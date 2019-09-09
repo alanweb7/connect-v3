@@ -151,5 +151,4 @@ close to you.</string>
         <variable name="ANDROID_PATH_PREFIX" value="C:/Program Files/Git/" />
     </plugin>
     <plugin name="mx.ferreyra.callnumber" spec="0.0.2" />
-    <plugin name="onesignal-cordova-plugin" spec="^2.5.2" />
 </widget>
