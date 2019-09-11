@@ -79,7 +79,8 @@ export class CodePesquisaPage {
     } else {
 
       this.codeProvider.searchEntries(this.searchTerm)
-        .subscribe((results: any) => {
+        .then((results: any) => {
+          console.log('results recebidos no code-pesquisa: ', results);
           this.searching = false;
           this.codes = results;
           if (this.codes <= 0) {
@@ -88,6 +89,19 @@ export class CodePesquisaPage {
           }
           this.isLoading = "";
         });
+
+      // this.codeProvider.searchEntries(this.searchTerm)
+      //   .subscribe((results: any) => {
+      //     this.searching = false;
+      //     this.codes = results;
+      //     if (this.codes <= 0) {
+      //       this.toast.create({ message: this.texto, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'alerta' }).present();
+
+      //     }
+      //     this.isLoading = "";
+      //   });
+
+
     }
   }
   closeModal() {
