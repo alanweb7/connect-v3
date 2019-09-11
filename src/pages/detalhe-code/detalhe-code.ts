@@ -393,7 +393,7 @@ export class DetalheCodePage {
                     }
                      //testa se meu retorno da API é vazio
                      this.titulo           = result.data[0]['titulo'];
-                     this.descricao        = result.data[0]['descricao'];
+                     this.descricao        = result.data[0].descricao;
 
                      this.nome_documento   = result.data[0]['nome_documento'];
                     // this.documento        = result.data[0]['documento'];

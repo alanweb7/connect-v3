@@ -113,7 +113,7 @@
                 <editor [initialValue]="descricao" class="second-editor" [init]="initModeUser"></editor>
                 <div [innerHTML]="descricao | keepHtml"></div>
               </ion-col>
-              <ion-col col-12 class="info-servico"  *ngIf="documento && documento.length > 0">
+              <ion-col col-12 class="info-servico"  *ngIf="documento && documento.length">
                       <ion-list id="verConteDo-list3" *ngFor="let doc of documento">
                               <a href="{{doc.doc_link}}" >
                                   <ion-item-sliding class="docitem">
