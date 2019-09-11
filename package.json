@@ -61,6 +61,7 @@
     "chart.js": "^2.7.3",
     "com-badrit-base64": "^0.2.0",
     "com-sarriaroman-photoviewer": "^1.2.4",
+    "cordova-android": "8.0.0",
     "cordova-ios": "5.0.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-advanced-http": "^2.1.1",
@@ -179,7 +180,8 @@
       "onesignal-cordova-plugin": {}
     },
     "platforms": [
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }
