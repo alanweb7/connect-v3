@@ -18,7 +18,7 @@
   <div *ngIf="searching" class="spinner-container">
     <ion-spinner name="bubbles"></ion-spinner>
   </div>
-  <ion-list class="list-cidade" *ngFor="let item of codes | slice:0:9">
+  <ion-list class="list-cidade" *ngFor="let item of codes">
     <ion-item (click)="pushPage(item.code)">
       <div class="header_thumbs">
         <div [ngStyle]="{'background-image': 'url('+ item.card +')'}"
