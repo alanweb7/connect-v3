@@ -162,7 +162,7 @@ showEnquete(code){
 getAllCode(token){
 
     this.codeProvider.getAllCode(token)
-    .subscribe(
+    .then(
           (result: any) =>{
               this.util.loading.dismissAll();
               if(result.status == 200){

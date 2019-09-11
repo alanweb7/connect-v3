@@ -156,8 +156,9 @@ export class ContatoAddPage {
   }
   getSetor(){
 
-        this.codeProvider.contato(this.id_code,this.token,"true","","","","","","get",this.sector_id,this.lang).subscribe(
+        this.codeProvider.contato(this.id_code,this.token,"true","","","","","","get",this.sector_id,this.lang).then(
           (result: any) =>{
+            console.log('Resultado dos contatos em cotato-adds.ts::', result);
           this.util.loading.dismissAll();
                 if(result.status == 200){
                       this.model.tipo              = result.code_sector.tipo;
@@ -189,8 +190,9 @@ export class ContatoAddPage {
   }
   getListTipo(){
 
-    this.codeProvider.contato(this.id_code,this.token,"list","","","","","","get",this.sector_id,this.lang).subscribe(
+    this.codeProvider.contato(this.id_code,this.token,"list","","","","","","get",this.sector_id,this.lang).then(
       (result: any) =>{
+        console.log('Resultado dos contatos em cotato-adds.ts: line-195:', result);
       //this.util.loading.dismissAll();
              this.tipo = result;
              console.log(result);
@@ -214,8 +216,9 @@ export class ContatoAddPage {
           }else{
             action ="update";
           }
-          this.codeProvider.contato(this.id_code,this.token,"true",this.model.tipo,this.model.calling_code,this.model.pais,this.model.conteudo,this.model.titulo,action,this.sector_id,this.lang).subscribe(
+          this.codeProvider.contato(this.id_code,this.token,"true",this.model.tipo,this.model.calling_code,this.model.pais,this.model.conteudo,this.model.titulo,action,this.sector_id,this.lang).then(
             (result: any) =>{
+              console.log('Resultado dos contatos em cotato-adds.ts:line-221:', result);
                   this.util.loading.dismissAll();
                   if(result.status == 200){
                     this.toast.create({ message: result.message, position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'sucesso'  }).present();

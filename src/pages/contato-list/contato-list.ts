@@ -152,8 +152,9 @@ voltar(){
  getList(){
   this.util.showLoading(this.load_aguarde);
 
-     this.codeProvider.contato(this.code_id,this.token,"true","","","","","","get","",this.lang).subscribe(
+     this.codeProvider.contato(this.code_id,this.token,"true","","","","","","get","",this.lang).then(
       (result: any) =>{
+        console.log('Resultado dos getList em cotato-adds.ts:line-157:', result);
       this.util.loading.dismissAll();
             if(result.status == 200){
                   this.whatsapp  = result.code_sectors.whatsapp;
@@ -215,8 +216,9 @@ voltar(){
  deleteSetor(id,tipo){
   this.util.showLoading(this.load_aguarde);
 
-        this.codeProvider.contato(this.code_id,this.token,"true","","","","","","delete",id,this.lang).subscribe(
+        this.codeProvider.contato(this.code_id,this.token,"true","","","","","","delete",id,this.lang).then(
         (result: any) =>{
+          console.log('Resultado dos contatos em cotato-adds.ts:line-221:', result);
         this.util.loading.dismissAll();
               if(result.status == 200){
                 this.toast.create({ message: result.message, position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'sucesso'  }).present();

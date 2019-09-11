@@ -101,10 +101,28 @@ export class CodeProvider {
     return this.API_IMG_URL;
   }
   //edição de code
-  getAllCode(token: String): Observable<any> {
+  async getAllCode(token: String){
     let url = this.APP_URL_CODE + '?token=' + token;
-    return this.http.get(url).map((resp: Response) => resp.json());
+    let result = await this.httpn.get(url, {}, {}).then((res) => {
+      console.log('resultado do getAllCode code.ts MEUS CODES: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
   }
+  // getAllCode(token: String): Observable<any> {
+  //   let url = this.APP_URL_CODE + '?token=' + token;
+  //   return this.http.get(url).map((resp: Response) => resp.json());
+  // }
   async getShowCode(code: String) {
     let url = this.API_URL + "?code=" + code;
     let result = await this.httpn.get(url, {}, {}).then((res) => {
@@ -159,7 +177,7 @@ export class CodeProvider {
     let url = this.APP_URL_CODE;
     return this.http.post(url, data).map((resp: Response) => resp.json());
   }
-  contato(id_code: String, token: String, setor: String, tipo: String, calling_code: String, pais: String, conteudo: String, titulo: String, action: String, sector_id: String, lang: String) {
+  async contato(id_code: String, token: String, setor: String, tipo: String, calling_code: String, pais: String, conteudo: String, titulo: String, action: String, sector_id: String, lang: String) {
     console.log(id_code, token, pais, setor, tipo, pais, conteudo, titulo, action, sector_id);
     var data = {
       id: id_code,
@@ -177,7 +195,24 @@ export class CodeProvider {
 
     };
     let url = this.APP_URL_CODE;
-    return this.http.post(url, data).map((resp: Response) => resp.json());
+
+    let result = await this.httpn.post(url, data, {}).then((res) => {
+      console.log('resultado dos contatos code.ts: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
+
+    // return this.http.post(url, data).map((resp: Response) => resp.json());
   }
   contato_Edit(id_code: Number, token: String, pais?: String, tel_whatsapp?: String, tel_contato?: String, email?: String, website?: String, facebookUser?: String, instagramUser?: String, linkedin?: String): Observable<any> {
     console.log(id_code, token, pais, tel_whatsapp, tel_contato, email);
