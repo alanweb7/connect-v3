@@ -182,7 +182,7 @@ export class ImageCodePage {
 
         this.util.showLoading(this.load_aguarde);
         this.codeProvider.getShowCode(this.id_code)
-        .subscribe(
+        .then(
               (result: any) =>{
                 this.util.loading.dismissAll();
                 console.log("result",result);

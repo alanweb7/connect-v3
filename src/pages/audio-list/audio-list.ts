@@ -384,7 +384,7 @@ getShow(){
   this.util.showLoading(this.load_aguarde);
        // this.util.showLoading("Aguarde...");
         this.codeProvider.getShowCode(this.id_code)
-        .subscribe(
+        .then(
               (result: any) =>{
                 console.log("result",result);
                 if(result.status == 200){

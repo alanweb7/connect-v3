@@ -105,10 +105,28 @@ export class CodeProvider {
     let url = this.APP_URL_CODE + '?token=' + token;
     return this.http.get(url).map((resp: Response) => resp.json());
   }
-  getShowCode(code: String): Observable<any> {
+  async getShowCode(code: String) {
     let url = this.API_URL + "?code=" + code;
-    return this.http.get(url).map((resp: Response) => resp.json());
+    let result = await this.httpn.get(url, {}, {}).then((res) => {
+      console.log('resultado do code.ts MENU CODE: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
   }
+  // getShowCode(code: String): Observable<any> {
+  //   let url = this.API_URL + "?code=" + code;
+  //   return this.http.get(url).map((resp: Response) => resp.json());
+  // }
   getLinks(page: any): Observable<any> {
     let url = this.APP_URL;
     return this.http.get(url).map((resp: Response) => resp.json());
