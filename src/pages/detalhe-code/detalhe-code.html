@@ -111,8 +111,7 @@
               <ion-col col-12 class="info-servico" *ngIf="descricao" style="padding-left: 20px !important; padding-right: 20px">
                 <p>DESCRIÇÃO:</p>
                 <editor [initialValue]="descricao" class="second-editor" [init]="initModeUser"></editor>
-                <p>Descrição II</p>
-                <div [innerHTML]="descricao"></div>
+                <div [innerHTML]="descricao" *ngIf="iosPlatform"></div>
               </ion-col>
               <ion-col col-12 class="info-servico"  *ngIf="documento && documento.length">
                       <ion-list id="verConteDo-list3" *ngFor="let doc of documento">

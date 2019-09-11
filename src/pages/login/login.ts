@@ -188,9 +188,9 @@ export class LoginPage {
                   let contextCliente: Usuario;
                   this.util.showLoading(this.load_enviando);
                   this.cli_Provider.login(this.model.email,this.model.password,this.lang)
-                  .subscribe(
+                  .then(
                         (result: any) =>{
-                          console.log(result);
+                          console.log('Resultado retornado no login page Login:: ',result);
                           if(result.code == 403.001){
                                  this.util.loading.dismissAll();
                                  this.toast.create({ message: result.message, position: 'top', duration: 10000,showCloseButton: true,closeButtonText: 'Ok!',cssClass: 'error' }).present();

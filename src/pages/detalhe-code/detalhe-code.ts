@@ -68,6 +68,7 @@ export class DetalheCodePage {
   option2           : String;
   label1            : String;
   label2            : String;
+  iosPlatform       : boolean;
   currentSlide: number = 0;
   totalSlides: number;
   disableNext: boolean = false;
@@ -153,23 +154,9 @@ export class DetalheCodePage {
                 readonly: true,
               }
 
-                // this.platform.backButton.subscribe(async () => {
-
-                //     let view = this.navCtrl.getActive();
-                //     console.log('Let view:::: ', view);
-                //     // Checks if can go back before show up the alert
-                //     if(view.name === 'DetalheCodePage') {
-
-                //         this.util.loading.dismissAll();
-                //         console.log('Dismissed alert');
-                //         this.alertModal.dismiss();
-                //         console.log('botão voltar');
-
-                //     }else{
-                //       this.navCtrl.setRoot('HomePage');
-                //     }
-
-                // });
+               if(this.platform.is('ios')){
+                 this.iosPlatform = true;
+               }
 
             }
 
