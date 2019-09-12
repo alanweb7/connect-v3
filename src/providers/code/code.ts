@@ -324,7 +324,7 @@ export class CodeProvider {
   }
   ///mídias
   async imagen_create(id_code: Number, token: String, files: any[], lang: String) {
-    var data = {
+    let data = {
       id: id_code,
       bloco: 3,
       token: token,
@@ -370,7 +370,7 @@ export class CodeProvider {
   }
 
   async doc_create(id_code: Number, token: String, files: any[], lang: String) {
-    var data = {
+    let data = {
       id: id_code,
       bloco: 4,
       token: token,
@@ -415,8 +415,8 @@ export class CodeProvider {
     // return this.http.delete(url).map((resp: Response) => resp.json());
   }
 
-  async video_create(id_code: Number, token: String, files: any[], lang: String){
-    var data = {
+  async video_create(id_code: Number, token: String, files: any[], lang: String) {
+    let data = {
       id: id_code,
       bloco: 5,
       token: token,
@@ -442,8 +442,8 @@ export class CodeProvider {
     // return this.http.post(url, data).map((resp: Response) => resp.json());
   }
 
-  async video_create_ftp(id_code: Number, token: String, files: String){
-    var data = {
+  async video_create_ftp(id_code: Number, token: String, files: String) {
+    let data = {
       id: id_code,
       bloco: 8,
       token: token,
@@ -468,7 +468,7 @@ export class CodeProvider {
     // return this.http.post(url, data).map((resp: Response) => resp.json());
   }
   async video_link_create(id_code: Number, token: String, files: String, origem: String, lang: String) {
-    var data = {
+    let data = {
       id: id_code,
       bloco: 6,
       token: token,
@@ -538,7 +538,7 @@ export class CodeProvider {
 
   async create_push(codeNumber: String, titulo: String, mensagem: String, token: String, lang: String) {
     console.log(codeNumber, titulo, mensagem, token);
-    var data = {
+    let data = {
       codeNumber: codeNumber,
       titulo: titulo,
       mensagem: mensagem,
