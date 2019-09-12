@@ -57,7 +57,7 @@ export class ContatoCodePage {
 
       this.util.showLoading("Aguarde...");
       this.codeProvider.contato_Edit(this.id_code,this.token,this.model.pais,this.model.whatsapp,this.model.telefone,this.model.email,this.model.site,this.model.facebook,this.model.instagram,this.model.linkedin)
-      .subscribe(
+      .then(
             (result: any) =>{
               this.util.loading.dismissAll();
               if(result.status == 200){

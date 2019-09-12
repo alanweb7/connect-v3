@@ -520,7 +520,7 @@ this.name="";
 
               console.log(url);
               this.codeProvider.video_link_create(this.id_code,this.token,url,"firebase",this.lang)
-                .subscribe(
+                .then(
                     (result: any) =>{
                       this.util.loading.dismissAll();
                       if(result.status == 200){

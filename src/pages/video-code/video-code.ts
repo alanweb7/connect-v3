@@ -173,7 +173,7 @@ public insertVideoLinkArray(link){
 
 
           this.codeProvider.video_link_create(this.id_code,this.token,link,"","")
-           .subscribe(
+           .then(
               (result: any) =>{
                 this.util.loading.dismissAll();
                 if(result.status == 200){
@@ -341,7 +341,7 @@ video_delete(id_code){
 
           this.util.showLoading("Aguarde..");
           this.codeProvider.video_delete(this.token,id_code,"")
-          .subscribe(
+          .then(
                 (result: any) =>{
                   this.util.loading.dismissAll();
                   if(result.status == 200){
@@ -524,7 +524,7 @@ enviar(){
 
         this.util.showLoading("Enviando...");
       this.codeProvider.video_create(this.id_code,this.token,this.caminho,"")
-                  .subscribe(
+                  .then(
                        (result: any) =>{
                         this.util.loading.dismissAll();
                           if(result.status == 200){
@@ -603,7 +603,7 @@ onUploadFTP():void{
                   this.on_progress;
                   if(up== 100){
                     this.codeProvider.video_create_ftp(this.id_code,this.token,this.name)
-                    .subscribe(
+                    .then(
                          (result: any) =>{
                           this.util.loading.dismissAll();
                             if(result.status == 200){

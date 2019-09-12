@@ -297,7 +297,7 @@ code_create(name_code,link){
                 t_conteudo = "2";
           }
          this.codeProvider.code_create(this.token,name_code,link,t_conteudo,this.lang)
-          .subscribe(
+          .then(
                 (result: any) =>{
                   this.util.loading.dismissAll();
                   if(result.status == 200){
@@ -325,7 +325,7 @@ code_create(name_code,link){
 
           this.util.showLoading(this.load_aguarde);
           this.codeProvider.code_remove(this.token,id_code,this.lang)
-          .subscribe(
+          .then(
                 (result: any) =>{
                   this.util.loading.dismissAll();
                   if(result.status == 200){

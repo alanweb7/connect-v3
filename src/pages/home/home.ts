@@ -274,7 +274,7 @@ trans={
     update_cupom(){
 
         this.cli_Provider.getinfConta(this.token)
-        .subscribe((result: any) =>{
+        .then((result: any) =>{
 
           if(result.status == 200){
             this.usuario.update_cupom("",result.cupom_id,result.user_id)

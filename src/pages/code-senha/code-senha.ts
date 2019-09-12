@@ -132,7 +132,7 @@ export class CodeSenhaPage {
 
 
                 this.codeProvider.getCodePassword(this.model.password,this.id_code,this.lang)
-                 .subscribe(
+                 .then(
                     (result: any) =>{
                       this.util.loading.dismissAll();
                       if(result.status == 200){

@@ -259,7 +259,7 @@ export class DetalheCodePage {
           console.log('codeID na funcao do validate Pass: ', codeID);
 
             this.codeProvider.getCodePassword(password,codeID,'pt')
-            .subscribe(
+            .then(
                (result: any) =>{
                  console.log('Dados retornados da senha: ', result);
 

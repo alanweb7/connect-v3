@@ -417,7 +417,7 @@ private _initialiseTranslation() : void
 
       this.util.showLoading(this.load_aguarde);
       this.codeProvider.code_Edit(this.token,this.id_code,this.modelC.name,this.modelG.titulo,this.modelG.descricao,this.model.link,this.meu_link,this.modelG.password,this.modelG.isprivate)
-      .subscribe(
+      .then(
             (result: any) =>{
               console.log('Retorno do Servidor: ', result)
               this.util.loading.dismissAll();

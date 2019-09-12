@@ -333,7 +333,7 @@ public insertVideoLinkArray(link){
 
 
           this.codeProvider.video_link_create(this.id_code,this.token,link,"",this.lang)
-           .subscribe(
+           .then(
               (result: any) =>{
                 this.util.loading.dismissAll();
                 if(result.status == 200){
@@ -404,7 +404,7 @@ getShow(){
 video_delete(id_code){
         this.util.showLoading(this.load_aguarde);
         this.codeProvider.audio_delete(this.token,id_code,this.lang)
-        .subscribe(
+        .then(
               (result: any) =>{
                 this.util.loading.dismissAll();
                 if(result.status == 200){

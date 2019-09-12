@@ -91,7 +91,7 @@ export class NotificacaoPushPage {
 
             this.util.showLoading(this.load_aguarde);
             this.codeProvider.create_push(this.code,this.model.titulo,this.model.mensagem,this.token,this.lang)
-            .subscribe(
+            .then(
                   (result: any) =>{
                     this.util.loading.dismissAll();
                     if(result.status == 200){

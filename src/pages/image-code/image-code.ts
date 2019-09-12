@@ -235,7 +235,7 @@ imagen_delete(id_img){
 
         this.util.showLoading(this.load_aguarde);
         this.codeProvider.imagen_delete(this.token,id_img,this.lang)
-        .subscribe(
+        .then(
               (result: any) =>{
                this.util.loading.dismissAll();
                 if(result.status == 200){

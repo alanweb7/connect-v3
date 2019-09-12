@@ -49,7 +49,7 @@ page_pesquisa;
 
 getAllinks(page: any) {
   this.codeProvider.getLinks(page)
-  .subscribe(
+  .then(
     (result: any) =>{
       console.log('result na pagina pesquisa!::',result);
         var user = result.data[0];

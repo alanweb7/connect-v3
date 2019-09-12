@@ -238,7 +238,7 @@ private takePicture(sourceType: number): void {
 
     this.util.showLoading(this.load_aguarde);
     this.cli_Provider.getinfConta(this.token)
-    .subscribe((result: any) =>{
+    .then((result: any) =>{
       this.util.loading.dismissAll();
       if(result.status == 200){
               this.cli_Provider.getSegmento().subscribe((result: any) =>{

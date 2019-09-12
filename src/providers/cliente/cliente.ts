@@ -79,9 +79,24 @@ export class ClienteProvider {
   //   }
 
 
-  getinfConta(token: String): Observable<any[]> {
+  async getinfConta(token: String){
     let url = this.CLIENTE_URL + 'token=' + token + '&bloco=9';
-    return this.http.get(url).map((resp: Response) => resp.json());
+    let result = await this.httpn.get(url, {}, {}).then((res) => {
+      console.log('resultado client.ts: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
+    // return this.http.get(url).map((resp: Response) => resp.json());
   }
 
   getSegmento(): Observable<any[]> {

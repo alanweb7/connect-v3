@@ -370,7 +370,7 @@ viewPhoto(img){
 
             this.util.showLoading(this.load_aguarde);
             this.codeProvider.imagen_delete(this.token,id_img,this.lang)
-            .subscribe(
+            .then(
                   (result: any) =>{
                   this.util.loading.dismissAll();
                     if(result.status == 200){
@@ -546,7 +546,7 @@ viewPhoto(img){
       this.util.showLoading(this.load_enviando);
 
             this.codeProvider.imagen_create(this.id_code,this.token,this.images,this.lang)
-            .subscribe(
+            .then(
               (result: any) =>{
                 this.util.loading.dismissAll();
                 if(result.status == 200){

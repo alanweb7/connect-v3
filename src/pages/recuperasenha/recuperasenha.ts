@@ -68,7 +68,7 @@ class ="";
         else {
 
                     this.codeProvider.forgotpass(this.email,this.lang)
-                        .subscribe(
+                        .then(
                                 (result: any) =>{
                                   if(result.status == 200){
                                     this.toast.create({ message: result.message, position: 'botton', duration: 4000 ,closeButtonText: 'Ok!',cssClass: 'sucesso'  }).present();

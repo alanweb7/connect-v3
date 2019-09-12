@@ -180,7 +180,7 @@ export class DocumentoCodePage {
 
           this.util.showLoading(this.load_aguarde);
           this.codeProvider.doc_delete(this.token,id_code,this.lang)
-          .subscribe(
+          .then(
                 (result: any) =>{
                   this.util.loading.dismissAll();
                   if(result.status == 200){
@@ -252,7 +252,7 @@ export class DocumentoCodePage {
     if(this.caminho.length >0){
 
               this.codeProvider.doc_create(this.id_code,this.token,this.caminho,this.lang)
-              .subscribe(
+              .then(
                     (result: any) =>{
                       if(result.status == 200){
                         this.util.loading.dismissAll();
