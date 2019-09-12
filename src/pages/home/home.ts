@@ -20,64 +20,64 @@ import { ClienteProvider } from '../../providers/cliente/cliente';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UtilService } from '../../providers/util/util.service';
 @IonicPage({
-  priority : 'high'
-})@Component({
+  priority: 'high'
+}) @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
 })
 export class HomePage {
-  public modalIsOpen:boolean;
+  public modalIsOpen: boolean;
   public signupform: FormGroup;
-  codeNumber         : any;
-  endLat             : any;
-  endLong            : any;
-  myfone             : any;
-  movies             : Usuario[] = [];
-  token              : any;
-  id                 : any ;
-  id_serv            : Number;
-  footerIsHidden     : Boolean = true;
-  public myGlobalVar : string;
-  public title : string;
-  public description : string;
-  public language : string ="pt";
-  button:String ="";
-  pesquisa:String="";
-  adquira:String="";
+  codeNumber: any;
+  endLat: any;
+  endLong: any;
+  myfone: any;
+  movies: Usuario[] = [];
+  token: any;
+  id: any;
+  id_serv: Number;
+  footerIsHidden: Boolean = true;
+  public myGlobalVar: string;
+  public title: string;
+  public description: string;
+  public language: string = "pt";
+  button: String = "";
+  pesquisa: String = "";
+  adquira: String = "";
   data = {
-    id_serv     :Number,
-    name        :String,
-    sobrenome   :String,
-    email       :String,
-    photo       :String,
-    logado      :String,
-    token       :String,
-    usuario     :String,
-    lang        :String,
-    cnpj        :String,
-    tp_pessoa   :String
+    id_serv: Number,
+    name: String,
+    sobrenome: String,
+    email: String,
+    photo: String,
+    logado: String,
+    token: String,
+    usuario: String,
+    lang: String,
+    cnpj: String,
+    tp_pessoa: String
 
-}
-trans={
-  login 		: String,
-  home      : String,
-  favoritos : String,
-  pesquisa  : String,
-  codes     : String,
-  sair      : String,
-  page_pesquisa :String,
-  msg_servidor:String,
-  load_aguarde:String,
-  nome:String,
-  sobrenome:String,
-    email:String,
-    empresa:String,
-    segmento:String,
-    cep:String,
-    cidade:String,
-    estado:String,
-    page:String,
-    btn_salvar:String,
+  }
+  trans = {
+    login: String,
+    home: String,
+    favoritos: String,
+    pesquisa: String,
+    codes: String,
+    sair: String,
+    page_pesquisa: String,
+    msg_servidor: String,
+    load_aguarde: String,
+    nome: String,
+    sobrenome: String,
+    email: String,
+    empresa: String,
+    segmento: String,
+    cep: String,
+    cidade: String,
+    estado: String,
+    page: String,
+    btn_salvar: String,
     page_login: String,
     load_enviando: String,
     campo_obrigatorio: String,
@@ -89,9 +89,9 @@ trans={
     page_senha: String,
     texto_1: String,
     texto_2: String,
-    usuario:String,
-    page_conta:String
-}
+    usuario: String,
+    page_conta: String
+  }
   campo;
   load_aguarde: any;
   msg_erro: any;
@@ -102,14 +102,14 @@ trans={
   btn_ircode: any;
   btn_fechar: any;
   page_pesquisa: any;
-  page_consulta:any;
+  page_consulta: any;
   msg_servidor: any;
-  isPT:boolean = false;
-  isDE:boolean = false;
-  isEN:boolean = false;
-  isES:boolean = false;
-  isFR:boolean = false;
-  isIT:boolean = false;
+  isPT: boolean = false;
+  isDE: boolean = false;
+  isEN: boolean = false;
+  isES: boolean = false;
+  isFR: boolean = false;
+  isIT: boolean = false;
   page_login: any;
   load_enviando: any;
   campo_obrigatorio: any;
@@ -122,37 +122,37 @@ trans={
   page_senha: any;
   texto_1: any;
   texto_2: any;
-  email ;
+  email;
   texto: any;
   msg_code: any;
-  statusConn:any;
+  statusConn: any;
   constructor(
-    public loadingCtrl     : LoadingController,
-    public navCtrl         : NavController,
-    public alertCtrl       : AlertController,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public alertCtrl: AlertController,
 
-    public navParams       : NavParams,
-    private global         : CodeProvider,
-    private geoProv        : GeolocationProvider,
-    private platform       : Platform,
-    private events         : Events,
-    private socialSharing  : SocialSharing,
-    private browserTab     : BrowserTab,
-    private oneSignal      : OneSignal,
+    public navParams: NavParams,
+    private global: CodeProvider,
+    private geoProv: GeolocationProvider,
+    private platform: Platform,
+    private events: Events,
+    private socialSharing: SocialSharing,
+    private browserTab: BrowserTab,
+    private oneSignal: OneSignal,
 
-    public  net            : NetworkProvider,
-    public network : Network,
-    private deeplinks      : Deeplinks,
-    private usuario        : UsuarioService,
-    private cli_Provider    : ClienteProvider ,
-    private keyboard       : Keyboard,
-    public modalCtrl       : ModalController,
+    public net: NetworkProvider,
+    public network: Network,
+    private deeplinks: Deeplinks,
+    private usuario: UsuarioService,
+    private cli_Provider: ClienteProvider,
+    private keyboard: Keyboard,
+    public modalCtrl: ModalController,
     public sqliteHelperService: SqliteHelperService,
-    private translate 	  : TranslateService,
+    private translate: TranslateService,
     private formBuilder: FormBuilder,
-    public util           : UtilService,
-    public toast          : ToastController,
-    public networkProvider : NetworkProvider,
+    public util: UtilService,
+    public toast: ToastController,
+    public networkProvider: NetworkProvider,
 
   ) {
 
@@ -161,13 +161,13 @@ trans={
     //   codeNumber: [''],
     // });
     this.modalIsOpen = this.navParams.get('modalIsOpen');
-    if(this.modalIsOpen == true){
+    if (this.modalIsOpen == true) {
       this.util.loading.dismissAll();
 
     }
     let error = this.navParams.get('error');
     console.log('erro recebido na HOME:: ', error);
-    if( error && error.status == -3){
+    if (error && error.status == -3) {
 
       this.netFail();
 
@@ -178,179 +178,180 @@ trans={
 
     });
 
-    if (this.platform.is('ios')){
+    if (this.platform.is('ios')) {
       this.sqliteHelperService.getDb()
-      .then((movies:any) => {
+        .then((movies: any) => {
           //alert("alert deu certo");
-      }).catch((erro)=>{
-         // alert("deu errado"+erro);
-      });
-     }
-
+        }).catch((erro) => {
+          // alert("deu errado"+erro);
+        });
     }
 
-    ngOnInit() {
+  }
 
-    }
-    ionViewDidLoad(){
-      console.log('enter ionViewDidLoad homePage:', this.navParams.get('config'));
+  ngOnInit() {
 
-     // this._initialiseTranslation();
+  }
+  ionViewDidLoad() {
+    console.log('enter ionViewDidLoad homePage:', this.navParams.get('config'));
 
-        //CHAMDA DO BANCO DE DADOS
-        this.platform.ready().then(()=>{
+    // this._initialiseTranslation();
 
-                this.usuario.getAll()
-                .then((movies:any) => {
-                  console.log(movies);
-                  if(movies.length == 1){
-                      this.data.name       = movies[0].name;
-                        this.data.sobrenome = movies[0].sobrenome;
-                        this.data.email     = movies[0].email;
-                        this.data.token     = movies[0].token;
-                        this.token          = movies[0].token;
-                        this.data.logado    = movies[0].logado;
-                        this.data.id_serv   = movies[0].id_serv;
-                        this.data.photo     = movies[0].photo;
-                        this.data.usuario   = movies[0].usuario;
-                        this.data.lang      = movies[0].cpf;
-                        this.language       = movies[0].cpf;
-                        this.id_serv        = movies[0].id_serv;
-                        this.data.cnpj      = movies[0].cnpj;
-                        this.data.tp_pessoa = movies[0].tp_pessoa;
+    //CHAMDA DO BANCO DE DADOS
+    this.platform.ready().then(() => {
 
-                        if(this.language ==  "" || this.language == undefined || this.language == null){
-                              this.language = "pt";
-                        }
-                        this.update_cupom();
-                        this.trogle_idiome_onesignal();
-                      //  this.events.publish('trans',this.language);
-                        this.events.publish('dados',this.data);
+      this.usuario.getAll()
+        .then((movies: any) => {
+          console.log(movies);
+          if (movies.length == 1) {
+            this.data.name = movies[0].name;
+            this.data.sobrenome = movies[0].sobrenome;
+            this.data.email = movies[0].email;
+            this.data.token = movies[0].token;
+            this.token = movies[0].token;
+            this.data.logado = movies[0].logado;
+            this.data.id_serv = movies[0].id_serv;
+            this.data.photo = movies[0].photo;
+            this.data.usuario = movies[0].usuario;
+            this.data.lang = movies[0].cpf;
+            this.language = movies[0].cpf;
+            this.id_serv = movies[0].id_serv;
+            this.data.cnpj = movies[0].cnpj;
+            this.data.tp_pessoa = movies[0].tp_pessoa;
 
-                  }else{
-                    this.language = "pt";
-                    console.log("minha lang",this.language);
+            if (this.language == "" || this.language == undefined || this.language == null) {
+              this.language = "pt";
+            }
+            this.update_cupom();
+            this.trogle_idiome_onesignal();
+            //  this.events.publish('trans',this.language);
+            this.events.publish('dados', this.data);
 
-                    console.log("entrei no else");
+          } else {
+            this.language = "pt";
+            console.log("minha lang", this.language);
 
-                      /* this.usuario.update_lang(this.language,this.id_serv)
-                    .then((data: any) => {
-                          console.log(data);
+            console.log("entrei no else");
 
-                    });  */
-                      this.isPT  =  true;
-                      this.trogle_idiome_onesignal();
-                  }
-                  // this.language= "pt";
-                  // this.isPT  =  true;
-                  this.pushGeoinfo();
-                  this.trogle_idiome(this.language);
-                  this._translateLanguage();
-                  this.oneSignalApp();
+            /* this.usuario.update_lang(this.language,this.id_serv)
+          .then((data: any) => {
+                console.log(data);
 
-                  }).catch((error)=>{
-                      alert("sqlite Erro "+error);
-                      this.language= "pt";
-                      this.isPT  =  true;
-                      this.pushGeoinfo();
-                      this.trogle_idiome(this.language);
-                      this._translateLanguage();
-                      this.oneSignalApp();
-                  });
-
-
-        });///final platform ready
-
-
-      this.keyboard.onKeyboardShow().subscribe(() => {
-          this.footerIsHidden= false;
-      });
-      this.keyboard.onKeyboardHide().subscribe(() => {
-          this.footerIsHidden= true;
-      });
-
-
-    }
-    update_cupom(){
-
-        this.cli_Provider.getinfConta(this.token)
-        .then((result: any) =>{
-
-          if(result.status == 200){
-            this.usuario.update_cupom("",result.cupom_id,result.user_id)
-            .then((data: any) => {
-                  console.log("atualizei o cupom",data);
-
-            });
+          });  */
+            this.isPT = true;
+            this.trogle_idiome_onesignal();
           }
+          // this.language= "pt";
+          // this.isPT  =  true;
+          this.pushGeoinfo();
+          this.trogle_idiome(this.language);
+          this._translateLanguage();
+          this.oneSignalApp();
+
+        }).catch((error) => {
+          alert("sqlite Erro " + error);
+          this.language = "pt";
+          this.isPT = true;
+          this.pushGeoinfo();
+          this.trogle_idiome(this.language);
+          this._translateLanguage();
+          this.oneSignalApp();
         });
 
 
-    }
-  trogle_idiome(id){
-    console.log("lang",id);
-      if(id=='pt'){
-        this.isDE = false;
-        this.isPT = true;
-        this.isES = false;
-        this.isFR = false;
-        this.isEN = false;
-        this.isIT = false;
-      }else if(id=='de'){
-          this.isDE = true;
-          this.isPT = false;
-          this.isES = false;
-          this.isFR = false;
-          this.isEN = false;
-          this.isIT = false;
-        }else if(id=='en'){
-          this.isDE = false;
-          this.isPT = false;
-          this.isES = false;
-          this.isFR = false;
-          this.isEN = true;
-          this.isIT = false;
-      }else if(id=='it'){
-        this.isDE = false;
-        this.isPT = false;
-        this.isES = false;
-        this.isFR = false;
-        this.isEN = false;
-        this.isIT = true;
-      }else if(id=='fr'){
-        this.isDE = false;
-        this.isPT = false;
-        this.isES = false;
-        this.isFR = true;
-        this.isEN = false;
-        this.isIT = false;
-      }else if(id=='es'){
-        this.isDE = false;
-        this.isPT = false;
-        this.isES = true;
-        this.isFR = false;
-        this.isEN = false;
-        this.isIT = false;
-      }else{
-        this.isDE = false;
-        this.isPT = true;
-        this.isES = false;
-        this.isFR = false;
-        this.isEN = false;
-        this.isIT = false;
-      }
+    });///final platform ready
+
+
+    this.keyboard.onKeyboardShow().subscribe(() => {
+      this.footerIsHidden = false;
+    });
+    this.keyboard.onKeyboardHide().subscribe(() => {
+      this.footerIsHidden = true;
+    });
+
+
   }
-  pushPage(){
+  update_cupom() {
+
+    this.cli_Provider.getinfConta(this.token)
+      .then((result: any) => {
+
+        if (result.status == 200) {
+          this.usuario.update_cupom("", result.cupom_id, result.user_id)
+            .then((data: any) => {
+              console.log("atualizei o cupom", data);
+
+            });
+        }
+      });
+
+
+  }
+  trogle_idiome(id) {
+    console.log("lang", id);
+    if (id == 'pt') {
+      this.isDE = false;
+      this.isPT = true;
+      this.isES = false;
+      this.isFR = false;
+      this.isEN = false;
+      this.isIT = false;
+    } else if (id == 'de') {
+      this.isDE = true;
+      this.isPT = false;
+      this.isES = false;
+      this.isFR = false;
+      this.isEN = false;
+      this.isIT = false;
+    } else if (id == 'en') {
+      this.isDE = false;
+      this.isPT = false;
+      this.isES = false;
+      this.isFR = false;
+      this.isEN = true;
+      this.isIT = false;
+    } else if (id == 'it') {
+      this.isDE = false;
+      this.isPT = false;
+      this.isES = false;
+      this.isFR = false;
+      this.isEN = false;
+      this.isIT = true;
+    } else if (id == 'fr') {
+      this.isDE = false;
+      this.isPT = false;
+      this.isES = false;
+      this.isFR = true;
+      this.isEN = false;
+      this.isIT = false;
+    } else if (id == 'es') {
+      this.isDE = false;
+      this.isPT = false;
+      this.isES = true;
+      this.isFR = false;
+      this.isEN = false;
+      this.isIT = false;
+    } else {
+      this.isDE = false;
+      this.isPT = true;
+      this.isES = false;
+      this.isFR = false;
+      this.isEN = false;
+      this.isIT = false;
+    }
+  }
+  pushPage() {
     let latitude = this.endLat;
-        let longitude = this.endLong;
-        console.log('home codes com gps');
-        let sendData = {liberado :false,origem:1,token:this.token,lang:this.language,
-          code: this.codeNumber,
-          latitude: latitude, longitude: longitude,
-          telephone: this.global.myGlobalVar
-      };
-        this.navCtrl.push('RedirectPage', {data:sendData});
-        // this.navCtrl.push('DetalheCodePage', {data:sendData});
+    let longitude = this.endLong;
+    console.log('home codes com gps');
+    let sendData = {
+      liberado: false, origem: 1, token: this.token, lang: this.language,
+      code: this.codeNumber,
+      latitude: latitude, longitude: longitude,
+      telephone: this.global.myGlobalVar
+    };
+    this.navCtrl.push('RedirectPage', { data: sendData });
+    // this.navCtrl.push('DetalheCodePage', {data:sendData});
 
 
     // this.util.showLoading('Aguarde...');
@@ -373,296 +374,294 @@ trans={
     //   }
     // });
   }
-pushGeoinfo(){
-  this.platform.ready().then(() => {
-    this.geoProv.getGeolocation().then((resp:String[])=>{
-      console.log('home',resp);
+  pushGeoinfo() {
+    this.platform.ready().then(() => {
+      this.geoProv.getGeolocation().then((resp: String[]) => {
+        console.log('home', resp);
 
         this.endLat = resp["latitude"];
         this.endLong = resp["longitude"];
-        console.log('home',this.endLat,this.endLong );
-     });
-  });
-}
-pushPageCode(){
+        console.log('home', this.endLat, this.endLong);
+      });
+    });
+  }
+  pushPageCode() {
 
-  let sendData = {liberado :false,origem:1,token:this.token,lang:this.language,  code: 'KSCODE',
-  latitude: this.endLat, longitude: this.endLong,
-  telephone: this.global.myGlobalVar
-  };
+    let sendData = {
+      liberado: false, origem: 1, token: this.token, lang: this.language, code: 'KSCODE',
+      latitude: this.endLat, longitude: this.endLong,
+      telephone: this.global.myGlobalVar
+    };
 
-  this.navCtrl.push('RedirectPage', {data:sendData});
+    this.navCtrl.push('RedirectPage', { data: sendData });
 
-}
+  }
 
-pushPagePesquisa(){
+  pushPagePesquisa() {
 
-  // let sendData = {texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language};
-  // this.navCtrl.push('RedirectPage', {data:sendData});
-  this.navCtrl.push('CodePesquisaPage',{texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language});
+    // let sendData = {texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language};
+    // this.navCtrl.push('RedirectPage', {data:sendData});
+    this.navCtrl.push('CodePesquisaPage', { texto: this.texto, campo: this.campo, page_pesquisa: this.page_consulta, msg_servidor: this.msg_servidor, load_aguarde: this.load_aguarde, token: this.token, lang: this.language });
 
-  // let myModal =this.modalCtrl.create('CodePesquisaPage',{texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language});
-  // myModal.present();
-}
-showCheckbox() {
+    // let myModal =this.modalCtrl.create('CodePesquisaPage',{texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language});
+    // myModal.present();
+  }
+  showCheckbox() {
 
-  let alert = this.alertCtrl.create();
-  alert.setTitle(this.selecione);
- //ingles, espanhol, italiano, frances e alemão
-  alert.addInput({
-    type: 'radio',
-    label:"Português",
-    value: "pt",
-    checked: this.isPT
-  });
-  alert.addInput({
-    type: 'radio',
-    label:"Inglês",
-    value: "en",
-    checked: this.isEN
-  });
-  alert.addInput({
-    type: 'radio',
-    label:"Espanhol",
-    value: "es",
-    checked: this.isES
-  });
-  alert.addInput({
-    type: 'radio',
-    label:"Italiano",
-    value: "it",
-    checked: this.isIT
-  });
-  alert.addInput({
-    type: 'radio',
-    label:"Frânces",
-    value: "fr",
-    checked: this.isFR
-  });
-  alert.addInput({
-    type: 'radio',
-    label:"Alemão",
-    value: "de",
-    checked: this.isDE
-  });
-   alert.addButton(this.btn_cancelar);
-   alert.addButton({
-     text: this.btn_continuar,
-     handler: data => {
-       console.log('radio data:', data);
-          this.language = data;
-          this.usuario.update_lang(this.language,this.id_serv)
+    let alert = this.alertCtrl.create();
+    alert.setTitle(this.selecione);
+    //ingles, espanhol, italiano, frances e alemão
+    alert.addInput({
+      type: 'radio',
+      label: "Português",
+      value: "pt",
+      checked: this.isPT
+    });
+    alert.addInput({
+      type: 'radio',
+      label: "Inglês",
+      value: "en",
+      checked: this.isEN
+    });
+    alert.addInput({
+      type: 'radio',
+      label: "Espanhol",
+      value: "es",
+      checked: this.isES
+    });
+    alert.addInput({
+      type: 'radio',
+      label: "Italiano",
+      value: "it",
+      checked: this.isIT
+    });
+    alert.addInput({
+      type: 'radio',
+      label: "Frânces",
+      value: "fr",
+      checked: this.isFR
+    });
+    alert.addInput({
+      type: 'radio',
+      label: "Alemão",
+      value: "de",
+      checked: this.isDE
+    });
+    alert.addButton(this.btn_cancelar);
+    alert.addButton({
+      text: this.btn_continuar,
+      handler: data => {
+        console.log('radio data:', data);
+        this.language = data;
+        this.usuario.update_lang(this.language, this.id_serv)
           .then((data: any) => {
-                console.log(data);
+            console.log(data);
 
           });
-          this.trogle_idiome(this.language);
-          this.changeLanguage();
+        this.trogle_idiome(this.language);
+        this.changeLanguage();
 
 
-     }
-   });
-   alert.present();
-}
-// compartilhar social share
-shareSheetShare() {
-  this.socialSharing.share("KSCODE - Tudo se conecta aqui! ->", "Share subject", "", "https://play.google.com/store/apps/details?id=com.kcode360.kcode").then(() => {
-
-  }).catch(() => {});
-}
-
-shopcode() {
-  var url = 'https://kscode.com.br/pacotes/';
-   this.browserTab.isAvailable()
-    .then(isAvailable => {
-      if (isAvailable) {
-        this.browserTab.openUrl(url);
       }
     });
-}
-// push notification onesignal
- oneSignalApp(){
-   console.log(this.btn_fechar,this.btn_ircode);
-  this.oneSignal.startInit('d9687a3a-3df5-4565-b183-653e84ed8207', '8700496258');
-  this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
-  this.oneSignal.handleNotificationReceived().subscribe( notification => {
-    console.log(notification);
-    //var notificationData       = notification.notification.payload;
-   /*  var notificationAdditional = notificationData.additionalData;
-    var notificationCode       = notificationAdditional.code; */
-   // this.redirectPush(notification);
-   const confirm              = this.alertCtrl.create({
-    title: notification.payload.title,
-    message: notification.payload.body,
-    buttons: [
-      {
-        text: this.btn_fechar,
-        handler: () => {
+    alert.present();
+  }
+  // compartilhar social share
+  shareSheetShare() {
+    this.socialSharing.share("KSCODE - Tudo se conecta aqui! ->", "Share subject", "", "https://play.google.com/store/apps/details?id=com.kcode360.kcode").then(() => {
 
+    }).catch(() => { });
+  }
+
+  shopcode() {
+    var url = 'https://kscode.com.br/pacotes/';
+    this.browserTab.isAvailable()
+      .then(isAvailable => {
+        if (isAvailable) {
+          this.browserTab.openUrl(url);
         }
-      },
-      {
-        text: this.btn_ircode,
-        handler: () => {
-          this.redirectPush(notification.payload.additionalData.code);
-        }
-      }
-    ]
-  });
-  confirm.present();
-  });
-  this.oneSignal.handleNotificationOpened().subscribe( notification => {
-    var notificationData       = notification.notification.payload;
-    var notificationAdditional = notificationData.additionalData;
-    var notificationCode       = notificationAdditional.code;
-    this.redirectPush(notificationCode);
-  });
+      });
+  }
+  // push notification onesignal
+  oneSignalApp() {
+    console.log(this.btn_fechar, this.btn_ircode);
+    this.oneSignal.startInit('d9687a3a-3df5-4565-b183-653e84ed8207', '8700496258');
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
+    this.oneSignal.handleNotificationReceived().subscribe(notification => {
+      console.log(notification);
+      //var notificationData       = notification.notification.payload;
+      /*  var notificationAdditional = notificationData.additionalData;
+       var notificationCode       = notificationAdditional.code; */
+      // this.redirectPush(notification);
+      const confirm = this.alertCtrl.create({
+        title: notification.payload.title,
+        message: notification.payload.body,
+        buttons: [
+          {
+            text: this.btn_fechar,
+            handler: () => {
 
-  this.oneSignal.endInit();
-}
-public changeLanguage() : void
-{
-   this._translateLanguage();
-}
+            }
+          },
+          {
+            text: this.btn_ircode,
+            handler: () => {
+              this.redirectPush(notification.payload.additionalData.code);
+            }
+          }
+        ]
+      });
+      confirm.present();
+    });
+    this.oneSignal.handleNotificationOpened().subscribe(notification => {
+      var notificationData = notification.notification.payload;
+      var notificationAdditional = notificationData.additionalData;
+      var notificationCode = notificationAdditional.code;
+      this.redirectPush(notificationCode);
+    });
+
+    this.oneSignal.endInit();
+  }
+  public changeLanguage(): void {
+    this._translateLanguage();
+  }
 
 
-private _translateLanguage() : void
-{
-   this.translate.use(this.language);
-   this.trogle_idiome(this.language);
-   console.log("linguagem",this.language);
-   this._initialiseTranslation();
-}
-private _initialiseTranslation() : void
-{
-   setTimeout(() =>
-   {
-      this.title 			            = this.translate.instant("home.heading");
-      this.button               	= this.translate.instant("home.button");
-      this.pesquisa               = this.translate.instant("home.pesquisa");
-      this.adquira              	= this.translate.instant("home.adquira");
-      this.trans.login 			      = this.translate.instant("menu.login");
-      this.trans.home         	  = this.translate.instant("menu.home");
-      this.trans.favoritos        = this.translate.instant("menu.favoritos");
-      this.trans.pesquisa         = this.translate.instant("menu.pesquisa");
-      this.trans.codes           	= this.translate.instant("menu.codes");
-      this.trans.sair           	= this.translate.instant("menu.sair");
-      this.trans.page_pesquisa   	= this.translate.instant("default.page_pesquisa");
-      this.trans.load_aguarde    	= this.translate.instant("default.load_aguarde");
-      this.trans.msg_servidor    	= this.translate.instant("default.msg_servidor");
-      this.trans.btn_salvar    	  = this.translate.instant("default.btn_salvar");
-      this.trans.nome             = this.translate.instant("minha_conta.nome");
-      this.trans.sobrenome        = this.translate.instant("minha_conta.sobrenome");
-      this.trans.email            = this.translate.instant("minha_conta.email");
-      this.trans.empresa          = this.translate.instant("minha_conta.empresa");
-      this.trans.segmento         = this.translate.instant("minha_conta.segmento");
-      this.trans.cep              = this.translate.instant("minha_conta.cep");
-      this.trans.cidade           = this.translate.instant("minha_conta.cidade");
-      this.trans.estado           = this.translate.instant("minha_conta.estado");
-      this.trans.page_conta       = this.translate.instant("minha_conta.page");
+  private _translateLanguage(): void {
+    this.translate.use(this.language);
+    this.trogle_idiome(this.language);
+    console.log("linguagem", this.language);
+    this._initialiseTranslation();
+  }
+  private _initialiseTranslation(): void {
+    setTimeout(() => {
+      this.title = this.translate.instant("home.heading");
+      this.button = this.translate.instant("home.button");
+      this.pesquisa = this.translate.instant("home.pesquisa");
+      this.adquira = this.translate.instant("home.adquira");
+      this.trans.login = this.translate.instant("menu.login");
+      this.trans.home = this.translate.instant("menu.home");
+      this.trans.favoritos = this.translate.instant("menu.favoritos");
+      this.trans.pesquisa = this.translate.instant("menu.pesquisa");
+      this.trans.codes = this.translate.instant("menu.codes");
+      this.trans.sair = this.translate.instant("menu.sair");
+      this.trans.page_pesquisa = this.translate.instant("default.page_pesquisa");
+      this.trans.load_aguarde = this.translate.instant("default.load_aguarde");
+      this.trans.msg_servidor = this.translate.instant("default.msg_servidor");
+      this.trans.btn_salvar = this.translate.instant("default.btn_salvar");
+      this.trans.nome = this.translate.instant("minha_conta.nome");
+      this.trans.sobrenome = this.translate.instant("minha_conta.sobrenome");
+      this.trans.email = this.translate.instant("minha_conta.email");
+      this.trans.empresa = this.translate.instant("minha_conta.empresa");
+      this.trans.segmento = this.translate.instant("minha_conta.segmento");
+      this.trans.cep = this.translate.instant("minha_conta.cep");
+      this.trans.cidade = this.translate.instant("minha_conta.cidade");
+      this.trans.estado = this.translate.instant("minha_conta.estado");
+      this.trans.page_conta = this.translate.instant("minha_conta.page");
 
-      this.load_aguarde           = this.translate.instant("default.load_aguarde");
-      this.msg_erro               = this.translate.instant("default.msg_erro");
-       this.selecione             = this.translate.instant("videos.selecione");
-      this.btn_cancelar           = this.translate.instant("default.btn_cancelar");
-      this.btn_continuar          =this.translate.instant("default.btn_continuar");
-      this.code_existe            =this.translate.instant("home.code_existe");
-      this.btn_ircode             =this.translate.instant("default.btn_ircode");
-      this.btn_fechar             =this.translate.instant("default.btn_fechar");
+      this.load_aguarde = this.translate.instant("default.load_aguarde");
+      this.msg_erro = this.translate.instant("default.msg_erro");
+      this.selecione = this.translate.instant("videos.selecione");
+      this.btn_cancelar = this.translate.instant("default.btn_cancelar");
+      this.btn_continuar = this.translate.instant("default.btn_continuar");
+      this.code_existe = this.translate.instant("home.code_existe");
+      this.btn_ircode = this.translate.instant("default.btn_ircode");
+      this.btn_fechar = this.translate.instant("default.btn_fechar");
 
-      console.log(this.btn_cancelar,this.btn_continuar,this.btn_fechar,this.btn_ircode);
-      this.page_pesquisa          = this.translate.instant("default.page_pesquisa");
-     // this.load_aguarde           = this.translate.instant("default.btn_fechar");
-      this.msg_servidor           =  this.translate.instant("default.msg_servidor");
-      this.page_consulta           =  this.translate.instant("default.page_pesquisa");
-      this.campo           =  this.translate.instant("meus_codes.campo");
-      this.texto           =  this.translate.instant("default.pesquisa");
+      console.log(this.btn_cancelar, this.btn_continuar, this.btn_fechar, this.btn_ircode);
+      this.page_pesquisa = this.translate.instant("default.page_pesquisa");
+      // this.load_aguarde           = this.translate.instant("default.btn_fechar");
+      this.msg_servidor = this.translate.instant("default.msg_servidor");
+      this.page_consulta = this.translate.instant("default.page_pesquisa");
+      this.campo = this.translate.instant("meus_codes.campo");
+      this.texto = this.translate.instant("default.pesquisa");
 
-      this.trans.page_login             = this.translate.instant("login.page");
-      this.trans.load_enviando          = this.translate.instant("default.load_enviando");
-      this.trans.campo_obrigatorio      = this.translate.instant("default.campo_obrigatorio");
-      this.trans.frase                  = this.translate.instant("login.frase");
-      this.trans.page                   = this.translate.instant("login.page");
-      this.trans.usuario                = this.translate.instant("login.usuario");
-      this.trans.senha                  = this.translate.instant("login.senha");
-      this.trans.esqueceu               = this.translate.instant("login.esqueceu");
-      this.trans.ou                     = this.translate.instant("login.ou");
-      this.trans.conta                  = this.translate.instant("login.conta");
-      this.trans.page_senha             = this.translate.instant("recupera_senha.page");
-      this.trans.texto_1                = this.translate.instant("recupera_senha.texto_1");
-      this.trans.texto_2                = this.translate.instant("recupera_senha.texto_2");
-     // this.trans.email                  = this.translate.instant("recupera_senha.texto_2");
+      this.trans.page_login = this.translate.instant("login.page");
+      this.trans.load_enviando = this.translate.instant("default.load_enviando");
+      this.trans.campo_obrigatorio = this.translate.instant("default.campo_obrigatorio");
+      this.trans.frase = this.translate.instant("login.frase");
+      this.trans.page = this.translate.instant("login.page");
+      this.trans.usuario = this.translate.instant("login.usuario");
+      this.trans.senha = this.translate.instant("login.senha");
+      this.trans.esqueceu = this.translate.instant("login.esqueceu");
+      this.trans.ou = this.translate.instant("login.ou");
+      this.trans.conta = this.translate.instant("login.conta");
+      this.trans.page_senha = this.translate.instant("recupera_senha.page");
+      this.trans.texto_1 = this.translate.instant("recupera_senha.texto_1");
+      this.trans.texto_2 = this.translate.instant("recupera_senha.texto_2");
+      // this.trans.email                  = this.translate.instant("recupera_senha.texto_2");
       //this.trans.lang       = this.language;
 
-     //this.events.publish('dados',this.data);
-      this.events.publish('trans',this.trans);
-      this.events.publish('lang',this.language);
-    // this.events.publish('dados',this.data);
-   }, 250);
+      //this.events.publish('dados',this.data);
+      this.events.publish('trans', this.trans);
+      this.events.publish('lang', this.language);
+      // this.events.publish('dados',this.data);
+    }, 250);
 
-}
-// redirect push enter
-redirectPush(notificationCode){
-  console.log(notificationCode);
+  }
+  // redirect push enter
+  redirectPush(notificationCode) {
+    console.log(notificationCode);
 
 
-  let sendData = {liberado :false,origem:1,token:this.token,lang:this.language,
-    code: notificationCode,
-    latitude: this.endLat, longitude: this.endLong,
-    telephone: this.global.myGlobalVar
+    let sendData = {
+      liberado: false, origem: 1, token: this.token, lang: this.language,
+      code: notificationCode,
+      latitude: this.endLat, longitude: this.endLong,
+      telephone: this.global.myGlobalVar
 
-  };
-  this.navCtrl.push('RedirectPage', {data:sendData});
+    };
+    this.navCtrl.push('RedirectPage', { data: sendData });
 
-  // this.navCtrl.push('DetalheCodePage', sendData);
-  console.log('notifcacao codes com gps');
+    // this.navCtrl.push('DetalheCodePage', sendData);
+    console.log('notifcacao codes com gps');
 
- }
+  }
 
-// redirect links
-openDeeplinks(){
-  this.deeplinks.routeWithNavController(this.navCtrl, {
-    '/card': {'card':'DetalheCodePage',},
-    '/about-us': {'card':'DetalheCodePage'},
-  }).subscribe((match) => {
-    console.log(match);
-    var code = match.$link.queryString.substring(5,50);
-    if(code){
+  // redirect links
+  openDeeplinks() {
+    this.deeplinks.routeWithNavController(this.navCtrl, {
+      '/card': { 'card': 'DetalheCodePage', },
+      '/about-us': { 'card': 'DetalheCodePage' },
+    }).subscribe((match) => {
+      console.log(match);
+      var code = match.$link.queryString.substring(5, 50);
+      if (code) {
         this.redirectPush(code);
+      }
+
+    }, (nomatch) => { });
+
+  }
+  trogle_idiome_onesignal() {
+    console.log("langsdfds", this.language);
+    if (this.language == 'pt') {
+      this.btn_fechar = "Fechar";
+      this.btn_ircode = "Ir para Code";
+
+    } else if (this.language == 'de') {
+      this.btn_fechar = "Schliessen";
+      this.btn_ircode = "Gehe zu CODE";
+    } else if (this.language == 'en') {
+      this.btn_fechar = "Close";
+      this.btn_ircode = "Go to CODE";
+    } else if (this.language == 'it') {
+      this.btn_fechar = "Vicino";
+      this.btn_ircode = "Vai al  CODE";
+    } else if (this.language == 'fr') {
+
+      this.btn_fechar = "Proche";
+      this.btn_ircode = "Aller à CODE";
+    } else if (this.language == 'es') {
+      this.btn_fechar = "Cerca";
+      this.btn_ircode = "Ir a CODE";
     }
+  }
 
-  }, (nomatch) => {});
-
-}
-    trogle_idiome_onesignal(){
-      console.log("langsdfds",this.language);
-        if(this.language =='pt'){
-          this.btn_fechar           =  "Fechar";
-          this.btn_ircode             = "Ir para Code";
-
-        }else if(this.language =='de'){
-              this.btn_fechar           =  "Schliessen";
-              this.btn_ircode             = "Gehe zu CODE";
-          }else if(this.language =='en'){
-            this.btn_fechar           =  "Close";
-            this.btn_ircode             = "Go to CODE";
-        }else if(this.language =='it'){
-          this.btn_fechar           =  "Vicino";
-          this.btn_ircode             = "Vai al  CODE";
-        }else if(this.language =='fr'){
-
-          this.btn_fechar           =  "Proche";
-          this.btn_ircode             = "Aller à CODE";
-        }else if(this.language =='es'){
-          this.btn_fechar           =  "Cerca";
-          this.btn_ircode             = "Ir a CODE";
-        }
-    }
-
-    netFail(){
-      let result:any = [];
-      result.message = "Sem conexão com a internet."
-      this.toast.create({ message: result.message, position: 'botton', duration: 14400 ,closeButtonText: 'Ok!', cssClass: 'error' }).present();
-    }
+  netFail() {
+    let result: any = [];
+    result.message = "Sem conexão com a internet."
+    this.toast.create({ message: result.message, position: 'botton', duration: 14400, closeButtonText: 'Ok!', cssClass: 'error' }).present();
+  }
 
 }

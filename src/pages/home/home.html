@@ -21,8 +21,9 @@
       <ion-content class="fundo">
 
           <div>
-            <ion-card class="fundo" style="text-align: center" *ngIf="footerIsHidden">
-                <img src="assets/imgs/logo_home_blanc.svg" style="height: 90px"/>
+            <ion-card class="fundo" style="text-align: center">
+                <img src="assets/imgs/logo_home_blanc.svg" style="height: 90px" *ngIf="footerIsHidden"/>
+                <img src="assets/imgs/logo_home_blanc.svg" style="height: 30px" *ngIf="!footerIsHidden"/>
                 <ion-card-content>
                   <ion-card-title>
                       {{title}}
