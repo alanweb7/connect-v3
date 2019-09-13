@@ -69,11 +69,20 @@
                                               <ion-input name="titulo" type="text" placeholder="{{titulo_lang}}" [(ngModel)]="modelG.titulo" formControlName="titulo"  class="validate" value="{{titulo}}"></ion-input>
                                           </ion-item>
 
-                                          <ion-item>
+                                          <ion-item *ngIf="!isIos">
                                               <p>Descrição</p>
                                               <editor [init]="initEditor3" [(ngModel)]="modelG.descricao" name="descricao"  formControlName="descricao" [initialValue]="descricao" ></editor>
 
                                           </ion-item>
+                                          <ion-item  *ngIf="isIos">
+                                              <ion-label position="stacked">Descrição</ion-label>
+                                              <ion-textarea
+                                              [(ngModel)]="modelG.descricao"
+                                              formControlName="descricao"
+                                              name="descricao"
+                                              value="descricao">
+                                              </ion-textarea>
+                                            </ion-item>
                                           <ion-item>
                                             <ion-label>
                                                 <ion-icon name="key"></ion-icon>

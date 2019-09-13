@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef} from '@angular/core';
-import { IonicPage, NavController, NavParams , Slides, ModalController,  LoadingController, ToastController, AlertController, ViewController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Slides, ModalController, LoadingController, ToastController, AlertController, ViewController, Platform } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { FormBuilder , Validators} from '../../../node_modules/@angular/forms';
 import { NetworkProvider } from '../../providers/network/network';
@@ -43,6 +43,7 @@ export class MenuCodePage {
   t_conteudo       : String;
   card             : string;
   package_imagens  :String;
+  isIos            :boolean;
 
   contato={
     pais           :  String,
@@ -81,8 +82,12 @@ export class MenuCodePage {
               public alertCtrl      : AlertController,
               private socialSharing : SocialSharing,
 
-              private translate 	  : TranslateService
+              private translate 	  : TranslateService,
+              public platform        : Platform,
             ) {
+              if(this.platform.is('ios')){
+                this.isIos = true;
+              }
               this.initEditor3 = {
                 // selector: 'textarea',  // change this value according to your HTML
                 height: 300,
