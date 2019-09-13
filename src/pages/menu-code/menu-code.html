@@ -1,5 +1,4 @@
 <ion-header>
-
   <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
@@ -8,12 +7,10 @@
     <ion-buttons end>
       <button ion-button icon-only (click)="shareSheetShare()">
         <ion-icon ios="ios-share" md="md-share"></ion-icon>
-
       </button>
       <button ion-button icon-only (click)="showPromptPush(code)">
         <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
       </button>
-
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -25,7 +22,6 @@
         <ion-row>
           <ion-col>
             <p>{{texto}}</p>
-
             <ion-list class="index-formularios">
               <ion-item>
                 <ion-input type="text" placeholder="Seu code" [(ngModel)]="modelC.name" formControlName="name"
@@ -33,43 +29,40 @@
               </ion-item>
             </ion-list>
           </ion-col>
-
         </ion-row>
       </ion-grid>
     </form>
   </div>
   <!-- AQUI COMEÇA O SEGMENTE DA HOME-->
   <div>
-    <div class="bar_segments">
-      <div>
-        <button ion-button round outline clas="btn_segments" (click)="changeSegment(1)">
-          {{seg_1}}
-        </button>
-      </div>
-      <div>
-        <button ion-button round outline clas="btn_segments" (click)="changeSegment(2)">
-          {{seg_2}}
-        </button>
-      </div>
-      <div>
-        <button ion-button round outline clas="btn_segments" (click)="changeSegment(3)">
-          {{seg_3}}
-        </button>
-      </div>
-
-    </div>
-    <div class="bar_segments">
-      <div style="width: 25%; text-align: center;">
-        <ion-icon name="checkmark-circle-outline" *ngIf="segment == 1"></ion-icon>
-      </div>
-      <div style="width: 50%; text-align: center;">
-        <ion-icon name="checkmark-circle-outline" *ngIf="segment == 2"></ion-icon>
-      </div>
-      <div style="width: 25%; text-align: center;">
-        <ion-icon name="checkmark-circle-outline" *ngIf="segment == 3"></ion-icon>
-      </div>
-    </div>
-
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div class="align_center">
+            <button ion-button block outline (click)="changeSegment(1)">
+              {{seg_1}}
+            </button>
+            <ion-icon name="checkmark-circle-outline" *ngIf="segment == 1"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div class="align_center">
+            <button ion-button block outline (click)="changeSegment(2)">
+              MIDIAS
+            </button>
+            <ion-icon name="checkmark-circle-outline" *ngIf="segment == 2"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div class="align_center">
+            <button ion-button block outline (click)="changeSegment(3)">
+              {{seg_3}}
+            </button>
+            <ion-icon name="checkmark-circle-outline" *ngIf="segment == 3"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
   <div style="margin-bottom: 15%;">
     <!-- slide inicial-->
