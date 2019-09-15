@@ -26,24 +26,6 @@
               </div>
           </div>
         </div>
-        <div>
-            <ion-list>
-                <ion-item *ngIf="isSelecionado && !isEnviando">
-                  <p>{{audio.filename}}</p>
-                  <div>
-                      <audio controls>
-                          <source [src]="fileUpload" type="audio/mp3">
-                          <source [src]="fileUpload" type="audio/3gp">
-                        Seu dispositivo não suporta esse formato de audio.
-                      </audio>
-                  </div>
-                  <!-- <button ion-button clear item-end large (click)="playAudio(audio.filename, i)">
-                    <ion-icon name="play"   *ngIf="!isPlayed"></ion-icon>
-                    <ion-icon name="pause"  *ngIf="isPlayed"></ion-icon>
-                  </button> -->
-                </ion-item>
-              </ion-list>
-        </div>
         <div class="uploading" *ngIf="inUpload"><!--Barra de progresso do upload-->
             <progress id="progressbar" max="100" value="{{ uploadPercent }}"> </progress>
             <div id="progressbarlabel">{{ uploadPercent }} %</div>
@@ -59,6 +41,7 @@
         <ion-item  *ngFor="let video of videos">
           <div>
               <audio controls>
+                  <source [src]="fileUpload" type="audio/mpeg">
                   <source [src]="video.audio_link" type="audio/mp3">
                   <source [src]="video.audio_link" type="audio/3gp">
                 Seu dispositivo não suporta esse formato de audio.

@@ -452,11 +452,11 @@ export class AudioListPage {
     this.StartTimer('init');
 
     if (this.platform.is('ios')) {
-      this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.mp3';
+      this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
       this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
       this.audio = this.media.create(this.filePath);
     } else if (this.platform.is('android')) {
-      this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.mp3';
+      this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
       this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
       this.audio = this.media.create(this.filePath);
     }
