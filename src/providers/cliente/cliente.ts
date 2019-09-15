@@ -2,7 +2,6 @@ import { HTTP } from '@ionic-native/http';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ClienteProvider {
@@ -17,7 +16,8 @@ export class ClienteProvider {
 
   }
 
-  UpdateAccount(first_name: String, last_name: String, avatar: String, user_email: String, nome_empresa: String, segmento_empresa: String, user_cep: String, estado_empresa: String, cidade_empresa: String, token: String, lang: String): Observable<any[]> {
+  async UpdateAccount(first_name: String, last_name: String, avatar: String, user_email: String, nome_empresa: String, segmento_empresa: String, user_cep: String, estado_empresa: String, cidade_empresa: String, token: String, lang: String){
+    let url = this.CLIENTE_URL;
     var data = {
       first_name: first_name,
       last_name: last_name,
@@ -32,15 +32,49 @@ export class ClienteProvider {
       token: token,
       lang: lang
     };
-    return this.http.post(this.CLIENTE_URL, data).map((resp: Response) => resp.json());
+
+    let result = await this.httpn.post(url, data, {}).then((res) => {
+      console.log('resultado dos contatos notificacao-push.ts: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
+
+    // return this.http.post(this.CLIENTE_URL, data).map((resp: Response) => resp.json());
 
   }
-  setPicture(picture: any, id: String): Observable<any[]> {
+  async setPicture(picture: any, id: String){
+    let url = this.API_URL + 'clients/picture';
     var data = {
       id: id,
       picture: picture
     };
-    return this.http.post(this.API_URL + 'clients/picture', data).map((resp: Response) => resp.json())
+
+    let result = await this.httpn.post(url, data, {}).then((res) => {
+      console.log('setpicture cliente.ts: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
+    // return this.http.post(this.API_URL + 'clients/picture', data).map((resp: Response) => resp.json())
   }
 
 
@@ -68,17 +102,6 @@ export class ClienteProvider {
     return result;
   }
 
-
-  // login(username: String, password: String,lang:String) : Observable<any[]>{
-  //     let data = {
-  //       username: username,
-  //       password: password,
-  //       lang              :lang
-  //     };
-  //     return this.http.post(this.API_URL ,data).map((resp:Response)=> resp.json());
-  //   }
-
-
   async getinfConta(token: String){
     let url = this.CLIENTE_URL + 'token=' + token + '&bloco=9';
     let result = await this.httpn.get(url, {}, {}).then((res) => {
@@ -99,15 +122,46 @@ export class ClienteProvider {
     // return this.http.get(url).map((resp: Response) => resp.json());
   }
 
-  getSegmento(): Observable<any[]> {
+  async getSegmento(){
     let url = 'https://kscode.com.br/ksc_2020/wp-json/admin/v1/users/codes?segments=all';
-    return this.http.get(url).map((resp: Response) => resp.json());
+    let result = await this.httpn.get(url, {}, {}).then((res) => {
+      console.log('getSegmento cliente.ts: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
+    // return this.http.get(url).map((resp: Response) => resp.json());
   }
-  forgotpass(email: String): Observable<any[]> {
+  async forgotpass(email: String){
+    let url = this.API_URL + 'clients/forgotpass';
     var data = {
       email: email
     };
-    return this.http.post(this.API_URL + 'clients/forgotpass', data).map((resp: Response) => resp.json());
+    let result = await this.httpn.post(url, data, {}).then((res) => {
+      console.log('resultado dos contatos notificacao-push.ts: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
+    // return this.http.post(this.API_URL + 'clients/forgotpass', data).map((resp: Response) => resp.json());
   }
   /////cupom
   getCupom(token: String) {
@@ -120,7 +174,8 @@ export class ClienteProvider {
     return this.http.get(url).map((resp: Response) => resp.json());
 
   }
-  setConta(lang: String, token: String, action: String, banco: String, tp_conta: String, agencia: String, n_conta: String, titular: String, cpf: String) {
+  async setConta(lang: String, token: String, action: String, banco: String, tp_conta: String, agencia: String, n_conta: String, titular: String, cpf: String) {
+    let url = this.CUPOM_URL;
     var data = {
       token: token,
       action: action,
@@ -132,6 +187,22 @@ export class ClienteProvider {
       cpf: cpf,
       lang: lang
     };
-    return this.http.post(this.CUPOM_URL, data).map((resp: Response) => resp.json());
+
+    let result = await this.httpn.post(url, data, {}).then((res) => {
+      console.log('resultado dos contatos notificacao-push.ts: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
+    // return this.http.post(this.CUPOM_URL, data).map((resp: Response) => resp.json());
   }
 }

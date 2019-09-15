@@ -130,7 +130,7 @@ export class ContatoCodePage {
   }
   getPais(){
 
-    this.util.getPaisALL().subscribe((result: any) =>{
+    this.util.getPaisALL().then((result: any) =>{
       this.pais = result.data;
 
       } ,(error:any) => {});

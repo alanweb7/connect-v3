@@ -297,7 +297,7 @@ getConta(){
   this.util.showLoading(this.load_enviando);
 
     this.cli_Provider.setConta(this.lang,this.token,"get_conta",this.model.banco,this.model.tipo,this.model.agencia,this.model.conta,this.model.titular,this.model.cpf)
-    .subscribe(
+    .then(
           (result: any) =>{
             console.log(result);
             this.util.loading.dismissAll();
@@ -371,7 +371,7 @@ setConta(){
         this.util.showLoading(this.load_enviando);
 
           this.cli_Provider.setConta(this.lang,this.token,"set_conta",this.model.banco,this.model.tipo,this.model.agencia,this.model.conta,this.model.titular,this.model.cpf)
-          .subscribe(
+          .then(
                 (result: any) =>{
                   console.log(result);
                   this.util.loading.dismissAll();

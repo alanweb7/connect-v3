@@ -32,7 +32,8 @@
                   <p>{{audio.filename}}</p>
                   <div>
                       <audio controls>
-                          <source [src]="fileUpload" type="audio/mpeg">
+                          <source [src]="fileUpload" type="audio/mp3">
+                          <source [src]="fileUpload" type="audio/3gp">
                         Seu dispositivo não suporta esse formato de audio.
                       </audio>
                   </div>
@@ -58,7 +59,8 @@
         <ion-item  *ngFor="let video of videos">
           <div>
               <audio controls>
-                  <source [src]="video.audio_link" type="audio/mpeg">
+                  <source [src]="video.audio_link" type="audio/mp3">
+                  <source [src]="video.audio_link" type="audio/3gp">
                 Seu dispositivo não suporta esse formato de audio.
               </audio>
           </div>

@@ -200,7 +200,7 @@ onActionSheet(): void {
 }
 onSearchByKeyword() {
   this.util.getCEP(this.model.user_cep)
-              .subscribe((results: any )=> {
+              .then((results: any )=> {
                 if(results){
                   this.cidade_empresa       = results.cidade;
                   this.estado_empresa       = results.estado;
@@ -241,7 +241,7 @@ private takePicture(sourceType: number): void {
     .then((result: any) =>{
       this.util.loading.dismissAll();
       if(result.status == 200){
-              this.cli_Provider.getSegmento().subscribe((result: any) =>{
+              this.cli_Provider.getSegmento().then((result: any) =>{
               this.segmentos = result;
 
           } ,(error:any) => {});
@@ -286,7 +286,7 @@ private takePicture(sourceType: number): void {
 
           this.util.showLoading(this.load_aguarde);
       this.cli_Provider.UpdateAccount(this.model.first_name,this.model.last_name,this.model.avatar,this.model.user_email,this.model.nome_empresa,this.model.segmento_empresa,this.model.user_cep,this.model.estado_empresa,this.model.cidade_empresa,this.token,this.lang)
-      .subscribe((result: any) =>{
+      .then((result: any) =>{
             this.util.loading.dismissAll();
             if(result.status == 200){
                   this.toast.create({ message: result.message, position: 'botton', duration: 10000 ,showCloseButton: true,closeButtonText: 'Ok!',cssClass: 'sucesso'}).present();

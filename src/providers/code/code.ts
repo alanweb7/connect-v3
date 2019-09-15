@@ -21,17 +21,6 @@ export class CodeProvider {
     public httpn: HTTP,
   ) { }
 
-  // getAll(code: any,phoneNumber:String,latitude:String,longitude:String) : Observable<any>{
-  //    /*  let code = page.code;
-  //     let phoneNumber = page.telephone;
-  //     let latitude = page.position.latitude;
-  //     let longitude = page.position.longitude;
-
-  //    */    let url = this.API_URL + '?code_number='+ code +'&phone='+ phoneNumber +'&latitude='+latitude+'&longitude='+ longitude;
-
-  //       return this.http.get(url).map((resp:Response)=> resp.json());
-  // }
-
   async getAll(code: any, phoneNumber: String, latitude: String, longitude: String) {
 
     let url = this.API_URL + '?code_number=' + code + '&phone=' + phoneNumber + '&latitude=' + latitude + '&longitude=' + longitude;
@@ -84,7 +73,7 @@ export class CodeProvider {
 
   async code_remove(token: String, id_code: Number, lang: String) {
     let url = this.APP_URL_CODE + '?token=' + token + '&bloco=1&id=' + id_code + '&lang=' + lang;
-    let result = await this.httpn.post(url, {}, {}).then((res) => {
+    let result = await this.httpn.delete(url, {}, {}).then((res) => {
       console.log('resultado dos contatos code.ts: ', res);
       let response = JSON.parse(res.data);
       return response;
@@ -149,10 +138,7 @@ export class CodeProvider {
     });
     return result;
   }
-  // getAllCode(token: String): Observable<any> {
-  //   let url = this.APP_URL_CODE + '?token=' + token;
-  //   return this.http.get(url).map((resp: Response) => resp.json());
-  // }
+
   async getShowCode(code: String) {
     let url = this.API_URL + "?code=" + code;
     let result = await this.httpn.get(url, {}, {}).then((res) => {
@@ -171,10 +157,7 @@ export class CodeProvider {
     });
     return result;
   }
-  // getShowCode(code: String): Observable<any> {
-  //   let url = this.API_URL + "?code=" + code;
-  //   return this.http.get(url).map((resp: Response) => resp.json());
-  // }
+
   async getLinks(page: any) {
     let url = this.APP_URL;
     let result = await this.httpn.post(url, {}, {}).then((res) => {
@@ -692,9 +675,4 @@ export class CodeProvider {
 
   }
 
-  // searchEntries(term): Observable<any[]>{
-
-  //   let url = 'https://kscode.com.br/ksc_2020/wp-json/code/search/?search=search&code_number='+term;
-  //   return this.http.get(url).map((resp:Response)=> resp.json());
-  // }
 }
