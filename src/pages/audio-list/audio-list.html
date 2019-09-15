@@ -39,7 +39,7 @@
       <!--   <progress-bar [progress]="progress"></progress-bar> -->
        <ion-list>
         <ion-item  *ngFor="let video of videos">
-          <div>
+          <div *ngIf="!isIos">
               <audio controls>
                   <source [src]="fileUpload" type="audio/wav">
                   <source [src]="fileUpload" type="audio/mpeg">
@@ -47,6 +47,10 @@
                   <source [src]="video.audio_link" type="audio/3gp">
                 Seu dispositivo não suporta esse formato de audio.
               </audio>
+              
+          </div>
+          <div *ngIf="isIos">
+            <button ion-button clear item-end large (click)="playAudio(video.audio_link, i)"><ion-icon name="play"></ion-icon></button>
           </div>
           <button ion-fab mini  item-end (click)="showConfirm(video.id)" *ngIf="video.id">
             <ion-icon name="trash"></ion-icon>
