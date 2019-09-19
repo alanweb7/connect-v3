@@ -45,6 +45,9 @@ import { NativeAudio } from '@ionic-native/native-audio';
 
 import { Crop } from '@ionic-native/crop';
 
+import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
+
+import { VideoEditor } from '@ionic-native/video-editor';
 
 
 @NgModule({
@@ -79,6 +82,8 @@ import { Crop } from '@ionic-native/crop';
 
   ],
   providers: [
+    VideoEditor,
+    StreamingMedia,
     Chooser,
     Crop,
     CallNumber,

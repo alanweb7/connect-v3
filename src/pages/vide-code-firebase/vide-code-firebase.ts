@@ -18,7 +18,7 @@ import { FTP } from '@ionic-native/ftp';
 import { NgZone } from '@angular/core';
 
 import { Media, MediaObject } from '@ionic-native/media';
-
+import { VideoEditor } from '@ionic-native/video-editor';
 
 @IonicPage()
 @Component({
@@ -114,7 +114,8 @@ export class VideCodeFirebasePage {
     private fTP: FTP,
     public _zone: NgZone,
     private media: Media,
-    public platform: Platform
+    public platform: Platform,
+    private videoEditor: VideoEditor,
   ) {
     this.referencia = firebase.storage().ref();
     this.fonteCapture = this.navParams.get('font_capture');
@@ -295,6 +296,7 @@ export class VideCodeFirebasePage {
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
 
     }
+    // transcoder do video
 
     this.camera.getPicture(options)
       .then((videoUrl) => {
@@ -328,6 +330,36 @@ export class VideCodeFirebasePage {
         (err) => {
           console.log(err);
         });
+  }
+
+  transcoderVideo() {
+
+
+    this.videoEditor.transcodeVideo({
+      fileUri: "file://" + this.fileUpload,
+      outputFileName: "" + new Date().getTime(),
+      outputFileType: this.videoEditor.OutputFileType.MPEG4,
+      optimizeForNetworkUse: this.videoEditor.OptimizeForNetworkUse.YES,
+      saveToLibrary: true,
+      maintainAspectRatio: true,
+      // videoBitrate: 7000000, // 5 megabit
+      // audioChannels: 2,
+      // audioSampleRate: 44100,
+      // audioBitrate: 128000, // 128 kilobits,
+      progress: function (info) {
+        console.log('transcodeVideo progress callback, info: ' + info);
+        console.log('transcodeVideo progress callback, info: ' + info * 100);
+        this.info = 3000;
+      }
+    })
+      .then((fileUri: string) => {
+
+        this.fileUpload = fileUri;
+        console.log('Arquivo Modificado: ', fileUri);
+
+      })
+
+
   }
   selectVideo() {
     this.fonteCapture = 'galeria';
@@ -812,7 +844,7 @@ export class VideCodeFirebasePage {
   //criar novo nome de arquivo
   async createNewFileName(oldFileName: string) {
     let extension: string = await oldFileName.substr(oldFileName.lastIndexOf('.')); // .png, .jpg
-    return new Date().getTime() + extension; // 1264546456.jpg
+    return new Date().getTime() + extension.toLocaleLowerCase(); // 1264546456.jpg
   }
 
 }
