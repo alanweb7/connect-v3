@@ -314,6 +314,8 @@ export class VideCodeFirebasePage {
           console.log('dirpath Final: ', dirpath);
           console.log('filename: ', filename);
 
+          this.fileUpload = videoUrl;
+
 
 
           if (this.platform.is('ios')) {
@@ -325,8 +327,6 @@ export class VideCodeFirebasePage {
 
             this.isSelecionado = true;
             this.uploadedVideo = null;
-
-            this.fileUpload = videoUrl;
 
           }
 
