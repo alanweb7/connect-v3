@@ -10,6 +10,11 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
+          <progress id="progressbar2" max="100" value="{{ progressBar }}"> </progress>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
         <div class="uploading" *ngIf="inUpload">
           <progress id="progressbar" max="100" value="{{ uploadPercent }}"> </progress>
           <div id="progressbarlabel">{{ uploadPercent }} %</div>

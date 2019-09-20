@@ -302,8 +302,7 @@ export class VideCodeFirebasePage {
       .then((videoUrl) => {
         if (videoUrl) {
           // this.showLoader();
-          this.isSelecionado = true;
-          this.uploadedVideo = null;
+
 
           let dirpath = videoUrl.substr(0, videoUrl.lastIndexOf('/') + 1);
           console.log('dirpath Inicial: ', dirpath);
@@ -313,7 +312,25 @@ export class VideCodeFirebasePage {
           console.log('videoUrl Original: ', videoUrl);
           console.log('dirpath Final: ', dirpath);
           console.log('filename: ', filename);
-          this.fileUpload = videoUrl;
+
+
+
+          if (this.platform.is('ios')) {
+
+            this.util.showLoading('Preparando o video! Aguarde...');
+
+            this.transcoderVideo();
+
+          } else {
+
+
+            this.isSelecionado = true;
+            this.uploadedVideo = null;
+
+            this.fileUpload = videoUrl;
+
+          }
+
           try {
 
             this.util.loading.dismissAll();
@@ -334,6 +351,8 @@ export class VideCodeFirebasePage {
 
   transcoderVideo() {
 
+    this.util.showLoading('Preparando seu video! Aguarde....')
+
 
     this.videoEditor.transcodeVideo({
       fileUri: "file://" + this.fileUpload,
@@ -346,18 +365,39 @@ export class VideCodeFirebasePage {
       // audioChannels: 2,
       // audioSampleRate: 44100,
       // audioBitrate: 128000, // 128 kilobits,
+
       progress: function (info) {
         console.log('transcodeVideo progress callback, info: ' + info);
         console.log('transcodeVideo progress callback, info: ' + info * 100);
-        this.info = 3000;
+        this._zone.run(() => {
+
+          var perc = Math.round(info * 100);
+
+          if (info == 1) {
+
+            this.progressBar = perc;
+
+
+            console.log('trancode em  100::');
+
+
+          }
+        });
       }
     })
       .then((fileUri: string) => {
+        this.util.loading.dismissAll();
+
+        this.isSelecionado = true;
+        this.uploadedVideo = null;
 
         this.fileUpload = fileUri;
         console.log('Arquivo Modificado: ', fileUri);
 
-      })
+      }).catch((err) => {
+        this.util.loading.dismissAll();
+        console.log('erro ao fazer o trancoder: ', err);
+      });
 
 
   }
