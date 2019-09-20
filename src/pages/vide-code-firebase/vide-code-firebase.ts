@@ -89,6 +89,7 @@ export class VideCodeFirebasePage {
   fileName: string;
   audio: MediaObject;
   audioList: any[] = [];
+  progressBar: any;
 
   public uploadPercent: number = 0;
   public ftp_remote_path: string;
@@ -317,8 +318,6 @@ export class VideCodeFirebasePage {
 
           if (this.platform.is('ios')) {
 
-            this.util.showLoading('Preparando o video! Aguarde...');
-
             this.transcoderVideo();
 
           } else {
@@ -351,7 +350,13 @@ export class VideCodeFirebasePage {
 
   transcoderVideo() {
 
-    this.util.showLoading('Preparando seu video! Aguarde....')
+    const MyencoderVideo = this._zone;
+    // const percentBar:number = 0;
+    // const myTeste = this.myteste;
+    // this.progressBar = percentBar;
+    // this.myteste();
+
+    this.util.showLoading('Preparando seu video! Aguarde....');
 
 
     this.videoEditor.transcodeVideo({
@@ -369,20 +374,35 @@ export class VideCodeFirebasePage {
       progress: function (info) {
         console.log('transcodeVideo progress callback, info: ' + info);
         console.log('transcodeVideo progress callback, info: ' + info * 100);
-        this._zone.run(() => {
 
-          var perc = Math.round(info * 100);
+        var perc = Math.round(info * 100);
 
-          if (info == 1) {
+        const percentBar = perc;
+        this.progressBar = percentBar;
 
-            this.progressBar = perc;
+        if (perc == 100) {
+
+          console.log('file modificado xcom sucesso!');
+
+        }
 
 
-            console.log('trancode em  100::');
+        setTimeout(() => {
+          console.log('Test');
+
+        //  return myTeste();
+
+      }, 1000/60);
 
 
-          }
+
+        MyencoderVideo.run(() => {
+
+          console.log('wwwwwww: ');
+
         });
+
+
       }
     })
       .then((fileUri: string) => {
@@ -400,6 +420,10 @@ export class VideCodeFirebasePage {
       });
 
 
+  }
+  myteste(){
+    this.progressBar = 30;
+    console.log('função externa');
   }
   selectVideo() {
     this.fonteCapture = 'galeria';
