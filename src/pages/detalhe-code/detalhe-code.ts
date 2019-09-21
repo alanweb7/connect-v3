@@ -310,6 +310,7 @@ export class DetalheCodePage {
           this.presentAlertPrompt(null);
         } else {
 
+
           this.continueLoad(res);
 
         }
@@ -461,7 +462,11 @@ export class DetalheCodePage {
         this.videoColection = result.data[0]['album_vimeo'];
         for (var i = 0; i < result.data[0]['album_vimeo'].length; i++) {
           let vid = result.data[0]['album_vimeo'][i];
-          let img = vid.video_pictures.replace('?r=pad', '');
+          let img = '';
+          if(vid.video_pictures){
+            img = vid.video_pictures.replace('?r=pad', '');
+          }
+
           vid.video_pictures = img;
           if (vid.post_status == "complete") {
             vid.video_link = this.domSanitizer.bypassSecurityTrustResourceUrl(vid.video_link);
@@ -473,11 +478,20 @@ export class DetalheCodePage {
             this.mostra = true;
             this.video_post_status = vid.post_status;
           }
+
+
         }
       }
 
       console.log('Galaeria de videos: ', this.album_vimeo);
+
       this.totalSlides = this.album_vimeo.length;
+      if(this.totalSlides > 0){
+
+        this.video_status = this.album_vimeo[0].post_status;
+        this.video_link = this.album_vimeo[0].video_link;
+
+      }
       this.infoLegendSlides = '1/' + this.totalSlides;
       this.currentSlide = 0;
       //popula audio
@@ -490,6 +504,10 @@ export class DetalheCodePage {
       this.util.loading.dismissAll();
       this.navCtrl.setRoot('HomePage', { 'error': result });
     }
+
+
+
+
 
   }
 
@@ -623,7 +641,6 @@ export class DetalheCodePage {
           this.browserTab.openUrl(url);
         }
       }).catch(erro => {
-
         this.toast.create({ message: 'A informação está incorreta', position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'alerta' }).present();
 
       });
@@ -797,6 +814,8 @@ export class DetalheCodePage {
   }
 
   controlSlide(action) {
+
+    this.video_status = null;
 
     if (action === 'up') {
       this.currentSlide++;

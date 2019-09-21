@@ -10,11 +10,6 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-          <progress id="progressbar2" max="100" value="{{ progressBar }}"> </progress>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
         <div class="uploading" *ngIf="inUpload">
           <progress id="progressbar" max="100" value="{{ uploadPercent }}"> </progress>
           <div id="progressbarlabel">{{ uploadPercent }} %</div>
@@ -43,7 +38,6 @@
       <ion-col col-6>
         <div class='input-wrapper'>
           <button ion-button block (click)="sendVideoFTP()" [disabled]="!isSelecionado"> Enviar </button>
-          <button ion-button block (click)="transcoderVideo()" [disabled]="!isSelecionado"> Transcoder </button>
         </div>
       </ion-col>
     </ion-row>

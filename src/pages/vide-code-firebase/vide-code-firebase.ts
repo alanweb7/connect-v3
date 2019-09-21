@@ -316,8 +316,6 @@ export class VideCodeFirebasePage {
 
           this.fileUpload = videoUrl;
 
-
-
           if (this.platform.is('ios')) {
 
             this.transcoderVideo();
@@ -364,7 +362,7 @@ export class VideCodeFirebasePage {
       outputFileName: "" + new Date().getTime(),
       outputFileType: this.videoEditor.OutputFileType.MPEG4,
       optimizeForNetworkUse: this.videoEditor.OptimizeForNetworkUse.YES,
-      saveToLibrary: true,
+      saveToLibrary: false,
       maintainAspectRatio: true,
       // videoBitrate: 7000000, // 5 megabit
       // audioChannels: 2,
