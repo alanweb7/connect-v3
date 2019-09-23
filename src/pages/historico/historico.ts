@@ -124,7 +124,7 @@ export class HistoricoPage {
 removerFavorito(id_serv) {
    //grava o historico
    this.historico.delete(id_serv)
-   .then((remove: Boolean) => {
+   .then((remove) => {
           if(remove){
             this.navCtrl.setRoot(this.navCtrl.getActive().component); //atualiza apagina atual
             this.toast.create({ message:this.excluir_msg, position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'sucesso'  }).present();
