@@ -63,8 +63,17 @@ export class HistoricoPage {
 // capta o que tem no storage
   mostrarStorage(){
      this.historico.getAll()
-     .then((movies:any) => {
+     .then(async (movies:any) => {
          this.hist = movies;
+
+         console.log('HISTORICO: ', movies);
+
+         let list = [];
+         for (let i = 0; i < movies.length; i++) {
+           list.push(movies[i].id);
+         }
+         let myHistory = JSON.stringify(list);
+         alert('HISTORICO: ' + myHistory );
      });
   }
   pushGeoinfo(){
@@ -118,8 +127,6 @@ export class HistoricoPage {
         ]
       });
       confirm.present();
-
-
 }
 removerFavorito(id_serv) {
    //grava o historico
