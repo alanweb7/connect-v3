@@ -32,7 +32,7 @@ export class MenuCodePage {
   titulo           : any;
   id_code          : any;
   qtd_img          : Number;
-  segment          : Number = 2;
+  public segment          : any = 2;
   package_videos       : Number;
   package_name           : String;
   word             = /[^0-9]+/g;
@@ -443,7 +443,7 @@ private _initialiseTranslation() : void
 
 
   }
-    changeSegment(item) {
+    changeSegment(item:any) {
 
           this.segment = item;
 

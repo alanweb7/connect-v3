@@ -73,7 +73,7 @@ export class HistoricoPage {
            list.push(movies[i].id);
          }
          let myHistory = JSON.stringify(list);
-         alert('HISTORICO: ' + myHistory );
+        //  alert('HISTORICO: ' + myHistory );
      });
   }
   pushGeoinfo(){
