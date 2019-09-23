@@ -9,43 +9,43 @@ export class HistoricoService {
 
   private db: SQLiteObject;
   private isFirstCall: boolean = true;
-  
+
 
   constructor(
     public sqliteHelperService: SqliteHelperService,
 
   ) {}
-  
+
   getDb(): Promise<SQLiteObject> {
-    
+
     if (this.isFirstCall) {
       this.isFirstCall=false;
       return this.sqliteHelperService.getDb('cliente.db',this.isFirstCall)
         .then((db: SQLiteObject) => {
-          
+
           this.db = db;
-  
+
           this.db.executeSql
           ('CREATE TABLE IF NOT EXISTS historico (id INTEGER PRIMARY KEY AUTOINCREMENT,id_serv TEXT,code TEXT,titulo TEXT,img TEXT,card TEXT)', [])
             .then(success => console.log('Cliente table created successfully!', success))
             .catch((error: Error) => console.log('Error creating movie table!', error));
-        
-               return this.db; 
-      
-      
-         
-        }); 
-                
-     
+
+               return this.db;
+
+
+
+        });
+
+
     }
     return this.sqliteHelperService.getDb();
   }
 
-  getAll(orderBy?: string): Promise<Historico[]> {
+  getAll(){
     return this.getDb()
       .then((db: SQLiteObject) => {
 
-        return <Promise<Historico[]>>this.db.executeSql('SELECT * FROM historico ;',[])
+        let history = this.db.executeSql('SELECT * FROM historico ;',[])
           .then(resultSet => {
 
             let list: Historico[] = [];
@@ -57,7 +57,10 @@ export class HistoricoService {
             return list;
           }).catch((error: Error) => console.log('Error executing method getAll!', error));
 
+          return history;
+
       });
+
   }
 
   create(hist: Historico): Promise<Historico> {
@@ -73,7 +76,7 @@ export class HistoricoService {
      console.log(titulo,img,code,card,id_serv);
     return <Promise<boolean>>this.db.executeSql('UPDATE historico SET code=?,titulo=?,img=?,card=? WHERE id_serv=?', [code,titulo,img,card,id_serv])
       .then(resultSet => resultSet.rowsAffected >= 0)
-      .catch((error: Error) => console.log(`Error updating ${name} movie!`, error)); 
+      .catch((error: Error) => console.log(`Error updating ${name} movie!`, error));
   }
 
   delete(id_serv: number): Promise<boolean> {
