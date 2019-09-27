@@ -235,6 +235,37 @@ export class CodeProvider {
     return result;
     // return this.http.post(url, data).map((resp: Response) => resp.json());
   }
+
+  async setHotSpot(rec) {
+    console.log('dados recebidos no provider setHotSpot: ', rec);
+
+    let data = {
+      token: rec.token,
+      id: rec.id_code,
+      action: rec.action,
+      data: rec.data,
+      bloco: 16,
+    };
+
+    let url = this.APP_URL_CODE;
+    let result = await this.httpn.post(url, data, {}).then((res) => {
+      console.log('resultado da API do hotspot code.ts: ', res);
+      let response = JSON.parse(res.data);
+      return response;
+    }).catch((err: any) => {
+      let erroStatus = err.status;
+      let response = {
+        'error': 'ocorreu_um_erro',
+        'status': erroStatus,
+      };
+      console.log('Erro em getAll:: ', err);
+      console.log('result em getAll:: ', result);
+      return response;
+    });
+    return result;
+    // return this.http.post(url, data).map((resp: Response) => resp.json());
+  }
+
   async contato(id_code: String, token: String, setor: String, tipo: String, calling_code: String, pais: String, conteudo: String, titulo: String, action: String, sector_id: String, lang: String) {
     console.log(id_code, token, pais, setor, tipo, pais, conteudo, titulo, action, sector_id);
     var data = {

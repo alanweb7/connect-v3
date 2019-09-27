@@ -48,7 +48,7 @@ import { Crop } from '@ionic-native/crop';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
 
 import { VideoEditor } from '@ionic-native/video-editor';
-
+import { Hotspot } from '@ionic-native/hotspot';
 
 @NgModule({
   declarations: [
@@ -82,6 +82,7 @@ import { VideoEditor } from '@ionic-native/video-editor';
 
   ],
   providers: [
+    Hotspot,
     VideoEditor,
     StreamingMedia,
     Chooser,
