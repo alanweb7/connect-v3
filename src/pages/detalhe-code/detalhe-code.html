@@ -202,6 +202,14 @@
         <span *ngIf="hotSpotConnMens && !isError" style="color: #080808;">{{hotSpotConnMens}}</span>
         <span *ngIf="hotSpotConnMens && isError" style="color: #ff0000;">{{hotSpotConnMens}}</span>
       </div>
+      <div *ngIf="showDataWifi">
+        <h4> Dados da conexão</h4>
+        <h5>Rede: {{hotspotData.ssid}}</h5>
+        <button ion-button icon-left (click)="copyToTransfer()">
+          <ion-icon name="copy"></ion-icon>
+          Copiar senha
+        </button>
+      </div>
     </div>
     <div style="width: 100%; height: 90px;"></div>
   </div>

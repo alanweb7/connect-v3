@@ -52,6 +52,7 @@ import { VideoEditor } from '@ionic-native/video-editor';
 import { Hotspot } from '@ionic-native/hotspot';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { Facebook } from '@ionic-native/facebook';
+import { Clipboard } from '@ionic-native/clipboard';
 
 
 @NgModule({
@@ -86,6 +87,7 @@ import { Facebook } from '@ionic-native/facebook';
 
   ],
   providers: [
+    Clipboard,
     Facebook,
     AdminToolsDb,
     AdminToolsRest,

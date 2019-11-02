@@ -28,6 +28,7 @@ import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-m
 import { FormBuilder, Validators } from '@angular/forms';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
+import { Clipboard } from '@ionic-native/clipboard';
 
 
 @IonicPage({
@@ -135,6 +136,7 @@ export class DetalheCodePage {
   public showAdress: boolean = false;
   public coordenates: string;
   public addresUser: object;
+  public showDataWifi: boolean;
 
   hotspotData = {
     isHotspotActive: false,
@@ -180,6 +182,7 @@ export class DetalheCodePage {
     private locationAccuracy: LocationAccuracy,
     private geoProv: GeolocationProvider,
     private fb: Facebook,
+    private clipboard: Clipboard,
 
   ) {
 
@@ -1067,32 +1070,48 @@ export class DetalheCodePage {
       console.log('Erro ao ativar o localizador');
     });
 
-    this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
-      this.hotSpotConnMens = 'Conectando...';
-      console.log(networks);
-      console.log('Conectando a rede wi-fi');
+    if (this.platform.is('ios')) {
+      this.showDataWifi = true;
       this.activeForm = false;
       this.inConnect = true;
-      let dataHotspot = this.hotspotData;
-      this.hotspot.connectToWifi(this.hotspotData.ssid, this.hotspotData.password).then((res) => {
-        this.isConnected = true;
-        this.hotSpotConnMens = 'Sucesso! Você está conectado.';
-        console.log('Success | Response of conection wifi: ', res);
+      this.isConnected = true;
+    }
 
-      }, (error) => {
+    if (this.platform.is('android')) {
 
-        this.hotSpotConnMens = 'Erro! Verifique os dados da conexão e tente novamente.';
-        console.log('Erro | Error of conection wifi: ', error);
+      this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
+        this.hotSpotConnMens = 'Conectando...';
+        console.log(networks);
+        console.log('Conectando a rede wi-fi');
+        this.activeForm = false;
+        this.inConnect = true;
+        let dataHotspot = this.hotspotData;
+        this.hotspot.connectToWifi(this.hotspotData.ssid, this.hotspotData.password).then((res) => {
+          this.isConnected = true;
+          this.hotSpotConnMens = 'Sucesso! Você está conectado.';
+          console.log('Success | Response of conection wifi: ', res);
 
+        }, (error) => {
+
+          this.hotSpotConnMens = 'Erro! Verifique os dados da conexão e tente novamente.';
+          console.log('Erro | Error of conection wifi: ', error);
+
+        });
+
+      }).catch((error) => {
+        console.log('Erro ao buscar redes: ', error);
+        this.hotSpotConnMens = 'Erro! Nenhuma rede disponível no local (Verifque se seu wi-fi está ativo).';
       });
 
-    }).catch((error) => {
-      console.log('Erro ao buscar redes: ', error);
-      this.hotSpotConnMens = 'Erro! Nenhuma rede disponível no local (Verifque se seu wi-fi está ativo).';
-    });
+    } //fim de platform is android
 
   }
 
+  copyToTransfer(){
+    this.clipboard.copy(this.hotspotData.password).then((res)=> {
+      alert('Senha copiada para a área de tranferência!');
+    });
+  }
   setDataUserHotspot() {
     this.userHotspotForm.player_id = this.player_id;
     this.userHotspotForm.value.coordenates = this.coordenates;
@@ -1103,14 +1122,14 @@ export class DetalheCodePage {
     let nome_user = this.userHotspotForm.nome;
     let email_user = this.userHotspotForm.email;
 
-    console.log('Nome e Email: ',nome_user, email_user )
+    console.log('Nome e Email: ', nome_user, email_user)
 
-    if(!nome_user){
+    if (!nome_user) {
       // this.userHotspotForm.valid = false;
       this.hotSpotConnMens = 'Nome inválido';
       this.isError = true;
     }
-    else if(!email_user){
+    else if (!email_user) {
       // this.userHotspotForm.valid = false;
       this.hotSpotConnMens = "Email inválido";
       this.isError = true;
@@ -1258,7 +1277,7 @@ export class DetalheCodePage {
       console.log(id.userId);
       this.player_id = id.userId;
 
-      let dataTag = {"userId":id.userId};
+      let dataTag = { "userId": id.userId };
       this.oneSignal.sendTags(dataTag);
 
       console.log('OneSignal Player ID: ', this.player_id);
