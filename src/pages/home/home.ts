@@ -1,3 +1,4 @@
+import { AdminToolsRest, AdminToolsDb } from './../../providers/admin-tools/admin-tools';
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../../providers/network/network';
 import { Component } from '@angular/core';
@@ -19,6 +20,10 @@ import { SqliteHelperService } from '../../providers/sqlite-helper/sqlite-helper
 import { ClienteProvider } from '../../providers/cliente/cliente';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UtilService } from '../../providers/util/util.service';
+
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
+
+
 @IonicPage({
   priority: 'high'
 }) @Component({
@@ -153,18 +158,25 @@ export class HomePage {
     public util: UtilService,
     public toast: ToastController,
     public networkProvider: NetworkProvider,
+    private locationAccuracy: LocationAccuracy,
+    public ApiRest: AdminToolsRest,
+    public adminDb: AdminToolsDb,
 
   ) {
 
-    // this.signupform = this.formBuilder.group({
-    //   title: ['', Validators.required],
-    //   codeNumber: [''],
-    // });
+    // configurações iniciais :: criação do banco de dados
+    // this.setConfigInitial();
+
+    this.getDeviceInfo();
+
+    this.language = "pt";
+          this.isPT = true;
+
     this.modalIsOpen = this.navParams.get('modalIsOpen');
     if (this.modalIsOpen == true) {
       this.util.loading.dismissAll();
-
     }
+
     let error = this.navParams.get('error');
     console.log('erro recebido na HOME:: ', error);
     if (error && error.status == -3) {
@@ -172,6 +184,7 @@ export class HomePage {
       this.netFail();
 
     }
+
     this.signupform = new FormGroup({
 
       codeNumber: new FormControl('', [Validators.required, Validators.minLength(1)]),
@@ -192,17 +205,15 @@ export class HomePage {
   ngOnInit() {
 
   }
-  ionViewDidLoad() {
-    console.log('enter ionViewDidLoad homePage:', this.navParams.get('config'));
 
-    // this._initialiseTranslation();
+  ionViewDidLoad() {
+    console.log('enter ionViewDidLoad homePage:');
 
     //CHAMDA DO BANCO DE DADOS
     this.platform.ready().then(() => {
-
       this.usuario.getAll()
         .then((movies: any) => {
-          console.log(movies);
+          console.log('Dados do banco interno: ', movies);
           if (movies.length == 1) {
             this.data.name = movies[0].name;
             this.data.sobrenome = movies[0].sobrenome;
@@ -219,25 +230,14 @@ export class HomePage {
             this.data.cnpj = movies[0].cnpj;
             this.data.tp_pessoa = movies[0].tp_pessoa;
 
-            if (this.language == "" || this.language == undefined || this.language == null) {
-              this.language = "pt";
-            }
-            this.update_cupom();
+            // this.update_cupom();
             this.trogle_idiome_onesignal();
             //  this.events.publish('trans',this.language);
             this.events.publish('dados', this.data);
-
           } else {
             this.language = "pt";
             console.log("minha lang", this.language);
-
             console.log("entrei no else");
-
-            /* this.usuario.update_lang(this.language,this.id_serv)
-          .then((data: any) => {
-                console.log(data);
-
-          });  */
             this.isPT = true;
             this.trogle_idiome_onesignal();
           }
@@ -257,8 +257,8 @@ export class HomePage {
           this._translateLanguage();
           this.oneSignalApp();
         });
-
-
+        this.language = "pt";
+        this.isPT = true;
     });///final platform ready
 
 
@@ -269,24 +269,24 @@ export class HomePage {
       this.footerIsHidden = true;
     });
 
+  }
+
+  setConfigInitial() {
+    console.log('iniciando a ciração do banco');
+    let res = this.adminDb.createDatabase();
+
+    this.adminDb.getAll().then((resp) => {
+      console.log('Resultado do banco Push: ', resp);
+      let userConnect:any = resp;
+      if(!userConnect || userConnect.length == 0){
+        console.log('Direcionando para a página de checkin');
+        this.navCtrl.push('CheckinPage');
+      }
+    });
 
   }
-  update_cupom() {
-
-    this.cli_Provider.getinfConta(this.token)
-      .then((result: any) => {
-
-        if (result.status == 200) {
-          this.usuario.update_cupom("", result.cupom_id, result.user_id)
-            .then((data: any) => {
-              console.log("atualizei o cupom", data);
-
-            });
-        }
-      });
 
 
-  }
   trogle_idiome(id) {
     console.log("lang", id);
     if (id == 'pt') {
@@ -350,41 +350,41 @@ export class HomePage {
       latitude: latitude, longitude: longitude,
       telephone: this.global.myGlobalVar
     };
+
     this.navCtrl.push('RedirectPage', { data: sendData });
-    // this.navCtrl.push('DetalheCodePage', {data:sendData});
 
-
-    // this.util.showLoading('Aguarde...');
-    // this.networkProvider.verifyConn().then((res)=>{
-    //   this.util.loading.dismissAll();
-    //   this.statusConn = res.status;
-    //   console.log('Return :::',res.status);
-    //   if(this.statusConn === -3){
-    //     this.netFail();
-    //   }else{
-    //     let latitude = this.endLat;
-    //     let longitude = this.endLong;
-    //     console.log('home codes com gps');
-    //     this.navCtrl.push('DetalheCodePage', {liberado :false,origem:1,token:this.token,lang:this.language,
-    //         code: this.codeNumber,
-    //         latitude: latitude, longitude: longitude,
-    //         telephone: this.global.myGlobalVar
-    //     });
-
-    //   }
-    // });
   }
-  pushGeoinfo() {
-    this.platform.ready().then(() => {
-      this.geoProv.getGeolocation().then((resp: String[]) => {
-        console.log('home', resp);
 
+  pushGeoinfo() {
+
+    this.platform.ready().then(() => {
+
+      this.geoProv.getGeolocation().then((resp: String[]) => {
+        console.log('home total geolocation:', resp);
         this.endLat = resp["latitude"];
         this.endLong = resp["longitude"];
-        console.log('home', this.endLat, this.endLong);
+        console.log('home geolocation: ', this.endLat, this.endLong);
       });
     });
   }
+
+  // vierificar o localizador
+  verifyGeolocationIsActive() {
+    this.platform.ready().then(() => {
+      // verifique a geolocalizacao
+      this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+        if (canRequest) {
+          // the accuracy option will be ignored by iOS
+          this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+            () => console.log('Request successful'),
+            error => console.log('Error requesting location permissions', error)
+          );
+        }
+      });
+    });
+  }
+
+
   pushPageCode() {
 
     let sendData = {
@@ -603,7 +603,6 @@ export class HomePage {
   redirectPush(notificationCode) {
     console.log(notificationCode);
 
-
     let sendData = {
       liberado: false, origem: 1, token: this.token, lang: this.language,
       code: notificationCode,
@@ -662,6 +661,11 @@ export class HomePage {
     let result: any = [];
     result.message = "Sem conexão com a internet."
     this.toast.create({ message: result.message, position: 'botton', duration: 14400, closeButtonText: 'Ok!', cssClass: 'error' }).present();
+  }
+
+  getDeviceInfo(){
+    // novo information
+    console.log();
   }
 
 }

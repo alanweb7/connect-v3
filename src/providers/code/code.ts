@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import { stringify } from 'querystring';
 @Injectable()
 export class CodeProvider {
   public myGlobalVar: string;
@@ -217,6 +218,7 @@ export class CodeProvider {
       lang: lang
 
     };
+
     let url = this.APP_URL_CODE;
     let result = await this.httpn.post(url, data, {}).then((res) => {
       console.log('resultado dos contatos code.ts: ', res);
@@ -238,16 +240,31 @@ export class CodeProvider {
 
   async setHotSpot(rec) {
     console.log('dados recebidos no provider setHotSpot: ', rec);
+    let data: object;
+    let url: string;
+    if (rec.action == 'search_adress') {
+      data = {};
+      url = rec.url_api;
+    }
+    else {
+      url = this.APP_URL_CODE;
+      data = {
+        token: rec.token,
+        id: rec.id_code,
+        action: rec.action,
+        player_id: rec.player_id,
+        data: rec.data,
+        bloco: 16,
+      };
+    }
 
-    let data = {
-      token: rec.token,
-      id: rec.id_code,
-      action: rec.action,
-      data: rec.data,
-      bloco: 16,
+    if (rec.action == 'set_user') {
+      url = 'https://kscode.com.br/ksc_2020/wp-json/hotspot/v1/users';
     };
 
-    let url = this.APP_URL_CODE;
+    // let data = rec;
+    // data.bloco = '16';
+    console.log('dados para o servidor (setHotSpot): ', data);
     let result = await this.httpn.post(url, data, {}).then((res) => {
       console.log('resultado da API do hotspot code.ts: ', res);
       let response = JSON.parse(res.data);
@@ -702,6 +719,58 @@ export class CodeProvider {
       console.log('result em getAll:: ', result);
       return response;
     });
+    return result;
+
+  }
+
+  async setHttpPadrao(infoData) {
+    /**
+     * infoData segue o padrao:
+     * data: {
+     * url: 'http://restfull.site.com?params',
+     * method: 'post|get|delete'
+     * data: Object
+     * }
+     */
+    let url = infoData.url;
+    let method = infoData.method;
+    let data = {};
+    let header = {};
+
+    if (infoData.data) {
+      data = infoData.data;
+    }
+
+    if (infoData.header) {
+      header = infoData.header;
+    }
+
+    let httpRest;
+
+    switch (method) {
+      case 'post':
+        httpRest = this.httpn.post(url, data, header);
+        break;
+      case 'get':
+        httpRest = this.httpn.get(url, data, header);
+        break;
+      case 'delete':
+        httpRest = this.httpn.delete(url, data, header);
+        break;
+
+      default:
+        console.log('method default no switch::');
+        break;
+    }
+
+    let result = await httpRest.then((resp) => {
+      // let response = JSON.parse(resp.data);
+      console.log('Resultado do servidor em code.ts::::setHttpPadrao',resp)
+      return resp;
+    }).catch((err) => {
+      console.log('Erro em setHttpPadrao ', err);
+    });
+
     return result;
 
   }

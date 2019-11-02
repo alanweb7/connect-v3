@@ -1,3 +1,6 @@
+import { Facebook } from '@ionic-native/facebook';
+import { GeolocationProvider } from './../../providers/geolocation/geolocation';
+import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
 import { Code } from './../menu-code/menu-code';
 import { ModalDetailPage } from './../modal-detail/modal-detail';
 import { Component } from '@angular/core';
@@ -21,6 +24,11 @@ import { UsuarioService } from '../../providers/movie/usuario.service';
 import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
+
+import { FormBuilder, Validators } from '@angular/forms';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
+
+
 
 @IonicPage({
   priority: 'low',
@@ -116,6 +124,34 @@ export class DetalheCodePage {
   alertModal: any;
   public logo_header: string;
 
+  // configuracoes do hotspot
+  public userHotspotForm: any;
+  public emailHotspot: string;
+  public passwordHotspot: string;
+  public player_id: string;
+  message = [];
+  messageError: any = {};
+  isError: boolean;
+  public showAdress: boolean = false;
+  public coordenates: string;
+  public addresUser: object;
+
+  hotspotData = {
+    isHotspotActive: false,
+    isOnlyHotspot: false,
+    isRegisterScreen: false,
+    password: null,
+    ssid: null
+  };
+
+  isConnected: boolean;
+  hotSpotConnMens: string;
+  hotspotActive: boolean;
+  inConnect: boolean;
+  activeForm: boolean = false;
+  globalAction: string;
+  showParts = new ShowParts();
+
   constructor(
     public navCtrl: NavController,
     public viewCtrl: ViewController,
@@ -138,12 +174,25 @@ export class DetalheCodePage {
     private callNumber: CallNumber,
     private translate: TranslateService,
     private platform: Platform,
-    private streamingMedia: StreamingMedia
-
-
-
+    private streamingMedia: StreamingMedia,
+    private hotspot: Hotspot,
+    public formBuilder: FormBuilder,
+    private locationAccuracy: LocationAccuracy,
+    private geoProv: GeolocationProvider,
+    private fb: Facebook,
 
   ) {
+
+    this.userHotspotForm = formBuilder.group({
+      nome: ['', ''],
+      email: ['', ''],
+      fone: ['', ''],
+      idade: ['', ''],
+      sexo: ['', ''],
+      cidade: ['', ''],
+      bairro: ['', ''],
+      endereco: ['', ''],
+    });
 
     this.setLanguage();
     this.getInitialconfig();
@@ -160,8 +209,14 @@ export class DetalheCodePage {
     if (this.platform.is('ios')) {
       this.iosPlatform = true;
     }
+    this.platform.ready().then((res) => {
+
+      this.myPlayerIdOnesignal();
+
+    });
 
   }
+
 
   ionViewDidLoad() {
     this.navBar.backButtonClick = (e: UIEvent) => {
@@ -262,22 +317,13 @@ export class DetalheCodePage {
           .then(
             (result: any) => {
               console.log('Dados retornados da senha: ', result);
-
               if (result.status == 200) {
-
-
                 this.continueLoad(this.persistentData);
-
-
               } else {
-
                 let message = 'Erro de senha. Tente novamente...';
                 this.presentAlertPrompt(message);
-
               }
-
             });
-
         break;
       case 'cancel':
 
@@ -304,12 +350,11 @@ export class DetalheCodePage {
         this.persistentData = res;
 
         this.code_id = res.data[0].id;
-        this.code_id = res.data[0].id;
+        this.hotspotData = res.data[0].hotspot;
 
         if (res.data[0]['isprivate'] == true) {
           this.presentAlertPrompt(null);
         } else {
-
 
           this.continueLoad(res);
 
@@ -357,23 +402,8 @@ export class DetalheCodePage {
         // this.viewCtrl.dismiss();
 
       }
-      //conde com senha
-      // else if(this.isLiberado == false && result.data[0]['isprivate'] == true && result.data[0].t_conteudo == "1"){
-      //         this.navCtrl.setRoot('CodeSenhaPage',{lang:this.lang,origem:1,id_code:result.data[0].id,link:null,code: this.page,latitude:this.latitude,longitude:this.longitude,telephone:this.telephone
-      //       });
-      // }
-      // code com senha e é um link
-      // else if(this.isLiberado == false && result.data[0]['isprivate'] == true && result.data[0].t_conteudo == "2"){
-      //   this.navCtrl.setRoot('CodeSenhaPage',{lang:this.lang,id_code:result.data[0].id,link:result.data[0].link,code: this.page,latitude:this.latitude,longitude:this.longitude,telephone:this.telephone
-      //   });
-      // }
-      // code é um link
-      // else if(this.isLiberado == false &&  result.data[0].t_conteudo == "2" && result.data[0]['isprivate'] == false){
-      //   this.openWithInAppBrowser(result.data[0].link);
-      //   this.util.loading.dismissAll();
-      //   // this.viewCtrl.dismiss();
 
-      // }
+
       if (result.data[0]['galeria'].length > 0) {
         this.createORupdateHistorico(result.data[0].id, result.data[0].code, result.data[0].titulo, result.data[0]['galeria'][0].img_link, result.data[0].card);
 
@@ -463,7 +493,7 @@ export class DetalheCodePage {
         for (var i = 0; i < result.data[0]['album_vimeo'].length; i++) {
           let vid = result.data[0]['album_vimeo'][i];
           let img = '';
-          if(vid.video_pictures){
+          if (vid.video_pictures) {
             img = vid.video_pictures.replace('?r=pad', '');
           }
 
@@ -486,7 +516,7 @@ export class DetalheCodePage {
       console.log('Galaeria de videos: ', this.album_vimeo);
 
       this.totalSlides = this.album_vimeo.length;
-      if(this.totalSlides > 0){
+      if (this.totalSlides > 0) {
 
         this.video_status = this.album_vimeo[0].post_status;
         this.video_link = this.album_vimeo[0].video_link;
@@ -504,9 +534,6 @@ export class DetalheCodePage {
       this.util.loading.dismissAll();
       this.navCtrl.setRoot('HomePage', { 'error': result });
     }
-
-
-
 
 
   }
@@ -790,7 +817,6 @@ export class DetalheCodePage {
   myIdOnesignal() {
     this.oneSignal.startInit('d9687a3a-3df5-4565-b183-653e84ed8207', '8700496258');
 
-
     this.oneSignal.endInit();
     this.oneSignal.getIds().then((id) => {
 
@@ -800,8 +826,6 @@ export class DetalheCodePage {
 
       var dataTag = '{"' + tagCode + '":"true"}';
       var Tagcode = JSON.parse(dataTag);
-
-
 
       this.oneSignal.sendTags(Tagcode);
 
@@ -862,7 +886,7 @@ export class DetalheCodePage {
       orientation: 'portrait'
     }
 
-    let linkVideo:any = this.video_link;
+    let linkVideo: any = this.video_link;
 
     this.streamingMedia.playVideo(linkVideo, options);
   }
@@ -963,7 +987,303 @@ export class DetalheCodePage {
 
 
   }
+  hotspotAction(action = null) {
+    let act = action;
+
+    this.showParts = new ShowParts();
+    switch (action) {
+      case 'showName':
+
+        this.showParts.userDetails = true;
+
+        break;
+
+      default:
+        break;
+    }
+
+  }
+  actionSpotConnect() {
+
+    this.verifyGeolocationIsActive();
+
+    // this.hotSpotConnMens = 'Conectando...';
+    let dataHotspot = this.hotspotData;
+    console.log('Dados do Hotspot: ', dataHotspot);
+
+    if (dataHotspot.isRegisterScreen) {
+      this.activeForm = true;
+
+      console.log('Abrindo formulário de conexão...');
+    } else {
+
+      this.hotspotConnect();
+
+    }
+
+  }
+  async verifyGeolocationIsActive() {
+
+    this.platform.ready().then(() => {
+      // verifique a geolocalizacao
+      this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+        // if (canRequest) {
+        // the accuracy option will be ignored by iOS
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+          () => {
+            console.log('Request successful');
+            this.getAdsressUser();
+          },
+          error => console.log('Error requesting location permissions', error)
+        );
+        // }
+      });
+    });
+
+  }
+
+  getAdsressUser() {
+
+    this.platform.ready().then(() => {
+      this.geoProv.getGeolocation().then((resp: String[]) => {
+        console.log('detalhe-code total geolocation:', resp);
+        this.coordenates = resp["latitude"] + ',' + resp["longitude"];
+        console.log('home geolocation: ', this.coordenates);
+        this.setHotSpotApi('search_adress');
+
+      });
+    });
 
 
+  }
 
+  hotspotConnect() {
+
+    console.log('Dados de conexão do hotspot no hotspotConnect: ', this.hotspotData);
+    this.verifyGeolocationIsActive().then((resp) => {
+      console.log('REsposta do localizador (Active): ', resp);
+
+    }).catch((err) => {
+      console.log('Erro ao ativar o localizador');
+    });
+
+    this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
+      this.hotSpotConnMens = 'Conectando...';
+      console.log(networks);
+      console.log('Conectando a rede wi-fi');
+      this.activeForm = false;
+      this.inConnect = true;
+      let dataHotspot = this.hotspotData;
+      this.hotspot.connectToWifi(this.hotspotData.ssid, this.hotspotData.password).then((res) => {
+        this.isConnected = true;
+        this.hotSpotConnMens = 'Sucesso! Você está conectado.';
+        console.log('Success | Response of conection wifi: ', res);
+
+      }, (error) => {
+
+        this.hotSpotConnMens = 'Erro! Verifique os dados da conexão e tente novamente.';
+        console.log('Erro | Error of conection wifi: ', error);
+
+      });
+
+    }).catch((error) => {
+      console.log('Erro ao buscar redes: ', error);
+      this.hotSpotConnMens = 'Erro! Nenhuma rede disponível no local (Verifque se seu wi-fi está ativo).';
+    });
+
+  }
+
+  setDataUserHotspot() {
+    this.userHotspotForm.player_id = this.player_id;
+    this.userHotspotForm.value.coordenates = this.coordenates;
+    console.log('Dados do user hotspot:: ', this.userHotspotForm);
+
+    let { nome, email } = this.userHotspotForm.controls;
+
+    let nome_user = this.userHotspotForm.nome;
+    let email_user = this.userHotspotForm.email;
+
+    console.log('Nome e Email: ',nome_user, email_user )
+
+    if(!nome_user){
+      // this.userHotspotForm.valid = false;
+      this.hotSpotConnMens = 'Nome inválido';
+      this.isError = true;
+    }
+    else if(!email_user){
+      // this.userHotspotForm.valid = false;
+      this.hotSpotConnMens = "Email inválido";
+      this.isError = true;
+    }
+    else {
+      this.isError = false;
+      this.setHotSpotApi('set_user');
+    }
+  }
+
+  setHotSpotApi(action) {
+    this.globalAction = action;
+    console.log('Definição dos globalAction: ', this.globalAction);
+    let info = this.userHotspotForm.value;
+    let data: any;
+    console.log('Dados do hotSpotForm enviados: ', info);
+    data = {
+      token: this.token,
+      id_code: this.code_id,
+      // id_code: this.id_code,
+      action: action,
+      player_id: this.player_id,
+      data: info,
+      bloco: '16'
+    }
+
+    if (action == 'search_adress') {
+      let dataCoordenates = this.coordenates;
+      data = {
+        'action': 'search_adress',
+        url_api: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + dataCoordenates + '&key=AIzaSyCvlHIxGDuqD4hbZP2hQ0ojfelVlQT-u1s'
+      };
+      console.log('Endereço pesquisado: ', data.url_api);
+    };
+
+    this.util.showLoading(this.load_aguarde);
+    this.codeProvider.setHotSpot(data)
+      .then(
+        (result: any) => {
+
+          this.util.loading.dismissAll();
+
+          if (this.globalAction == 'search_adress' && result.status == 'OK') {
+
+            let totalSddress = result.results[0];
+            this.addresUser = totalSddress;
+
+            this.userHotspotForm.endereco = totalSddress.formatted_address;
+            this.userHotspotForm.bairro = totalSddress.address_components[2].long_name;
+            this.userHotspotForm.cidade = totalSddress.address_components[3].long_name;
+
+            console.log('Endereço Total usuário posição [0]: ', totalSddress);
+
+          }
+
+          if (result.status == 200 && this.globalAction == 'set_user') {
+            console.log('Retorno hotspot do Servidor: ', result);
+            let DataHotspot = result.hotspot.data;
+            if (DataHotspot) {
+              action = {
+                action: 'config',
+                data: DataHotspot,
+              };
+              // this.setActionHotSpot(action);
+            }
+
+            this.hotspotConnect();
+
+            this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'sucesso' }).present();
+          }
+          else if (result.status == 404) {
+            console.log('Response 404!');
+          }
+
+          else if (result.status == 403) {
+            this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
+            this.navCtrl.setRoot('LoginPage', { lang: this.lang });
+          }
+        }
+        , (error: any) => {
+          this.toast.create({ message: 'Error the response', position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
+          this.util.loading.dismissAll();
+          this.navCtrl.setRoot('HomePage');
+        });
+
+
+  }
+
+  // login com facebook
+  //método para chamar api do facebook e salvar no banco o usuario
+  loginFacebook() {
+    let permissions = new Array<string>();
+    permissions = ['public_profile', 'email'];
+
+    this.fb.login(permissions).then((response) => {
+      let params = new Array<string>();
+
+      this.fb.api("/me?fields=name,email", params)
+        .then(res => {
+
+          //estou usando o model para criar os usuarios
+          console.log('Todos os dados retornados do facebook:', res);
+          let usuario = new Usuario();
+          usuario.nome = res.name;
+          usuario.email = res.email;
+          usuario.senha = res.id;
+          usuario.login = res.email;
+
+          this.userHotspotForm.value.id = res.id;
+          this.userHotspotForm.value.nome = res.name;
+          this.userHotspotForm.value.email = res.email;
+          this.userHotspotForm.value.coordenates = this.coordenates;;
+          this.showParts.userDetails = true;
+          // this.hotSpotConnMens = 'Verifique seus dados e Clique eom Connect.';
+          this.logar(usuario);
+        }, (error) => {
+          // alert(error);
+          this.hotSpotConnMens = 'Erro! Tentar conectar com facebook.';
+          console.log('ERRO LOGIN: ', error);
+        })
+    }, (error) => {
+      // alert(error);
+      console.log('ERRO FACEBOOK plugin: ', error);
+      this.hotSpotConnMens = 'Erro! Tentar conectar com facebook!::';
+    });
+  }
+
+  logar(usuario: Usuario) {
+    let action = 'set_user';
+
+    console.log('Usuario cadastrado via facebook: ', usuario);
+    console.log('Gravando dados no servidor: ', this.userHotspotForm);
+    this.setHotSpotApi(action);
+
+    // this.salvarService.salvarFacebook(usuario)
+    //   .then(() => {
+    //     console.log('Usuario cadastrado via facebook com sucesso!');
+    //   })
+
+  }
+
+  async myPlayerIdOnesignal() {
+    this.oneSignal.endInit();
+    this.oneSignal.getIds().then((id) => {
+      console.log(id.userId);
+      this.player_id = id.userId;
+
+      let dataTag = {"userId":id.userId};
+      this.oneSignal.sendTags(dataTag);
+
+      console.log('OneSignal Player ID: ', this.player_id);
+    });
+
+  }
+
+}
+
+export class Model {
+
+  constructor(objeto?) {
+    Object.assign(this, objeto);
+  }
+
+}
+
+export class Usuario extends Model {
+  codigo: number;
+  nome: string;
+  email: string;
+  login: string;
+  senha: string;
+}
+
+export class ShowParts {
+  userDetails: boolean;
 }

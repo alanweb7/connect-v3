@@ -8,14 +8,16 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { OneSignal } from '@ionic-native/onesignal';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { EditorModule } from '@tinymce/tinymce-angular';
+import { BrMaskerModule } from 'brmasker-ionic-3';
 
 @NgModule({
   declarations: [
     DetalheCodePage,
   ],
   imports: [
+    BrMaskerModule,
     EditorModule,
     IonicPageModule.forChild(DetalheCodePage),
     TranslateModule.forChild({

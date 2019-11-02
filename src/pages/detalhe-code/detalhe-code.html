@@ -26,24 +26,25 @@
 <ion-content class="pg-login page_detail" no-padding>
   <!-- <div style="width: 100%; height:45px"></div> -->
   <div>
-    <ion-grid no-padding>
-      <ion-row>
-        <ion-col col-12 class="info-servico video_gallery" *ngIf="mostra">
-          <div style="background: black;padding-top: 30px;">
+    <div class="content_details" *ngIf="!activeForm">
+      <ion-grid no-padding>
+        <ion-row>
+          <ion-col col-12 class="info-servico video_gallery" *ngIf="mostra">
+            <div style="background: black;padding-top: 30px;">
 
-            <div *ngIf="video_status == 'complete'">
-              <iframe width="100%" height="250px" [src]="video_link" (load)="video ? handleIFrameLoadEvent() : null"
-                frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
-              </iframe>
-            </div>
+              <div *ngIf="video_status == 'complete'">
+                <iframe width="100%" height="250px" [src]="video_link" (load)="video ? handleIFrameLoadEvent() : null"
+                  frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+                </iframe>
+              </div>
 
 
-            <video controls="controls" id="myVideo" preload="metadata" width="100%" height="250px"
-              webkit-playsinline="webkit-playsinline" class="videoPlayer"
-              *ngIf="video_status == 1 || video_status == 2">
-              <source src="{{video_link}}" type="video/mp4" />
-            </video>
-            <!-- <div class="list-categorias" *ngIf="album_vimeo && album_vimeo.length">
+              <video controls="controls" id="myVideo" preload="metadata" width="100%" height="250px"
+                webkit-playsinline="webkit-playsinline" class="videoPlayer"
+                *ngIf="video_status == 1 || video_status == 2">
+                <source src="{{video_link}}" type="video/mp4" />
+              </video>
+              <!-- <div class="list-categorias" *ngIf="album_vimeo && album_vimeo.length">
                           <div  class="box-menu-categorias">
                             <button ion-button clear large btn-categoria *ngFor="let video of album_vimeo">
                               <ion-thumbnail item-start (click)="selectVideo(video.video_link,video.post_status)">
@@ -52,101 +53,163 @@
                             </button>
                           </div>
                       </div> -->
-          </div><!-- final do container do slide -->
-          <div class="video_controller" *ngIf="totalSlides > 1">
-            <button ion-button class="controller-button" (click)="controlSlide('down')" round [disabled]="disablePrev">
-              <ion-icon style="font-size: large" slot="icon-only" name="md-arrow-dropleft-circle"></ion-icon>
-            </button>
-            <div class="info_slide_number" style="font-size: large; padding-top:10px;">{{infoLegendSlides}}</div>
-            <button ion-button class="controller-button" (click)="controlSlide('up')" round [disabled]="disableNext">
-              <ion-icon style="font-size: large" slot="icon-only" name="md-arrow-dropright-circle"></ion-icon>
-            </button>
-          </div>
-        </ion-col>
-        <ion-col col-12 *ngIf="!mostra" style="padding-top: 10px; padding-right: 10px">
-          <div style="width: 40px"></div>
-        </ion-col>
-        <ion-col col-12 class="info-servico"
-          style="position:relative;margin-top:15px;padding-left: 10px; padding-right: 10px">
-          <h4>{{titulo}}</h4>
-        </ion-col>
-        <ion-col col-12 *ngIf="audioContent">
-          <ion-list>
-            <ion-item *ngFor="let audio of audio_colection">
-              <div class="full-audio-div">
-                <audio controls>
-                  <source [src]="audio.audio_link" type="audio/mpeg">
-                  Seu dispositivo não suporta esse formato de audio.
-                </audio>
-              </div>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-        <ion-col col-12 class="info-servico" *ngIf="galeria && galeria.length">
-          <div style="position:relative;width:100%;">
-            <ion-slides initialSlide=0 autoplay="3000" loop=true autoplay=5000 speed="300" class="slide_code">
-              <ion-slide #mySlider *ngFor="let gal of galeria">
-                <div class="slide-galery" style="width: 100%;height: 250px;">
-                  <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 0" (click)="viewPhoto(gal.img_link)" alt=""
-                    style="width: 100%;height: auto;">
-                  <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 0" (click)="getModalAds()" alt="" style="width: 100%;height: auto;"> -->
-                  <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 2"
-                    (click)="showImageLink({'link':gal.code_ads.link_ads,'action':gal.code_ads.action})" alt=""
-                    style="width: 100%;height: auto;">
-                  <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 2" (click)="showLink(gal.code_ads.link_ads)" alt="" style="width: 100%;height: auto;"> -->
-                  <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 1" (click)="showCode(gal.code_ads.link_ads)" alt="" style="width: 100%;height: auto;"> -->
+            </div><!-- final do container do slide -->
+            <div class="video_controller" *ngIf="totalSlides > 1">
+              <button ion-button class="controller-button" (click)="controlSlide('down')" round
+                [disabled]="disablePrev">
+                <ion-icon style="font-size: large" slot="icon-only" name="md-arrow-dropleft-circle"></ion-icon>
+              </button>
+              <div class="info_slide_number" style="font-size: large; padding-top:10px;">{{infoLegendSlides}}</div>
+              <button ion-button class="controller-button" (click)="controlSlide('up')" round [disabled]="disableNext">
+                <ion-icon style="font-size: large" slot="icon-only" name="md-arrow-dropright-circle"></ion-icon>
+              </button>
+            </div>
+          </ion-col>
+          <ion-col col-12 *ngIf="!mostra" style="padding-top: 10px; padding-right: 10px">
+            <div style="width: 40px"></div>
+          </ion-col>
+          <ion-col col-12 class="info-servico"
+            style="position:relative;margin-top:15px;padding-left: 10px; padding-right: 10px">
+            <h4>{{titulo}}</h4>
+          </ion-col>
+          <ion-col col-12 *ngIf="audioContent">
+            <ion-list>
+              <ion-item *ngFor="let audio of audio_colection">
+                <div class="full-audio-div">
+                  <audio controls>
+                    <source [src]="audio.audio_link" type="audio/mpeg">
+                    Seu dispositivo não suporta esse formato de audio.
+                  </audio>
                 </div>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+          <ion-col col-12 class="info-servico" *ngIf="galeria && galeria.length">
+            <div style="position:relative;width:100%;">
+              <ion-slides initialSlide=0 autoplay="3000" loop=true autoplay=5000 speed="300" class="slide_code">
+                <ion-slide #mySlider *ngFor="let gal of galeria">
+                  <div class="slide-galery" style="width: 100%;height: 250px;">
+                    <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 0" (click)="viewPhoto(gal.img_link)" alt=""
+                      style="width: 100%;height: auto;">
+                    <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 0" (click)="getModalAds()" alt="" style="width: 100%;height: auto;"> -->
+                    <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 2"
+                      (click)="showImageLink({'link':gal.code_ads.link_ads,'action':gal.code_ads.action})" alt=""
+                      style="width: 100%;height: auto;">
+                    <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 2" (click)="showLink(gal.code_ads.link_ads)" alt="" style="width: 100%;height: auto;"> -->
+                    <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 1" (click)="showCode(gal.code_ads.link_ads)" alt="" style="width: 100%;height: auto;"> -->
+                  </div>
 
-              </ion-slide>
-            </ion-slides>
+                </ion-slide>
+              </ion-slides>
+            </div>
+          </ion-col>
+          <ion-col col-12 class="info-servico" *ngIf="descricao"
+            style="padding-left: 20px !important; padding-right: 20px">
+            <p>DESCRIÇÃO:</p>
+            <editor [initialValue]="descricao" class="second-editor" [init]="initModeUser"></editor>
+            <div [innerHTML]="descricao" *ngIf="iosPlatform"></div>
+          </ion-col>
+          <ion-col col-12 class="info-servico" *ngIf="documento && documento.length">
+            <ion-list id="verConteDo-list3" *ngFor="let doc of documento">
+              <a href="{{doc.doc_link}}">
+                <ion-item-sliding class="docitem">
+
+                  <ion-item color="none" id="verConteDo-list-item5">
+                    {{doc.file_name}}
+                    <ion-icon name="document" item-right></ion-icon>
+                  </ion-item>
+
+                  <ion-item-options side="left">
+                    <button ion-button color="positive"></button>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </a>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <!--Final da div content_details-->
+    <div *ngIf="hotspotData.isHotspotActive" style="text-align: center">
+      <div *ngIf="activeForm && hotspotData.isRegisterScreen">
+        <div *ngIf="player_id"><span>Token wi-fi: {{player_id}}</span></div>
+
+        <form padding [formGroup]="userHotspotForm" (submit)="setDataUserHotspot()" novalidate>
+          <div>
+            <ion-item>
+              <ion-input [(ngModel)]="userHotspotForm.nome" formControlName="nome" type="text" placeholder="Nome"
+                clearInput clearOnEdit="false">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input [(ngModel)]="userHotspotForm.email" formControlName="email" type="text" placeholder="E-mail"
+                clearInput clearOnEdit="false">
+              </ion-input>
+            </ion-item>
           </div>
-        </ion-col>
-        <ion-col col-12 class="info-servico" *ngIf="descricao"
-          style="padding-left: 20px !important; padding-right: 20px">
-          <p>DESCRIÇÃO:</p>
-          <editor [initialValue]="descricao" class="second-editor" [init]="initModeUser"></editor>
-          <div [innerHTML]="descricao" *ngIf="iosPlatform"></div>
-        </ion-col>
-        <ion-col col-12 class="info-servico" *ngIf="documento && documento.length">
-          <ion-list id="verConteDo-list3" *ngFor="let doc of documento">
-            <a href="{{doc.doc_link}}">
-              <ion-item-sliding class="docitem">
+          <ion-item>
+            <ion-input [(ngModel)]="userHotspotForm.fone" formControlName="fone" type="text"
+              [brmasker]="{mask:'(00) 00000-0000', len:15, type:'num'}" placeholder="fone" clearInput
+              clearOnEdit="false">
+            </ion-input>
+          </ion-item>
 
-                <ion-item color="none" id="verConteDo-list-item5">
-                  {{doc.file_name}}
-                  <ion-icon name="document" item-right></ion-icon>
-                </ion-item>
+          <div>
+            <h5>Endereço:</h5>
+            <ion-item>
+              <ion-textarea [(ngModel)]="userHotspotForm.endereco" formControlName="endereco" placeholder="Endereço"
+                value="{{userHotspotForm.endereco}}">
+              </ion-textarea>
+            </ion-item>
 
-                <ion-item-options side="left">
-                  <button ion-button color="positive"></button>
-                </ion-item-options>
-              </ion-item-sliding>
-            </a>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+            <ion-item>
+              <ion-input class="text-inputs" [(ngModel)]="userHotspotForm.cidade" formControlName="cidade" type="text"
+                placeholder="Cidade" clearInput clearOnEdit="false">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input class="text-inputs" [(ngModel)]="userHotspotForm.bairro" formControlName="bairro" type="text"
+                placeholder="Bairro" clearInput clearOnEdit="false">
+              </ion-input>
+            </ion-item>
+
+          </div>
+          <div style="display: flex">
+            <ion-item>
+              <ion-input [(ngModel)]="userHotspotForm.idade" formControlName="idade" type="number" placeholder="idade"
+                clearInput clearOnEdit="false">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Sexo:</ion-label>
+              <ion-select [(ngModel)]="userHotspotForm.sexo" formControlName="sexo">
+                <ion-option value="1" [selected]="true">Masc.</ion-option>
+                <ion-option value="2">Femin.</ion-option>
+              </ion-select>
+            </ion-item>
+          </div>
+          <h6 *ngIf="messageError.email" class="error"> {{messageError.email}}</h6>
+          <button ion-button block outline color="primary" [disabled]="!userHotspotForm.valid"
+            class="login-button">Connect</button>
+        </form>
+        <button class="btn_connect facebook_st" ion-button icon-left (click)='loginFacebook();'>
+          <ion-icon name="logo-facebook"></ion-icon>Login com Facebook
+        </button>
+      </div>
+      <button ion-button outline (click)="actionSpotConnect()" [disabled]="inConnect" *ngIf="!activeForm">ACESSAR REDE
+        WI-FI</button>
+      <div style="width: 100%">
+        <span *ngIf="hotSpotConnMens && !isError" style="color: #080808;">{{hotSpotConnMens}}</span>
+        <span *ngIf="hotSpotConnMens && isError" style="color: #ff0000;">{{hotSpotConnMens}}</span>
+      </div>
+    </div>
     <div style="width: 100%; height: 90px;"></div>
-    <!--  <div *ngIf="ask_id">
-          <ion-grid>
-              <ion-row>
-                  <ion-col col-6>
-                      <button ion-button block (click)="mostraEnquete()" class="facebook">Enquete</button>
-                  </ion-col>
-                  <ion-col col-6>
-                      <button ion-button block (click)="resultEnq()" class="bt-cadatro">Resultado</button>
-                  </ion-col>
-              </ion-row>
-          </ion-grid>
-      </div> -->
   </div>
   <ion-fab right bottom *ngIf="whatsapp && whatsapp.length > 1">
 
     <button (click)="selectTipo('0')" ion-fab color="light" class="dois">
       <ion-icon name="call" disabled="true"></ion-icon>
     </button>
-
-
   </ion-fab>
   <ion-fab right bottom *ngIf="whatsapp && whatsapp.length == 1">
     <a href="http://api.whatsapp.com/send?1=pt_BR&phone={{calling_code}}{{tel_whatsapp}}">
@@ -223,8 +286,6 @@
             <ion-icon name="logo-instagram"></ion-icon>
           </a>
         </ion-col>
-
-
       </ion-row>
       <!-- FIM BOTOES COM WHATSAPP -->
 

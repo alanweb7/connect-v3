@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
+import { text } from '@angular/core/src/render3/instructions';
 
 @IonicPage({
   priority: 'low',
@@ -48,12 +49,31 @@ export class MenuCodePage {
   isIos: boolean;
 
   // configuracoes hotspot
+  hotspotData: any;
   isWifiSelected: boolean;
   networks: any;
   isHotspotActive: boolean = false;
   isOnlyHotspot: boolean = false;
   messageHotspot: string;
   errorHotspotConnect: boolean;
+  inSearch: boolean;
+  isConnected: number = 0;
+  hotspotConditions: boolean;
+  sectorUser: string;
+  messages: Messages;
+
+  // hotspotuserInfo: object = [
+  //   { 'player_id': '123455', 'nome': 'Alan', 'email': 'alanweb7@gmail.com', 'telefone': '(91) 2345-6789)', 'local': 'Rua Luis Nobre, 124 - Ananindeua - PA' },
+  //   { 'player_id': '123456', 'nome': 'Dione', 'email': 'dionesilva@gmail.com', 'telefone': '(91) 2345-6789', 'local': 'Conj. Jardim Ananindeua, Alameda N, 224 - Ananindeua - PA' }];
+
+  hotspotuserInfo: object;
+  showDetails: any = {
+    icon: {
+      ios: 'ios-arrow-dropdown-circle',
+      md: 'md-arrow-dropdown-circle'
+    },
+    is_active: false
+  };
 
   errorEmail: any;
 
@@ -98,6 +118,7 @@ export class MenuCodePage {
     public platform: Platform,
     private hotspot: Hotspot
   ) {
+    this.messages = new Messages();
     if (this.platform.is('ios')) {
       this.isIos = true;
     }
@@ -461,7 +482,113 @@ export class MenuCodePage {
 
   }
 
+  // sistema de envio de push
+
+  postPushHotspot(playerData) {
+    let action;
+    if (playerData.action) {
+      action = playerData.action;
+    } else {
+      action = 'open_form';
+    }
+    switch (action) {
+      case 'send_push':
+        console.log('Enviando push para: ', playerData.hotspot);
+        console.log('Dados: ', playerData.data);
+        break;
+
+      case 'open_form':
+        console.log('Abrindo formulário: ');
+        this.getFormPush(playerData);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  async getFormPush(playerData = null) {
+    let dadosRecebidos = playerData;
+    let alert = this.alertCtrl.create({
+      subTitle: 'Enviar notificação para: ' + playerData.data.nome,
+      message: this.messages.error,
+      inputs: [
+        {
+          name: 'title',
+          placeholder: 'Titulo da Mensagem'
+        },
+        {
+          name: 'message',
+          placeholder: 'Mensagem',
+
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Enviar',
+          handler: data => {
+            let error = null;
+            if (!data.title) {
+              error = '<Digite class="error">* Digite um titulo</span>';
+            }
+            else if (!data.message) {
+              error = '<span class="error">* Digite uma mensagem</span>';
+            }
+            if (error) {
+              this.showAlert(error);
+            }
+
+            if (!error) {
+              // logged in!
+              console.log('enviando...');
+              /**
+               * infoData segue o padrao:
+               * data: {
+               * url: 'http://restfull.site.com?params',
+               * method: 'post|get|delete'
+               * data: Object
+               * }
+               */
+              let infoData = {
+                url: 'https://kscode.com.br/ksc_2020/wp-json/hotspot/v1/push',
+                method: 'post',
+                header: {Authorization: 'Bearer '+ this.token},
+                data: {
+                  push: data,
+                  code_name: this.code,
+                  code_id: this.id_code,
+                  hotspot: dadosRecebidos
+                },
+
+              };
+
+              this.httpPadrao(infoData);
+
+            } else {
+              // invalid login
+              console.log('Erro ao enviar!');
+              return false;
+            }
+
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   setHotSpotApi(action) {
+
+    if (action == 'get_users') {
+      this.hotspotConditions = true;
+    }
 
     let info = this.hotSpotForm.value;
     console.log('Dados do hotSpotForm enviados: ', info);
@@ -477,21 +604,42 @@ export class MenuCodePage {
     this.codeProvider.setHotSpot(data)
       .then(
         (result: any) => {
-          console.log('Retorno hotspot do Servidor: ', result)
+          console.log('Retorno de dados do hotspot vindo do Servidor: ', result)
           this.util.loading.dismissAll();
           if (result.status == 200) {
 
-            action = {
+            // tratando dados retornado do servidor
+            let DataHotspot = result.hotspot.data;
+            if (result.action == 'get_users') {
+              this.hotspotuserInfo = DataHotspot;
+            }
 
-              action: 'config',
-              data: result.hotspot.data,
+            if (DataHotspot) {
 
-            };
+              action = {
+                action: 'config',
+                data: DataHotspot,
+              };
 
-            this.setActionHotSpot(action);
+              this.setActionHotSpot(action);
+            }
+
             this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'sucesso' }).present();
 
-          } else if (result.status == 403) {
+          }
+
+          else if (result.status == 404) {
+
+            this.hotSpotForm.isHotspotActive = false;
+            this.hotSpotForm.isOnlyHotspot = false;
+            this.hotSpotForm.isRegisterScreen = false;
+            this.hotSpotForm.password = null;
+
+            this.searchWifi();
+
+          }
+
+          else if (result.status == 403) {
             this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
             this.navCtrl.setRoot('LoginPage', { lang: this.lang });
           }
@@ -524,6 +672,23 @@ export class MenuCodePage {
         let togleValue = this.hotSpotForm.value;
 
         console.log('Status do Hotspot', togleValue);
+
+        break;
+      case 'detail_user':
+
+        let player_id = data.player_id;
+        console.log('Status do OLD Hotspot', this.sectorUser, ':: player_id: ', player_id);
+        if (player_id == this.sectorUser) {
+          this.sectorUser = null;
+        } else {
+          this.sectorUser = player_id;
+        }
+
+        console.log('Status do New Hotspot', this.sectorUser, ':: player_id: ', player_id);
+        break;
+      case 'hiddeInfo':
+
+        this.hotspotConditions = false;
 
         break;
       case 'send':
@@ -562,36 +727,44 @@ export class MenuCodePage {
 
   conectHotspot() {
 
+    this.inSearch = true;
     console.log('Conectando com a rede wi-fi...');
     let data = {
       ssid: this.hotSpotForm.ssid,
       password: this.hotSpotForm.password
     }
 
+    this.hotspot.removeWifiNetwork(data.ssid).then((rem) => {
+
+      console.log('Disconectando da rede: ', rem);
+
+      this.hotspot.connectToWifi(data.ssid, data.password).then((res) => {
+
+        this.inSearch = false;
+        this.isConnected = 1;
+        console.log('Success | Response of conection wifi: ', res);
 
 
-    this.hotspot.connectToWifi(data.ssid, data.password).then((res) => {
+      }, (error) => {
 
-      console.log('Success | Response of conection wifi: ', res);
-
-
-    }, (error) => {
-
-      console.log('Erro ao conectar (wifi): ', error)
-
-
-    })
+        this.inSearch = false;
+        this.isConnected = 3;
+        console.log('Erro ao conectar (wifi): ', error);
+      });
+    });
 
   }
   searchWifi() {
 
     this.isWifiSelected = false;
+    this.inSearch = true;
     this.platform.ready().then(() => {
 
       console.log('Buscando redes');
       this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
         console.log(networks);
         this.networks = networks;
+        this.inSearch = false;
 
       });
 
@@ -643,8 +816,58 @@ export class MenuCodePage {
     });
 
   }
+  showAlert(message) {
+    let alert = this.alertCtrl.create({
+      message: message,
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: data => {
+          console.log('Cancel clicked');
+        }
+      }
+      ]
+    });
+    alert.present();
+  }
+
+  httpPadrao(infoData) {
+    /**
+     * infoData segue o padrao:
+     * data: {
+     * url: 'http://restfull.site.com?params',
+     * method: 'post|get|delete'
+     * data: Object
+     * }
+     */
+    console.log('Dados enviados no httPadrao:: ', infoData);
+
+    this.util.showLoading(this.load_aguarde);
+
+    this.codeProvider.setHttpPadrao(infoData)
+      .then(
+        (result: any) => {
+          console.log('Retorno de dados do Servidor em httpPadrao: ', result.data);
+          let response = JSON.parse(result.data);
+
+          this.util.loading.dismissAll();
+          if (response.status == 200) {
+
+            this.toast.create({ message: response.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'sucesso' }).present();
+          }
+          else if (response.status == 403) {
+            this.toast.create({ message: response.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
+            this.navCtrl.setRoot('LoginPage', { lang: this.lang });
+          }
+
+        }, (error: any) => {
+          this.toast.create({ message: this.msg_servidor, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
+          this.util.loading.dismissAll();
+        });
+  }
 
 }
+
 export class Link {
   link: String;
   isLink: String;
@@ -658,5 +881,9 @@ export class geral {
 }
 export class Code {
   name: String;
+}
+export class Messages {
+  error: any;
+  success: any;
 }
 

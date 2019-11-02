@@ -29,7 +29,7 @@ export class UsuarioService {
             .catch((error: Error) => console.log('Error creating movie table!', error));
              return this.db;
 
-        }); 
+        });
 
     }
     return this.sqliteHelperService.getDb();
@@ -64,23 +64,23 @@ export class UsuarioService {
   update(name:String,sobrenome:String, email:String ,photo:String ,telefone :String,celular ,logado:String,token:String,id_serv:Number): Promise<boolean> {
      return <Promise<boolean>>this.db.executeSql('UPDATE cliente SET name=?,sobrenome=?,email=?,photo=?,telefone=?,celular=?,logado=?,token=? WHERE id_serv=?', [name,sobrenome,email,photo,telefone,celular,logado,token,id_serv])
       .then(resultSet => resultSet.rowsAffected >= 0)
-      .catch((error: Error) => console.log(`Error updating ${name} movie!`, error)); 
+      .catch((error: Error) => console.log(`Error updating ${name} movie!`, error));
   }
   update_lang(lang,id_serv){
     return <Promise<boolean>>this.db.executeSql('UPDATE cliente SET cpf=? WHERE id_serv=?', [lang,id_serv])
     .then(resultSet => resultSet.rowsAffected >= 0)
-    .catch((error: Error) => console.log(`Error updating endereco ${lang} movie!`, error)); 
+    .catch((error: Error) => console.log(`Error updating endereco ${lang} movie!`, error));
   }
   update_cupom(tp_pessoa:String,cnpj:String,id_serv){
     console.log(tp_pessoa,cnpj);
     return <Promise<boolean>>this.db.executeSql('UPDATE cliente SET tp_pessoa=?,cnpj=? WHERE id_serv=?', [tp_pessoa,cnpj,id_serv])
     .then(resultSet => resultSet.rowsAffected >= 0)
-    .catch((error: Error) => console.log(`Error updating cupom ${cnpj} movie!`, error)); 
+    .catch((error: Error) => console.log(`Error updating cupom ${cnpj} movie!`, error));
   }
   update_Endereco(nome_empresa:String,segmento_empresa:String,user_cep:String,cidade_empresa:String,estado_empresa:String,id_serv:Number){
      return <Promise<boolean>>this.db.executeSql('UPDATE cliente SET nome_empresa=?,segmento_empresa=?,cep=?,cidade=?,estado=? WHERE id_serv=?', [nome_empresa,segmento_empresa,user_cep,cidade_empresa,estado_empresa,id_serv])
       .then(resultSet => resultSet.rowsAffected >= 0)
-      .catch((error: Error) => console.log(`Error updating endereco ${nome_empresa} movie!`, error)); 
+      .catch((error: Error) => console.log(`Error updating endereco ${nome_empresa} movie!`, error));
 
   }
 

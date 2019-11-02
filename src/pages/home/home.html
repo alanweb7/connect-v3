@@ -1,92 +1,91 @@
 <ion-header>
 
-        <ion-navbar color="primary">
-            <button ion-button menuToggle>
-                <ion-icon name="menu"></ion-icon>
-            </button>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
 
-            <ion-title>
-                <ion-icon name="icone-logo"></ion-icon>
-            </ion-title>
-            <ion-buttons end>
-                <button ion-button icon-only (click)="showCheckbox()">
-                    <ion-icon name="flag"></ion-icon>
+    <ion-title *ngIf="!footerIsHidden">
+      <ion-icon name="icone-logo"></ion-icon>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="showCheckbox()">
+        <ion-icon name="flag"></ion-icon>
+      </button>
 
-                </button>
+    </ion-buttons>
+  </ion-navbar>
 
-            </ion-buttons>
-        </ion-navbar>
+</ion-header>
+<ion-content class="fundo">
+  <div style="margin-top: 15px;">
+    <ion-card class="fundo" style="text-align: center" *ngIf="footerIsHidden">
+      <img src="assets/imgs/logo_home_blanc.svg" style="height: 90px" />
+      <ion-card-content>
+        <ion-card-title>
+          {{title}}
+        </ion-card-title>
+      </ion-card-content>
+    </ion-card>
+    <form id="home-form1" [formGroup]="signupform">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col col-12>
+              <ion-item id="home-input1" ng-model="movie.name" class="search_code">
+                <ion-label></ion-label>
+                <ion-input type="text" class="input_search" placeholder="CONNECT AQUI" [(ngModel)]="codeNumber"
+                  formControlName="codeNumber" name="code"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-12 class="info-servico">
+              <button id="home-button1" ion-button color="primary" block icon-left (click)="pushPage()"
+                [disabled]="signupform.invalid">
+                <ion-icon name="navigate"></ion-icon>
+                {{button}}
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </form>
 
-      </ion-header>
-      <ion-content class="fundo">
-
-          <div>
-            <ion-card class="fundo" style="text-align: center">
-                <img src="assets/imgs/logo_home_blanc.svg" style="height: 90px" *ngIf="footerIsHidden"/>
-                <img src="assets/imgs/logo_home_blanc.svg" style="height: 30px" *ngIf="!footerIsHidden"/>
-                <ion-card-content>
-                  <ion-card-title>
-                      {{title}}
-                  </ion-card-title>
-                </ion-card-content>
-              </ion-card>
-              <form id="home-form1" [formGroup]="signupform">
-                  <ion-card-content>
-                      <ion-grid>
-                          <ion-row>
-                              <ion-col col-12>
-                                  <ion-item id="home-input1" ng-model="movie.name" class="search_code">
-                                      <ion-label></ion-label>
-                                      <ion-input type="text" class="input_search" placeholder="CONNECT AQUI"  [(ngModel)]="codeNumber" formControlName="codeNumber" name="code"></ion-input>
-                                  </ion-item>
-                              </ion-col>
-                              <ion-col col-12 class="info-servico">
-                                  <button id="home-button1" ion-button color="primary" block icon-left (click)="pushPage()" [disabled]="signupform.invalid" >
-                                      <ion-icon name="navigate"></ion-icon>
-                                      {{button}}
-                                  </button>
-                              </ion-col>
-                          </ion-row>
-                      </ion-grid>
-                  </ion-card-content>
-              </form>
-
-         </div>
-      </ion-content>
-      <!-- CONTENT -->
+  </div>
+</ion-content>
+<!-- CONTENT -->
 <!-- FOOTER -->
 <ion-footer *ngIf="footerIsHidden">
-    <ion-toolbar >
-        <ion-grid>
-            <ion-row>
-                <ion-col col-3>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-3>
 
-                      <div class="adquire-code" (click)="pushPagePesquisa()">
-                            <span class="title-share">{{pesquisa}}</span>
-                      </div>
-                </ion-col>
-                <ion-col col-1>
-                        |
+          <div class="adquire-code" (click)="pushPagePesquisa()">
+            <span class="title-share">{{pesquisa}}</span>
+          </div>
+        </ion-col>
+        <ion-col col-1>
+          |
 
-                </ion-col>
-                <ion-col col-4>
-                        <div class="adquire-code" (click)="shopcode()">
-                                <span class="title-share">{{adquira}}</span>
-                        </div>
+        </ion-col>
+        <ion-col col-4>
+          <div class="adquire-code" (click)="shopcode()">
+            <span class="title-share">{{adquira}}</span>
+          </div>
 
-                </ion-col>
-                <ion-col col-1>
-                        |
+        </ion-col>
+        <ion-col col-1>
+          |
 
-                </ion-col>
-                <ion-col col-3>
-                    <div class="adquire-code" (click)="pushPageCode()">
-                        <span class="title-share">CONNECT</span>
-                    </div>
-                </ion-col>
-            </ion-row>
+        </ion-col>
+        <ion-col col-3>
+          <div class="adquire-code" (click)="pushPageCode()">
+            <span class="title-share">CONNECT</span>
+          </div>
+        </ion-col>
+      </ion-row>
 
-        </ion-grid>
-    </ion-toolbar>
+    </ion-grid>
+  </ion-toolbar>
 </ion-footer>
 <!-- FOOTER -->

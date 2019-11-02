@@ -174,85 +174,177 @@
         </form>
       </div>
       <div *ngIf="segment == 4">
-        <div>
-          <button ion-button full (click)="searchWifi()" round>
-            <ion-icon slot="start" name="md-refresh"
-              style="font-size: x-large; color: chartreuse; position: relative; float: left; margin-left: 20px; margin-right:15px">
-            </ion-icon> <span>BUSCAR REDES
-              WI-FI</span>
-          </button>
-        </div>
-        <div *ngIf="!isWifiSelected">
-          <h3 *ngIf="networks"> Redes Encontradas</h3>
-          <h3 *ngIf="!networks"> Nenhuma Rede Encontrada</h3>
-          <ion-card *ngFor="let network of networks">
-            <ion-item (click)="setActionHotSpot({'action':'password', 'ssid':network.SSID})">
-              <h3>{{network.SSID}}</h3>
-              <button round item-end>
-                <ion-icon ios="ios-share" md="md-options"></ion-icon>
+        <div style="width: 100%; padding: 10px !important;">
+          <div class="header-info">
+            <button ion-button outline (click)="setHotSpotApi('get_users')" *ngIf="!hotspotConditions">
+              <ion-icon ios="ios-contacts" md="md-contacts" style="margin-right: 5px; font-size: large"></ion-icon>
+              Usuários Cadastrados
+            </button>
+            <div class="header-info-flex" *ngIf="hotspotConditions">
+              <h4 style="text-align: center; flex: 0 0 60%">Lista de usuários cadastrados no hotspot:</h4>
+              <button ion-button outline round (click)="setActionHotSpot('hiddeInfo')">
+                <ion-icon ios="ios-backspace" md="md-backspace" style="margin-right: 5px; font-size: large; color: red">
+                </ion-icon> VOLTAR
               </button>
-            </ion-item>
-          </ion-card>
-
-        </div>
-        <!-- Mostra se a rede for selecionada -->
-        <div *ngIf="isWifiSelected">
-          <form class="" [formGroup]="hotSpotForm">
-            <div style="margin-top: 20px">
-              <h5>Nome da Rede:</h5>
-              <ion-list>
-                <ion-item>
-                  <ion-label>
-                    <ion-icon name="md-wifi"></ion-icon>
-                  </ion-label>
-                  <ion-input name="ssid" type="text" [(ngModel)]="hotSpotForm.ssid" formControlName="ssid"
-                    placeholder="Nome da Rede" value="{{hotSpotForm.ssid}}" readonly></ion-input>
-                </ion-item>
-              </ion-list>
-              <h5>Senha usada na Rede:</h5>
-              <ion-list>
-                <ion-item>
-                  <ion-label>
-                    <ion-icon name="md-code-working"></ion-icon>
-                  </ion-label>
-                  <ion-input name="password" type="text" [(ngModel)]="hotSpotForm.password" formControlName="password"
-                    placeholder="Senha" value="{{hotSpotForm.password}}"></ion-input>
-                </ion-item>
-                <div>
-                  <p *ngIf="errorHotspotConnect" class="error"> {{messageHotspot}}</p>
+            </div>
+          </div>
+          <ion-list no-padding *ngIf="hotspotConditions">
+            <ion-item class="hotspot-item" *ngFor="let user of hotspotuserInfo">
+              <div class="info-content" (click)="setActionHotSpot({'action':'detail_user','player_id':user.player_id})">
+                <div style="width: 75%; text-align: left">
+                  <ion-icon *ngIf="sectorUser != user.player_id" class="icons-tools" ios="ios-arrow-dropdown-circle"
+                    md="md-arrow-dropdown-circle" style="color: green"></ion-icon>
+                  <ion-icon *ngIf="sectorUser == user.player_id" class="icons-tools" ios="ios-arrow-dropup-circle"
+                    md="md-arrow-dropup-circle" style="color: red"></ion-icon>
+                  | {{user.data.nome}}
                 </div>
-              </ion-list>
-
-            </div>
-            <div style="text-align: center">
-
-              <button ion-button (click)="conectHotspot()" round>
-                <span style="float: left">TESTAR A CONEXÃO </span>
-                <ion-spinner name="bubbles"></ion-spinner>
-                <ion-icon name="md-checkmark-circle"></ion-icon>
-              </button>
-
-            </div>
-            <ion-list>
-              <ion-item>
-                <ion-label>ATIVAR HOTSPOT</ion-label>
-                <ion-toggle [(ngModel)]="hotSpotForm.isHotspotActive" formControlName="isHotspotActive"
-                  checked="{{isHotspotActive}}"></ion-toggle>
-              </ion-item>
-
-              <ion-item>
-                <ion-label>USAR SOMENTE COMO HOTSPOT</ion-label>
-                <ion-toggle [(ngModel)]="hotSpotForm.isOnlyHotspot" formControlName="isOnlyHotspot"
-                  checked="{{hotSpotForm.isRegisterScreen}}"></ion-toggle>
-              </ion-item>
-              <ion-item>
-                <ion-label>TELA DE CADASTRO</ion-label>
-                <ion-toggle [(ngModel)]="hotSpotForm.isRegisterScreen" formControlName="isRegisterScreen"
-                  checked="{{hotSpotForm.isRegisterScreen}}"></ion-toggle>
-              </ion-item>
-            </ion-list>
-          </form>
+                <div class="info-user" *ngIf="sectorUser == user.player_id ">
+                  <h4>
+                    <ion-icon ios="ios-contact" md="md-contact"></ion-icon><strong> informações do usuário:</strong>
+                  </h4>
+                  <div style="padding-left: 10%">
+                    <p style="font-size: large" class="local-info item-text-wrap">
+                    </p>
+                    <ion-item *ngIf="user.data.email">
+                      <ion-icon ios="ios-mail" md="md-mail"></ion-icon>
+                      <ion-textarea class="text-endereco" rows="2" readonly value="{{user.data.email}}">
+                      </ion-textarea>
+                    </ion-item>
+                    <p style="font-size: large" class="local-info item-text-wrap">
+                      <ion-icon ios="ios-call" md="md-call"></ion-icon>
+                      {{user.data.fone}}
+                    </p>
+                    <ion-item *ngIf="user.data.endereco">
+                      <ion-textarea class="text-endereco" rows="5" readonly value="{{user.data.endereco}}">
+                      </ion-textarea>
+                    </ion-item>
+                  </div>
+                  <h4>
+                    <ion-icon ios="ios-construct" md="md-construct"></ion-icon><strong> Ferramentas:</strong>
+                  </h4>
+                  <ion-grid>
+                    <ion-row style="display: flex;">
+                      <ion-col size="4">
+                        <button ion-button color="light" (click)="postPushHotspot(user)" class="um">
+                          <ion-icon style="text-align: center" ios="ios-notifications" md="md-notifications"
+                            class="icons-tools notify-user">
+                          </ion-icon>
+                        </button>
+                      </ion-col>
+                      <ion-col size="4">
+                        <a href="mailto:{{user.data.email}}" *ngIf="user.data.email"> <button ion-button color="light"
+                            class="um">
+                            <ion-icon style="text-align: center" ios="ios-mail" md="md-mail"
+                              class="icons-tools email-user">
+                            </ion-icon>
+                          </button></a>
+                      </ion-col>
+                      <ion-col size="4">
+                        <a href="tel:{{user.data.fone}}" *ngIf="user.data.fone"> <button ion-button color="light"
+                            class="um">
+                            <ion-icon style="text-align: center" ios="ios-call" md="md-call"
+                              class="icons-tools phone-user">
+                            </ion-icon>
+                          </button></a>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </div>
+              </div>
+            </ion-item>
+          </ion-list>
         </div>
+        <!--Formulario do hotspot-->
+        <div class="container-hotspot-fields" *ngIf="!hotspotConditions">
+          <div>
+            <button ion-button full (click)="searchWifi()" [disabled]="inSearch" round>
+              <ion-icon *ngIf="!inSearch" slot="start" name="md-refresh"
+                style="font-size: x-large; color: chartreuse; position: relative; float: left; margin-left: 20px; margin-right:15px">
+              </ion-icon>
+              <span *ngIf="!inSearch">BUSCAR REDES WI-FI</span>
+              <span *ngIf="inSearch">... Buscando ...</span>
+              <ion-spinner *ngIf="inSearch" name="bubbles"></ion-spinner>
+            </button>
+          </div>
+          <div *ngIf="!isWifiSelected">
+            <h3 *ngIf="networks"> Redes Encontradas</h3>
+            <h3 *ngIf="!networks"> Nenhuma Rede Encontrada</h3>
+            <ion-card *ngFor="let network of networks">
+              <ion-item (click)="setActionHotSpot({'action':'password', 'ssid':network.SSID})">
+                <h3>{{network.SSID}}</h3>
+                <button round item-end>
+                  <ion-icon ios="ios-share" md="md-options"></ion-icon>
+                </button>
+              </ion-item>
+            </ion-card>
+
+          </div>
+          <!-- Mostra se a rede for selecionada -->
+          <div *ngIf="isWifiSelected">
+            <form class="" [formGroup]="hotSpotForm">
+              <div style="margin-top: 20px">
+                <h5>Nome da Rede:</h5>
+                <ion-list>
+                  <ion-item>
+                    <ion-label>
+                      <ion-icon name="md-wifi"></ion-icon>
+                    </ion-label>
+                    <ion-input name="ssid" type="text" [(ngModel)]="hotSpotForm.ssid" formControlName="ssid"
+                      placeholder="Nome da Rede" value="{{hotSpotForm.ssid}}" readonly></ion-input>
+                  </ion-item>
+                </ion-list>
+                <h5>Senha usada na Rede:</h5>
+                <ion-list>
+                  <ion-item>
+                    <ion-label>
+                      <ion-icon name="md-code-working"></ion-icon>
+                    </ion-label>
+                    <ion-input name="password" type="text" [(ngModel)]="hotSpotForm.password" formControlName="password"
+                      placeholder="Senha" value="{{hotSpotForm.password}}"></ion-input>
+                  </ion-item>
+                  <div>
+                    <p *ngIf="errorHotspotConnect" class="error"> {{messageHotspot}}</p>
+                  </div>
+                </ion-list>
+              </div>
+              <div style="text-align: center">
+                <!--
+
+                <button ion-button (click)="conectHotspot()" round>
+                <span style="float: left" *ngIf="!inSearch">TESTAR A CONEXÃO </span>
+                <ion-spinner *ngIf="inSearch" name="bubbles" style="color: cornsilk"></ion-spinner>
+                <ion-icon name="md-checkmark-circle" style="color: chartreuse; font-size: x-large"
+                  *ngIf="isConnected == 1 && !inSearch"></ion-icon>
+                <ion-icon name="md-close-circle" style="color: #ff0022; font-size: x-large; margin-left: 10px" *ngIf="isConnected == 3 && !inSearch">
+                </ion-icon>
+                <ion-spinner name="bubbles" *ngIf="inSearch"></ion-spinner>
+              </button>
+              <span style="color: #ff0022; width: 100%" *ngIf="isConnected == 3">Erro ao tentar conectar com a rede wi-fi</span>
+
+            -->
+              </div>
+              <ion-list>
+                <ion-item>
+                  <ion-label>ATIVAR HOTSPOT</ion-label>
+                  <ion-toggle [(ngModel)]="hotSpotForm.isHotspotActive" formControlName="isHotspotActive"
+                    checked="{{isHotspotActive}}"></ion-toggle>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>USAR SOMENTE COMO HOTSPOT</ion-label>
+                  <ion-toggle [(ngModel)]="hotSpotForm.isOnlyHotspot" formControlName="isOnlyHotspot"
+                    checked="{{hotSpotForm.isOnlyHotspot}}"></ion-toggle>
+                </ion-item>
+                <ion-item>
+                  <ion-label>TELA DE CADASTRO</ion-label>
+                  <ion-toggle [(ngModel)]="hotSpotForm.isRegisterScreen" formControlName="isRegisterScreen"
+                    checked="{{hotSpotForm.isRegisterScreen}}"></ion-toggle>
+                </ion-item>
+              </ion-list>
+            </form>
+          </div>
+        </div>
+        <!--Formulario do hotspot (final)-->
       </div>
 
     </div> <!-- fechamento dos sliders -->
