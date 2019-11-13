@@ -1,8 +1,8 @@
 import { AdminToolsRest, AdminToolsDb } from './../../providers/admin-tools/admin-tools';
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../../providers/network/network';
-import { Component } from '@angular/core';
-import { NavController, IonicPage, NavParams, Platform, Loading, LoadingController, Events, AlertController, ModalController, ToastController } from 'ionic-angular';
+import { Component, Input, ViewChild } from '@angular/core';
+import { NavController, IonicPage, NavParams, Platform, Loading, LoadingController, Events, AlertController, ModalController, ToastController, ViewController } from 'ionic-angular';
 //Import Native
 import { OneSignal } from '@ionic-native/onesignal';
 import { Deeplinks } from '@ionic-native/deeplinks';
@@ -26,11 +26,13 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 @IonicPage({
   priority: 'high'
-}) @Component({
+})
+@Component({
   selector: 'page-home',
   templateUrl: 'home.html',
 })
 export class HomePage {
+  @ViewChild('input') myInput;
   public modalIsOpen: boolean;
   public signupform: FormGroup;
   codeNumber: any;
@@ -109,7 +111,7 @@ export class HomePage {
   page_pesquisa: any;
   page_consulta: any;
   msg_servidor: any;
-  isPT: boolean = false;
+  isPT: boolean = true;
   isDE: boolean = false;
   isEN: boolean = false;
   isES: boolean = false;
@@ -161,16 +163,14 @@ export class HomePage {
     private locationAccuracy: LocationAccuracy,
     public ApiRest: AdminToolsRest,
     public adminDb: AdminToolsDb,
+    public viewCtrl: ViewController,
 
   ) {
 
     // configurações iniciais :: criação do banco de dados
     // this.setConfigInitial();
-
+    this.viewCtrl = viewCtrl;
     this.getDeviceInfo();
-
-    this.language = "pt";
-          this.isPT = true;
 
     this.modalIsOpen = this.navParams.get('modalIsOpen');
     if (this.modalIsOpen == true) {
@@ -187,7 +187,7 @@ export class HomePage {
 
     this.signupform = new FormGroup({
 
-      codeNumber: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      codeNumber: new FormControl('', []),
 
     });
 
@@ -207,7 +207,20 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+
+    let dataUser:any = this.data;
+
+    dataUser.token = '';
+
+    this.events.publish('dados',dataUser);
+
     console.log('enter ionViewDidLoad homePage:');
+
+    setTimeout(() => {
+      console.log('iniciando o foco');
+      this.language = "pt";
+      this.isPT = true;
+    }, 150);
 
     //CHAMDA DO BANCO DE DADOS
     this.platform.ready().then(() => {
@@ -215,6 +228,7 @@ export class HomePage {
         .then((movies: any) => {
           console.log('Dados do banco interno: ', movies);
           if (movies.length == 1) {
+            console.log('Dados Iniciais: ', movies);
             this.data.name = movies[0].name;
             this.data.sobrenome = movies[0].sobrenome;
             this.data.email = movies[0].email;
@@ -225,7 +239,7 @@ export class HomePage {
             this.data.photo = movies[0].photo;
             this.data.usuario = movies[0].usuario;
             this.data.lang = movies[0].cpf;
-            this.language = movies[0].cpf;
+            this.language = movies[0].lang;
             this.id_serv = movies[0].id_serv;
             this.data.cnpj = movies[0].cnpj;
             this.data.tp_pessoa = movies[0].tp_pessoa;
@@ -257,8 +271,8 @@ export class HomePage {
           this._translateLanguage();
           this.oneSignalApp();
         });
-        this.language = "pt";
-        this.isPT = true;
+      this.language = "pt";
+      this.isPT = true;
     });///final platform ready
 
 
@@ -277,8 +291,8 @@ export class HomePage {
 
     this.adminDb.getAll().then((resp) => {
       console.log('Resultado do banco Push: ', resp);
-      let userConnect:any = resp;
-      if(!userConnect || userConnect.length == 0){
+      let userConnect: any = resp;
+      if (!userConnect || userConnect.length == 0) {
         console.log('Direcionando para a página de checkin');
         this.navCtrl.push('CheckinPage');
       }
@@ -340,19 +354,25 @@ export class HomePage {
       this.isIT = false;
     }
   }
+
   pushPage() {
-    let latitude = this.endLat;
-    let longitude = this.endLong;
-    console.log('home codes com gps');
-    let sendData = {
-      liberado: false, origem: 1, token: this.token, lang: this.language,
-      code: this.codeNumber,
-      latitude: latitude, longitude: longitude,
-      telephone: this.global.myGlobalVar
-    };
 
-    this.navCtrl.push('RedirectPage', { data: sendData });
+    if (!this.codeNumber) {
+      alert('Digite algo pra acessar');
+    } else {
 
+      let latitude = this.endLat;
+      let longitude = this.endLong;
+      console.log('home codes com gps');
+      let sendData = {
+        liberado: false, origem: 1, token: this.token, lang: this.language,
+        code: this.codeNumber,
+        latitude: latitude, longitude: longitude,
+        telephone: this.global.myGlobalVar
+      };
+
+      this.navCtrl.push('RedirectPage', { data: sendData });
+    }
   }
 
   pushGeoinfo() {
@@ -385,10 +405,10 @@ export class HomePage {
   }
 
 
-  pushPageCode() {
+  pushPageCode(code) {
 
     let sendData = {
-      liberado: false, origem: 1, token: this.token, lang: this.language, code: 'KSCODE',
+      liberado: false, origem: 1, token: this.token, lang: this.language, code: code,
       latitude: this.endLat, longitude: this.endLong,
       telephone: this.global.myGlobalVar
     };
@@ -533,6 +553,7 @@ export class HomePage {
     console.log("linguagem", this.language);
     this._initialiseTranslation();
   }
+
   private _initialiseTranslation(): void {
     setTimeout(() => {
       this.title = this.translate.instant("home.heading");
@@ -663,9 +684,15 @@ export class HomePage {
     this.toast.create({ message: result.message, position: 'botton', duration: 14400, closeButtonText: 'Ok!', cssClass: 'error' }).present();
   }
 
-  getDeviceInfo(){
+  getDeviceInfo() {
     // novo information
     console.log();
+  }
+
+  setFocusField(){
+    this.myInput.setFocus();
+    this.keyboard.show();
+    console.log('Acessando o connect');
   }
 
 }

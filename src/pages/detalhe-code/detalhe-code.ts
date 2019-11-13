@@ -400,10 +400,6 @@ export class DetalheCodePage {
 
         await this.navCtrl.setRoot('HomePage', { modalIsOpen: true });
 
-        return;
-
-        // this.viewCtrl.dismiss();
-
       }
 
 

@@ -4,11 +4,11 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>{{page}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="code">
       <button ion-button icon-only (click)="shareSheetShare()">
         <ion-icon ios="ios-share" md="md-share"></ion-icon>
       </button>
-      <button ion-button icon-only (click)="showPromptPush(code)">
+      <button ion-button icon-only (click)="showPromptPush()">
         <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
       </button>
     </ion-buttons>

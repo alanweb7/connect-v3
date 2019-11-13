@@ -99,13 +99,15 @@ export class VideoCodePage {
   }
   //preencher lista vinda por parametro
 getVideoServe(){
-    this.videos =[];
-    if(this.vidbase64 != "" && this.vidbase64 != null){
+  console.log('Entrou nogetVideoServe ::', this.vidbase64);
+    if(this.vidbase64){
          for (let i = 0; i < this.vidbase64.length; i++) {
-               this.videos.push(this.vidbase64[i]);
+
               this.videos_serve.push(this.vidbase64[i]);
         }
-        this.vidbase64 ="";
+        this.videos = this.videos_serve;
+        console.log('Videos depois do for ::', this.videos);
+        this.vidbase64 = "";
     }
 }
 
@@ -160,7 +162,7 @@ showPrompt() {
           {
             text: 'Publicar',
             handler: data => {
-              console.log('Saved clicked',data.link);
+              console.log('Saved clicked link: ',data.link);
               this.insertVideoLinkArray(data.link);
             }
           }
@@ -171,13 +173,12 @@ showPrompt() {
 public insertVideoLinkArray(link){
   this.util.showLoading("Enviando...");
 
-
           this.codeProvider.video_link_create(this.id_code,this.token,link,"","")
            .then(
               (result: any) =>{
                 this.util.loading.dismissAll();
                 if(result.status == 200){
-                  console.log("result delete code",result);
+                  console.log("result create video",result);
                   this.toast.create({ message: result.message, position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'sucesso'  }).present();
                   this.vidbase64 = result.midias;
                   this.getVideoServe();

@@ -286,10 +286,11 @@ export class MenuCodePage {
     this.package_videos = this.navParams.get('package_videos');
     this.lang = this.navParams.get('lang');
     console.log("img", this.lang);
+    console.log("Code recebido no construct:: ", this.id_code);
     this._translateLanguage();
   }
   //fazer o start do slide
-  private ionViewDidEnter() {
+  ionViewDidEnter() {
     this.getShowCode();
 
   }
@@ -420,8 +421,23 @@ export class MenuCodePage {
 
 
   }
-  showPromptPush(codeNumber) {
-    this.navCtrl.push('NotificacaoPushPage', { codeNumber: codeNumber, lang: this.lang, token: this.token, texto_push: this.texto_push, campo_1: this.campo_1, campo_2: this.campo_2, btn_enviar: this.btn_enviar, btn_cancelar: this.btn_cancelar, msg_servidor: this.msg_servidor, load_aguarde: this.load_aguarde, campo_obrigatorio: this.campo_obrigatorio });
+  showPromptPush() {
+    let data = {
+      codeNumber: this.code,
+      lang: this.lang,
+      token: this.token,
+      texto_push: this.texto_push,
+      campo_1: this.campo_1,
+      campo_2: this.campo_2,
+      btn_enviar: this.btn_enviar,
+      btn_cancelar: this.btn_cancelar,
+      msg_servidor: this.msg_servidor,
+      load_aguarde: this.load_aguarde,
+      campo_obrigatorio: this.campo_obrigatorio
+    };
+
+    console.log('Dados para enviar no push: ', data);
+    this.navCtrl.push('NotificacaoPushPage', data);
 
   }
 
@@ -559,7 +575,7 @@ export class MenuCodePage {
               let infoData = {
                 url: 'https://kscode.com.br/ksc_2020/wp-json/hotspot/v1/push',
                 method: 'post',
-                header: {Authorization: 'Bearer '+ this.token},
+                header: { Authorization: 'Bearer ' + this.token },
                 data: {
                   push: data,
                   code_name: this.code,
@@ -794,12 +810,12 @@ export class MenuCodePage {
 
   change_segmento() {
 
-    let link: any = this.model;
-    this.meu_link = link.islink;
+    this.meu_link = this.model.isLink;
 
     console.log('Status do conteúdo (link): ', this.meu_link);
 
   }
+
   change_senha(item) {
 
     this.modelG.isprivate = item;

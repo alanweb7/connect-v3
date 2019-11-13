@@ -272,16 +272,17 @@ uploadVideo(){
 public insertVideoLinkArray(link){
   this.util.showLoading(this.load_enviando);
 
-
           this.codeProvider.video_link_create(this.id_code,this.token,link,"",this.lang)
            .then(
               (result: any) =>{
                 this.util.loading.dismissAll();
                 if(result.status == 200){
-                  console.log("result delete code",result);
+                  console.log("result create video insertVideoLinkArray::",result);
                   this.toast.create({ message: result.message, position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'sucesso'  }).present();
                   //this.vidbase64 = result.midias;
                  // this.getVideoServe();
+                 this.videos = result.midias;
+
                 }else if(result.status == 402){
                   this.toast.create({ message: result.message, position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'alerta'  }).present();
                   this.navCtrl.push('LoginPage',{lang:this.lang});

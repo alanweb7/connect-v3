@@ -49,11 +49,16 @@ export class UtilService {
     let extension: string = file.substr(file.lastIndexOf('.')); // .png, .jpg
     return extension; // .jpg
   }
-  converterBase64(file): Promise<String> {
 
-    let base64Image = this.base64.encodeFile(file).then(base64File => base64File)
+  async converterBase64(file) {
+
+    let base64Image = await this.base64.encodeFile(file).then((base64File) => {
+      return base64File;
+
+    })
       .catch((error: Error) => console.log(`Error updating ${name} movie!`, error));
-    return <Promise<String>>base64Image;
+
+    return base64Image;
   }
 
   showLoading(msg) {
@@ -63,7 +68,7 @@ export class UtilService {
     });
     this.loading.present();
   }
-  async getCEP(cep){
+  async getCEP(cep) {
     let url = '  https://api.postmon.com.br/v1/cep/' + cep;
     let result = await this.httpn.get(url, {}, {}).then((res) => {
       console.log('resultado do code.ts MENU CODE: ', res);

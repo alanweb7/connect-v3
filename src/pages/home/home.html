@@ -32,9 +32,8 @@
         <ion-grid>
           <ion-row>
             <ion-col col-12>
-              <ion-item id="home-input1" ng-model="movie.name" class="search_code">
-                <ion-label></ion-label>
-                <ion-input type="text" class="input_search" placeholder="CONNECT AQUI" [(ngModel)]="codeNumber"
+              <ion-item>
+                <ion-input (click)="setFocusField()" type="text" #input placeholder="CONNECT AQUI" [(ngModel)]="codeNumber"
                   formControlName="codeNumber" name="code"></ion-input>
               </ion-item>
             </ion-col>
@@ -79,7 +78,7 @@
 
         </ion-col>
         <ion-col col-3>
-          <div class="adquire-code" (click)="pushPageCode()">
+          <div class="adquire-code" (click)="pushPageCode('connect')">
             <span class="title-share">CONNECT</span>
           </div>
         </ion-col>

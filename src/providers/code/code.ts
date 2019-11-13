@@ -568,7 +568,7 @@ export class CodeProvider {
   }
 
   async create_push(codeNumber: String, titulo: String, mensagem: String, token: String, lang: String) {
-    console.log(codeNumber, titulo, mensagem, token);
+    console.log('dados do push em code provider create_push: ',codeNumber, titulo, mensagem, token);
     let data = {
       codeNumber: codeNumber,
       titulo: titulo,
@@ -577,7 +577,8 @@ export class CodeProvider {
       password: "@spot2020",
       lang: lang
 
-    }
+    };
+
     console.log(data);
     let url = 'https://kscode.com.br/ksc_2020/wp-json/admin/v1/dashboard/';
     let result = await this.httpn.post(url, data, {}).then((res) => {

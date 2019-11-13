@@ -75,7 +75,7 @@ import { Clipboard } from '@ionic-native/clipboard';
         deps: [HttpClient]
       }
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{ scrollAssist: false }),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     IonicStorageModule.forRoot(),
 
