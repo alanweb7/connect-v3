@@ -649,10 +649,9 @@ export class HomePage {
       if (code) {
         this.redirectPush(code);
       }
-
     }, (nomatch) => { });
-
   }
+
   trogle_idiome_onesignal() {
     console.log("langsdfds", this.language);
     if (this.language == 'pt') {

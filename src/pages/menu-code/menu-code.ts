@@ -62,10 +62,6 @@ export class MenuCodePage {
   sectorUser: string;
   messages: Messages;
 
-  // hotspotuserInfo: object = [
-  //   { 'player_id': '123455', 'nome': 'Alan', 'email': 'alanweb7@gmail.com', 'telefone': '(91) 2345-6789)', 'local': 'Rua Luis Nobre, 124 - Ananindeua - PA' },
-  //   { 'player_id': '123456', 'nome': 'Dione', 'email': 'dionesilva@gmail.com', 'telefone': '(91) 2345-6789', 'local': 'Conj. Jardim Ananindeua, Alameda N, 224 - Ananindeua - PA' }];
-
   hotspotuserInfo: object;
   showDetails: any = {
     icon: {
@@ -87,6 +83,7 @@ export class MenuCodePage {
     linkedin: String,
     website: String
   }
+
   texto;
   seg_1;
   seg_2;
@@ -787,6 +784,7 @@ export class MenuCodePage {
     })
 
   }
+
   setConfigHotspot(ssid) {
     this.isWifiSelected = true;
     this.hotSpotForm.password = ssid;

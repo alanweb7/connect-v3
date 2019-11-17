@@ -1073,7 +1073,7 @@ export class DetalheCodePage {
       this.isConnected = true;
     }
 
-    if (this.platform.is('android')) {
+    else if (this.platform.is('android')) {
 
       this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
         this.hotSpotConnMens = 'Conectando...';
