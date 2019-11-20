@@ -1,45 +1,46 @@
 <ion-menu [content]="content">
   <ion-content>
-      <div class="topo-user">
-         <button menuClose>
-             <ion-icon name="arrow-forward"></ion-icon>
-         </button>
-        <ion-avatar>
-         <img  src="assets/imgs/user.png" *ngIf="!photo"  (click)="minhaConta()">
-          <img  src="{{photo}}" *ngIf="photo"  (click)="minhaConta()">
-          <div *ngIf="mostra">
-            <h2 >{{name}} {{sobrenome}}</h2>
-          </div>
-           <p  *ngIf="mostra">{{email}}</p>
-           <h2 *ngIf="!mostra" (click)="logout()">{{login}}</h2>
-        </ion-avatar>
-      </div>
+    <div class="topo-user">
+      <button menuClose>
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+      <ion-avatar>
+        <img src="assets/imgs/user.png" *ngIf="!photo" (click)="minhaConta()">
+        <img src="{{photo}}" *ngIf="photo" (click)="minhaConta()">
+        <div *ngIf="mostra">
+          <h2>{{name}} {{sobrenome}}</h2>
+        </div>
+        <p *ngIf="mostra">{{photo}}</p>
+        <p *ngIf="mostra">{{email}}</p>
+        <h2 *ngIf="!mostra" (click)="logout()">{{login}}</h2>
+      </ion-avatar>
+    </div>
     <ion-list class="menu-lateral">
-      <button menuClose ion-item  (click)="openPage(1)">
+      <button menuClose ion-item (click)="openPage(1)">
         <ion-icon color="primary" name="home"></ion-icon> {{home}}
       </button>
-      <button menuClose ion-item  (click)="openPage(2)">
+      <button menuClose ion-item (click)="openPage(2)">
         <ion-icon color="primary" name="contact"></ion-icon> {{codes}}
       </button>
-      <button menuClose ion-item  (click)="openPage(3)">
+      <button menuClose ion-item (click)="openPage(3)">
         <ion-icon color="primary" name="star"></ion-icon> {{favoritos}}
       </button>
       <button menuClose ion-item (click)="openPage(4)">
         <ion-icon color="primary" name="search"></ion-icon> {{pesquisa}}
       </button>
-      <button menuClose ion-item (click)="openPage(5)"  *ngIf="cnpj">
-          <ion-icon color="primary" name="filing"></ion-icon>  Relatórios Ganhos
+      <button menuClose ion-item (click)="openPage(5)" *ngIf="cnpj">
+        <ion-icon color="primary" name="filing"></ion-icon> Relatórios Ganhos
       </button>
-      <button menuClose ion-item (click)="openPage(6)"  *ngIf="cnpj">
+      <button menuClose ion-item (click)="openPage(6)" *ngIf="cnpj">
         <ion-icon color="primary" name="cash"></ion-icon>Meu Cupom
       </button>
       <!-- <button menuClose ion-item (click)="openPage(77)"  *ngIf="id_serv == 41"> -->
       <button menuClose ion-item (click)="openPage(77)" *ngIf="id_serv == 41">
         <ion-icon color="primary" name="cash"></ion-icon>Administrativo
       </button>
-      <button menuClose ion-item  (click)="logout()" *ngIf="mostra">
+      <button menuClose ion-item (click)="logout()" *ngIf="mostra">
         <ion-icon color="danger" class="sair" name="exit"></ion-icon>
-        <span  color="danger" >{{sair}}</span>
+        <span color="danger">{{sair}}</span>
       </button>
     </ion-list>
 

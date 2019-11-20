@@ -250,13 +250,13 @@ export class ImageAddPage {
     if (this.platform.is('ios')) {
 
       const options: CameraOptions = {
-        quality: 50,
+        quality: 100,
         destinationType: this.platform.is('ios') ? this.camera.DestinationType.FILE_URI : this.camera.DestinationType.DATA_URL,
         encodingType: this.camera.EncodingType.JPEG,
         mediaType: this.camera.MediaType.PICTURE,
         allowEdit: true,
-        targetWidth: 300,
-        targetHeight: 300
+        targetWidth: 1200,
+        // targetHeight: 1200
       }
 
       this.imageToBase64 = await this.camera.getPicture(options).then((imageData) => {
@@ -293,8 +293,8 @@ export class ImageAddPage {
         encodingType: this.camera.EncodingType.JPEG,
         mediaType: this.camera.MediaType.PICTURE,
         allowEdit: true,
-        // targetWidth: 500,
-        // targetHeight: 500
+        targetWidth: 1200,
+        // targetHeight: 1200
       }
 
       this.camera.getPicture(cameraOptions)
@@ -308,7 +308,7 @@ export class ImageAddPage {
 
           let photoName = name3+'.jpeg';
 
-          this.images.push({ id: "", files: base64, img_link: base64, file_name: photoName, origin: originPhoto });
+          this.images.push({ id: "", files: base64, img_link: "", file_name: photoName, origin: originPhoto });
 
         }).catch((err: Error) => console.log('Camera error: ', err));
 
@@ -318,20 +318,22 @@ export class ImageAddPage {
   async getPhoto(sourceType: number) {
     const options: CameraOptions = {
       quality: 100,
-      targetHeight: 300,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
       sourceType: sourceType,
       saveToPhotoAlbum: false,
-      allowEdit: true
+      allowEdit: true,
+      targetWidth: 1200,
+      // targetHeight: 1200
     }
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
+      let originPhoto = 'base64';
 
-      this.images.push({ id: "", files: base64Image, img_link: base64Image, file_name: '178498123.jpg' });
+      this.images.push({ id: "", files: base64Image, img_link: '', file_name: '178498123.jpg', origin: originPhoto });
 
       // now you can do whatever you want with the base64Image, I chose to update the db
       // this.authenticationService.utilizador.avatar = base64Image;
@@ -557,6 +559,7 @@ export class ImageAddPage {
   enviar() {
     if (this.images.length > 0) {
       console.log(this.images);
+
       this.util.showLoading(this.load_enviando);
 
       this.codeProvider.imagen_create(this.id_code, this.token, this.images, this.lang)

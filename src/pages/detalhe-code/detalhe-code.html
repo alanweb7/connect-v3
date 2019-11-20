@@ -87,15 +87,13 @@
             <div style="position:relative;width:100%;">
               <ion-slides initialSlide=0 autoplay="3000" loop=true autoplay=5000 speed="300" class="slide_code">
                 <ion-slide #mySlider *ngFor="let gal of galeria">
-                  <div class="slide-galery" style="width: 100%;height: 250px;">
-                    <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 0" (click)="viewPhoto(gal.img_link)" alt=""
-                      style="width: 100%;height: auto;">
-                    <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 0" (click)="getModalAds()" alt="" style="width: 100%;height: auto;"> -->
-                    <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 2"
-                      (click)="showImageLink({'link':gal.code_ads.link_ads,'action':gal.code_ads.action})" alt=""
-                      style="width: 100%;height: auto;">
-                    <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 2" (click)="showLink(gal.code_ads.link_ads)" alt="" style="width: 100%;height: auto;"> -->
-                    <!-- <img src="{{gal.img_link}}" *ngIf="gal.code_ads.type == 1" (click)="showCode(gal.code_ads.link_ads)" alt="" style="width: 100%;height: auto;"> -->
+                  <div class="slide-galery" style="width: 100%;height: 250px;" *ngIf="gal.code_ads.type == 0"
+                    (click)="viewPhoto(gal.img_link)">
+                    <img src="{{gal.img_link}}" style="height: 70vh;width: auto;">
+                  </div>
+                  <div class="slide-galery" style="width: 100%;height: 250px;" *ngIf="gal.code_ads.type == 2"
+                    (click)="showImageLink({'link':gal.code_ads.link_ads,'action':gal.code_ads.action})">
+                    <img src="{{gal.img_link}}" alt="" style="height: 70vh;width: auto;">
                   </div>
                 </ion-slide>
               </ion-slides>

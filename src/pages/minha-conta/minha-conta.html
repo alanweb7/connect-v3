@@ -13,12 +13,12 @@
 <ion-content>
             <div class="topo-user">
                 <ion-avatar >
-                    <img (click)="onActionSheet()" src="{{photo_bd}}">
+                    <img (click)="onActionSheet()" [src]="photo_bd">
                     <ion-icon color="primary" name="camera"></ion-icon>
                     <h2>{{first_name}} {{last_name}}</h2>
                     <p>{{user_email}}</p>
                 </ion-avatar>
-            
+
             </div>
             <form class="col s12" [formGroup]="contaForm" name="contaForm">
                 <ion-list class="index-formularios2">
@@ -65,7 +65,7 @@
                         <!-- <ion-input type="text" placeholder="CEP"    class="validate" value="{{user_cep}}"></ion-input> -->
                         <button ion-button block (click)="onSearchByKeyword()">Buscar</button>
                     </ion-item>
-                    <div><p *ngIf="errorCEP" class="error"> {{messageCEP}}</p></div> 
+                    <div><p *ngIf="errorCEP" class="error"> {{messageCEP}}</p></div>
                     <ion-item>
                         <ion-label>
                             <ion-icon name="compass"></ion-icon>
@@ -79,8 +79,8 @@
                         </ion-label>
                         <ion-input type="text" placeholder="{{estado}}"   [(ngModel)]="model.estado_empresa" formControlName="estado_empresa" class="validate" value="{{estado_empresa}}"></ion-input>
                     </ion-item>
-                    <div><p *ngIf="errorEstado" class="error"> {{messageestado_empresa}}</p></div> 
-                    
+                    <div><p *ngIf="errorEstado" class="error"> {{messageestado_empresa}}</p></div>
+
                 </ion-list>
 
             <div class="bt-edit-dados">

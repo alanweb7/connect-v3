@@ -16,13 +16,15 @@ export class ClienteProvider {
 
   }
 
-  async UpdateAccount(first_name: String, last_name: String, avatar: String, user_email: String, nome_empresa: String, segmento_empresa: String, user_cep: String, estado_empresa: String, cidade_empresa: String, token: String, lang: String){
+  async UpdateAccount(first_name: String, last_name: String, avatar: String, photo: String, user_email: String, nome_empresa: String, segmento_empresa: String, user_cep: String, estado_empresa: String, cidade_empresa: String, token: String, lang: String){
+    console.log('Função UpdateAccount em client.ts');
     let url = this.CLIENTE_URL;
-    var data = {
+    let data = {
       first_name: first_name,
       last_name: last_name,
       user_email: user_email,
       avatar: avatar,
+      photo: photo,
       nome_empresa: nome_empresa,
       segmento_empresa: segmento_empresa,
       user_cep: user_cep,
