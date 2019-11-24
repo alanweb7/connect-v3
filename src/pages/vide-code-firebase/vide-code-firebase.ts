@@ -1,3 +1,4 @@
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController, Events, Navbar, ViewController, Platform } from 'ionic-angular';
 import { FirebaseApp } from 'angularfire2';
@@ -20,6 +21,9 @@ import { NgZone } from '@angular/core';
 import { Media, MediaObject } from '@ionic-native/media';
 import { VideoEditor } from '@ionic-native/video-editor';
 
+import { normalizeURL } from 'ionic-angular';
+import { DomSanitizer } from '@angular/platform-browser';
+
 @IonicPage()
 @Component({
   selector: 'page-vide-code-firebase',
@@ -35,6 +39,7 @@ export class VideCodeFirebasePage {
   token: any;
   id_code: any;
   videos: any[];
+  public webSrc: any;
   package_codes: Number;
   package_name: String;
   package_videos: Number;
@@ -117,7 +122,11 @@ export class VideCodeFirebasePage {
     private media: Media,
     public platform: Platform,
     private videoEditor: VideoEditor,
+    private webview: WebView,
+    private sanitize: DomSanitizer
   ) {
+
+    this.webSrc = sanitize.bypassSecurityTrustResourceUrl("file:///storage/emulated/0/DCIM/Camera/20191124_044314.mp4");
     this.referencia = firebase.storage().ref();
     this.fonteCapture = this.navParams.get('font_capture');
     if (this.fonteCapture == 'camera') {
@@ -307,9 +316,19 @@ export class VideCodeFirebasePage {
 
           let dirpath = videoUrl.substr(0, videoUrl.lastIndexOf('/') + 1);
           console.log('dirpath Inicial: ', dirpath);
+
+
           let filename = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
 
+          this.webSrc = dirpath + filename;
+
+
           dirpath = dirpath.includes("file://") ? dirpath : "file://" + dirpath;
+
+
+          console.log('Fixed: ' + this.webSrc);
+          console.log('Normalize path: ', this.webSrc);
+
           console.log('videoUrl Original: ', videoUrl);
           console.log('dirpath Final: ', dirpath);
           console.log('filename: ', filename);
@@ -388,9 +407,9 @@ export class VideCodeFirebasePage {
         setTimeout(() => {
           console.log('Test');
 
-        //  return myTeste();
+          //  return myTeste();
 
-      }, 1000/60);
+        }, 1000 / 60);
 
 
 
@@ -419,7 +438,7 @@ export class VideCodeFirebasePage {
 
 
   }
-  myteste(){
+  myteste() {
     this.progressBar = 30;
     console.log('função externa');
   }
@@ -442,8 +461,14 @@ export class VideCodeFirebasePage {
           let dirpath = videoUrl.substr(0, videoUrl.lastIndexOf('/') + 1);
           console.log('dirpath Inicial: ', dirpath);
           let filename = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
+          this.webSrc = dirpath + filename;
 
           dirpath = dirpath.includes("file://") ? dirpath : "file://" + dirpath;
+
+
+          console.log('Fixed: ' + this.webSrc);
+          console.log('Normalize path: ', this.webSrc);
+
           console.log('videoUrl Original: ', videoUrl);
           console.log('dirpath Final: ', dirpath);
           console.log('filename: ', filename);
@@ -489,14 +514,23 @@ export class VideCodeFirebasePage {
           this.isSelecionado = true;
           let videoUrl = data[0].fullPath;
           console.log('videoUrl initial: ', videoUrl);
+
+          this.webSrc = videoUrl;
           // this.showLoader();
           this.uploadedVideo = null;
 
           let dirpath = videoUrl.substr(0, videoUrl.lastIndexOf('/') + 1);
           console.log('dirpath Inicial: ', dirpath);
+
           let filename = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
+          this.webSrc = dirpath + filename;
+
 
           dirpath = dirpath.includes("file://") ? dirpath : "file://" + dirpath;
+
+          console.log('Fixed: ' + this.webSrc);
+          console.log('Normalize path: ', this.webSrc);
+
           console.log('videoUrl: ', videoUrl);
           console.log('dirpath Final: ', dirpath);
           console.log('filename: ', filename);

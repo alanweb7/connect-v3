@@ -5,12 +5,11 @@
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
       <ion-avatar>
-        <img src="assets/imgs/user.png" *ngIf="!photo" (click)="minhaConta()">
+        <img src="./assets/imgs/user.png" *ngIf="!photo" (click)="minhaConta()">
         <img src="{{photo}}" *ngIf="photo" (click)="minhaConta()">
         <div *ngIf="mostra">
           <h2>{{name}} {{sobrenome}}</h2>
         </div>
-        <p *ngIf="mostra">{{photo}}</p>
         <p *ngIf="mostra">{{email}}</p>
         <h2 *ngIf="!mostra" (click)="logout()">{{login}}</h2>
       </ion-avatar>

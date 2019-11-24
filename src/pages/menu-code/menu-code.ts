@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides, ModalController, LoadingController, ToastController, AlertController, ViewController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Slides, ModalController, LoadingController, ToastController, AlertController, ViewController, Platform, Events } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { FormBuilder, Validators } from '../../../node_modules/@angular/forms';
 import { NetworkProvider } from '../../providers/network/network';
@@ -72,6 +72,7 @@ export class MenuCodePage {
   };
 
   errorEmail: any;
+  public user_info = new UserInfoData;
 
   contato = {
     pais: String,
@@ -110,12 +111,14 @@ export class MenuCodePage {
     public viewCtrl: ViewController,
     public alertCtrl: AlertController,
     private socialSharing: SocialSharing,
+    private event: Events,
 
     private translate: TranslateService,
     public platform: Platform,
     private hotspot: Hotspot
   ) {
     this.messages = new Messages();
+    this.user_info = new UserInfoData();
     if (this.platform.is('ios')) {
       this.isIos = true;
     }
@@ -285,6 +288,8 @@ export class MenuCodePage {
     console.log("img", this.lang);
     console.log("Code recebido no construct:: ", this.id_code);
     this._translateLanguage();
+
+
   }
   //fazer o start do slide
   ionViewDidEnter() {
@@ -373,6 +378,7 @@ export class MenuCodePage {
             }
 
             this.descricao = result.data[0]['descricao'];
+            this.user_info = result.data[0]['user_info'];
             this.modelG.descricao = this.descricao;
             this.contato.pais = result.data[0]['pais'];
             this.contato.email = result.data[0]['email'];
@@ -821,9 +827,11 @@ export class MenuCodePage {
   }
   // compartilhar social share
   shareSheetShare() {
+    let user_info = this.user_info;
+    console.log('Dados do usuário em shareSheetShare: ', user_info.name);
     this.card = this.imagens[0].img_link;
     console.log('link do card: ', this.card, this.slug);
-    this.socialSharing.share(this.visite_code + "->", "Share subject", this.card, "https://kscode.com.br/card?code=" + this.slug).then(() => {
+    this.socialSharing.share(user_info.intro, "Share subject", user_info.card, user_info.link).then(() => {
       console.log("shareSheetShare: Success");
     }).catch(() => {
       console.error("shareSheetShare: failed");
@@ -899,5 +907,12 @@ export class Code {
 export class Messages {
   error: any;
   success: any;
+}
+export class UserInfoData {
+  name: string;
+  email: string;
+  intro: string;
+  card: string;
+  link: string;
 }
 

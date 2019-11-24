@@ -54,6 +54,8 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { Facebook } from '@ionic-native/facebook';
 import { Clipboard } from '@ionic-native/clipboard';
 
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+
 
 @NgModule({
   declarations: [
@@ -87,6 +89,7 @@ import { Clipboard } from '@ionic-native/clipboard';
 
   ],
   providers: [
+    WebView,
     Clipboard,
     Facebook,
     AdminToolsDb,

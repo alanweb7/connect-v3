@@ -86,7 +86,7 @@ export class MyApp {
     private usuarioDB: UsuarioService,
     public sqliteHelperService: SqliteHelperService,
     public app: App,
-    deeplinks: Deeplinks,
+    private deeplinks: Deeplinks,
     public alertCtrl: AlertController,
     private translateService: TranslateService,
     //  public navCtrl: NavController,
@@ -94,26 +94,31 @@ export class MyApp {
   ) {
 
     platform.ready().then(() => {
+
+      deeplinks.routeWithNavController(this.nav, {
+        '/card': { 'card': 'DetalheCodePage', },
+        '/about-us': { 'card': 'DetalheCodePage' },
+      }).subscribe((match) => {
+        var code = match.$link.queryString.substring(5, 50);
+        console.log("mene", match);
+        if (code != "" && code != undefined) {
+          this.redirectPush(code);
+        }
+        console.log('Successfully routed', match.$link.queryString.substring(4, 50));
+        console.log('Successfully routed', match.$link.queryString);
+      }, (nomatch) => {
+        console.log('Unmatched Route', nomatch);
+        // this.navCtrl.setRoot("HomePage",{token:this.token});
+      });
+
+
       translateService.setDefaultLang('pt');
       translateService.use('pt');
     });
 
     this.initializeApp();
-    deeplinks.routeWithNavController(this.nav, {
-      '/card': { 'card': 'DetalheCodePage', },
-      '/about-us': { 'card': 'DetalheCodePage' },
-    }).subscribe((match) => {
-      var code = match.$link.queryString.substring(5, 50);
-      console.log("mene", match);
-      if (code != "" && code != undefined) {
-        this.redirectPush(code);
-      }
-      console.log('Successfully routed', match.$link.queryString.substring(4, 50));
-      console.log('Successfully routed', match.$link.queryString);
-    }, (nomatch) => {
-      console.log('Unmatched Route', nomatch);
-      // this.navCtrl.setRoot("HomePage",{token:this.token});
-    });
+
+
     this.event.subscribe("trans", (trans: any) => {
       console.log("trans", trans);
       this.login = trans.login;

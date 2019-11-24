@@ -138,13 +138,7 @@ export class DetalheCodePage {
   public addresUser: object;
   public showDataWifi: boolean;
 
-  hotspotData = {
-    isHotspotActive: false,
-    isOnlyHotspot: false,
-    isRegisterScreen: false,
-    password: null,
-    ssid: null
-  };
+  hotspotData = new HotspotData();
 
   isConnected: boolean;
   hotSpotConnMens: string;
@@ -1301,4 +1295,11 @@ export class Usuario extends Model {
 
 export class ShowParts {
   userDetails: boolean;
+}
+export class HotspotData {
+  isHotspotActive: boolean;
+  isOnlyHotspot: boolean;
+  isRegisterScreen: boolean;
+  password: string;
+  ssid: string;
 }

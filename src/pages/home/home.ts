@@ -5,7 +5,6 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { NavController, IonicPage, NavParams, Platform, Loading, LoadingController, Events, AlertController, ModalController, ToastController, ViewController } from 'ionic-angular';
 //Import Native
 import { OneSignal } from '@ionic-native/onesignal';
-import { Deeplinks } from '@ionic-native/deeplinks';
 import { Geolocation } from '@ionic-native/geolocation';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { BrowserTab } from '@ionic-native/browser-tab';
@@ -149,7 +148,6 @@ export class HomePage {
 
     public net: NetworkProvider,
     public network: Network,
-    private deeplinks: Deeplinks,
     private usuario: UsuarioService,
     private cli_Provider: ClienteProvider,
     private keyboard: Keyboard,
@@ -638,19 +636,6 @@ export class HomePage {
 
   }
 
-  // redirect links
-  openDeeplinks() {
-    this.deeplinks.routeWithNavController(this.navCtrl, {
-      '/card': { 'card': 'DetalheCodePage', },
-      '/about-us': { 'card': 'DetalheCodePage' },
-    }).subscribe((match) => {
-      console.log(match);
-      var code = match.$link.queryString.substring(5, 50);
-      if (code) {
-        this.redirectPush(code);
-      }
-    }, (nomatch) => { });
-  }
 
   trogle_idiome_onesignal() {
     console.log("langsdfds", this.language);
