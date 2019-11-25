@@ -191,7 +191,7 @@
         "APP_ID": "1139066386292050",
         "APP_NAME": "connect"
       },
-      "cordova-clipboard": {},
+      "cordova-clipboard": {}
     },
     "platforms": []
   }
