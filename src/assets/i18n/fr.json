@@ -1,8 +1,8 @@
 {
 	"home" : {
 		"heading" 		: "tout se connecte ici",
-		"button" 	    : "accès",
-		"pesquisa"      : "recherche",
+		"button" 	    : "ACCÈS",
+		"pesquisa"      : "RECHERCHE",
 		"adquira"       : "ACHETER UN DOMAINE",
 		"code_existe"   : "KSCODE n'existe pas!"
 

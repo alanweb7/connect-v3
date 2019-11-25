@@ -40,13 +40,11 @@
           <button ion-button block (click)="sendVideoFTP()" [disabled]="!isSelecionado"> Enviar </button>
         </div>
       </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <video controls="controls" id="myVideo" preload="metadata" width="100%" height="250px"
-          webkit-playsinline="webkit-playsinline" class="videoPlayer">
-          <source src="{{webSrc}}" type="video/mp4" />
-        </video>
+      <ion-col size="12" style="text-align: center;">
+        <div *ngIf="webSrc" class="video_preview" (click)="playVideo()"><img src="./assets/imgs/video_preview.png" width="60%"
+            height="auto" /></div>
+        <div class="text">
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -46,8 +46,6 @@ import { NativeAudio } from '@ionic-native/native-audio';
 
 import { Crop } from '@ionic-native/crop';
 
-import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
-
 import { VideoEditor } from '@ionic-native/video-editor';
 import { Hotspot } from '@ionic-native/hotspot';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
@@ -55,6 +53,7 @@ import { Facebook } from '@ionic-native/facebook';
 import { Clipboard } from '@ionic-native/clipboard';
 
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { StreamingMedia } from '@ionic-native/streaming-media';
 
 
 @NgModule({

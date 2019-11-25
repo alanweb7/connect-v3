@@ -1,3 +1,4 @@
+import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController, Events, Navbar, ViewController, Platform } from 'ionic-angular';
@@ -31,6 +32,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class VideCodeFirebasePage {
   @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild('myvideo') myVideo: any;
   referencia;
   arquivo;
   porc;
@@ -123,10 +125,10 @@ export class VideCodeFirebasePage {
     public platform: Platform,
     private videoEditor: VideoEditor,
     private webview: WebView,
-    private sanitize: DomSanitizer
+    private sanitize: DomSanitizer,
+    private streamingMedia: StreamingMedia,
   ) {
 
-    this.webSrc = sanitize.bypassSecurityTrustResourceUrl("file:///storage/emulated/0/DCIM/Camera/20191124_044314.mp4");
     this.referencia = firebase.storage().ref();
     this.fonteCapture = this.navParams.get('font_capture');
     if (this.fonteCapture == 'camera') {
@@ -312,15 +314,11 @@ export class VideCodeFirebasePage {
       .then((videoUrl) => {
         if (videoUrl) {
           // this.showLoader();
-
-
           let dirpath = videoUrl.substr(0, videoUrl.lastIndexOf('/') + 1);
-          console.log('dirpath Inicial: ', dirpath);
-
-
           let filename = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
 
           this.webSrc = dirpath + filename;
+          console.log('Caminho do video webSrc: ', this.webSrc);
 
 
           dirpath = dirpath.includes("file://") ? dirpath : "file://" + dirpath;
@@ -459,9 +457,10 @@ export class VideCodeFirebasePage {
           this.uploadedVideo = null;
 
           let dirpath = videoUrl.substr(0, videoUrl.lastIndexOf('/') + 1);
-          console.log('dirpath Inicial: ', dirpath);
           let filename = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
+
           this.webSrc = dirpath + filename;
+          console.log('Caminho do video webSrc: ', this.webSrc);
 
           dirpath = dirpath.includes("file://") ? dirpath : "file://" + dirpath;
 
@@ -520,10 +519,10 @@ export class VideCodeFirebasePage {
           this.uploadedVideo = null;
 
           let dirpath = videoUrl.substr(0, videoUrl.lastIndexOf('/') + 1);
-          console.log('dirpath Inicial: ', dirpath);
-
           let filename = videoUrl.substring(videoUrl.lastIndexOf('/') + 1);
+
           this.webSrc = dirpath + filename;
+          console.log('Caminho do video webSrc: ', this.webSrc);
 
 
           dirpath = dirpath.includes("file://") ? dirpath : "file://" + dirpath;
@@ -941,6 +940,24 @@ export class VideCodeFirebasePage {
   async createNewFileName(oldFileName: string) {
     let extension: string = await oldFileName.substr(oldFileName.lastIndexOf('.')); // .png, .jpg
     return new Date().getTime() + extension.toLocaleLowerCase(); // 1264546456.jpg
+  }
+
+  playVideo() {
+    // let videoUrl = './storage/4144-1118/DCIM/Camera/VID_20191124_194851.mp4';
+    // let video = this.myVideo.nativeElement;
+    // video.src = videoUrl;
+    // video.src = this.webSrc;
+
+    let options: StreamingVideoOptions = {
+      successCallback: () => { console.log('Video played') },
+      errorCallback: (e) => { console.log('Error streaming') },
+      orientation: 'portrait',
+      shouldAutoClose: true,
+      controls: true,
+    };
+
+    this.streamingMedia.playVideo(this.webSrc, options);
+
   }
 
 }
