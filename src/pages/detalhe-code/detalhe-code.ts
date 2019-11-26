@@ -770,14 +770,14 @@ export class DetalheCodePage {
         if (this.calling_code != '') {
           CodeCountri = this.calling_code.replace('+', '');
         }
-        let direction = 'http://api.whatsapp.com/send?1=pt_BR&phone=' + CodeCountri + data.link;
+        let direction = 'http://api.whatsapp.com/send?1=pt_BR&phone=' + CodeCountri + data.link_ads;
         console.log('direction função redirectLinkImage::: ', direction);
         this.openWithInAppBrowser(direction);
         break;
       case '3':
         console.log('Case 3 em redirectLinkImage');
         // call number
-        this.callNumber.callNumber(data.link, true)
+        this.callNumber.callNumber(data.link_ads, true)
           .then(res => console.log('Launched dialer!', res))
           .catch(err => console.log('Error launching dialer', err));
         break;
