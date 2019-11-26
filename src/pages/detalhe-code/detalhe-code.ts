@@ -762,7 +762,7 @@ export class DetalheCodePage {
     switch (getAction) {
       case '1':
         console.log('Case 1 em redirectLinkImage');
-        this.openWithInAppBrowser(data.link);
+        this.openWithInAppBrowser(data.link_ads);
         break;
       case '2':
         console.log('Case 2 em redirectLinkImage');
