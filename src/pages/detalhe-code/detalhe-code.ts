@@ -1,3 +1,4 @@
+import { Data } from './../minha-conta/minha-conta';
 import { Facebook } from '@ionic-native/facebook';
 import { GeolocationProvider } from './../../providers/geolocation/geolocation';
 import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
@@ -624,6 +625,7 @@ export class DetalheCodePage {
 
   }
   viewPhoto(img) {
+    console.log('Visualizar imagem: ', img);
     this.photoViewer.show(img);
   }
   mostraEnquete() {
@@ -690,42 +692,66 @@ export class DetalheCodePage {
     });
     confirm.present();
   }
-  showImageLink(data) {
-    console.log('Dados recebidos na nova função do link da imagem:: ', data);
+  showImageLink(id) {
+    console.log('Dados recebidos na nova função do link da imagem:: ', id);
+    let dataImg;
+    this.galeria.forEach(imagem => {
+      if (imagem.id == id) {
+        dataImg = imagem;
+      }
+
+    });
+
+    console.log('Dados da imagem encontrada: ', dataImg);
     let msgAction;
-    switch (data.action) {
-      case '1':
-        msgAction = 'Deseja acessar este endereço?';
-        break;
-      case '2':
-        msgAction = 'Você deseja enviar mensagem (whatsapp)?';
-        break;
-      case '3':
-        msgAction = 'Você deseja fazer ligação para este anúncio?';
-        break;
+    let action = dataImg.code_ads.action;
+    let type = dataImg.code_ads.action;
+    let data = dataImg.code_ads;
+    let img_link = dataImg.img_link;
+
+    if (action && type) {
+      switch (action) {
+        case '1':
+          msgAction = 'Deseja acessar este endereço?';
+          break;
+        case '2':
+          msgAction = 'Você deseja enviar mensagem (whatsapp)?';
+          break;
+        case '3':
+          msgAction = 'Você deseja fazer ligação para este anúncio?';
+          break;
+
+      }
+
+      const confirm = this.alertCtrl.create({
+        title: msgAction,
+        message: "",
+        buttons: [
+          {
+            text: this.nao,
+            handler: () => {
+
+            }
+          },
+          {
+            text: this.sim,
+            handler: () => {
+              //this.viewCtrl.dismiss();
+              console.log('Dados recebidos na função ::: ', data);
+              this.redirectLinkImage(data);
+            }
+          }
+        ]
+      });
+      confirm.present();
+    } else {
+
+      this.viewPhoto(img_link);
+
 
     }
-    const confirm = this.alertCtrl.create({
-      title: msgAction,
-      message: "",
-      buttons: [
-        {
-          text: this.nao,
-          handler: () => {
 
-          }
-        },
-        {
-          text: this.sim,
-          handler: () => {
-            //this.viewCtrl.dismiss();
-            console.log('Dados recebidos na função ::: ', data);
-            this.redirectLinkImage(data);
-          }
-        }
-      ]
-    });
-    confirm.present();
+
   }
 
   redirectLinkImage(data) {
@@ -1097,8 +1123,8 @@ export class DetalheCodePage {
 
   }
 
-  copyToTransfer(){
-    this.clipboard.copy(this.hotspotData.password).then((res)=> {
+  copyToTransfer() {
+    this.clipboard.copy(this.hotspotData.password).then((res) => {
       alert('Senha copiada para a área de tranferência!');
     });
   }
