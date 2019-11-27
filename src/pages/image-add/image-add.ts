@@ -306,7 +306,7 @@ export class ImageAddPage {
 
           let name3 = new Date().toISOString();
 
-          let photoName = name3+'.jpeg';
+          let photoName = name3 + '.jpeg';
 
           this.images.push({ id: "", files: base64, img_link: "", file_name: photoName, origin: originPhoto });
 
@@ -494,20 +494,42 @@ export class ImageAddPage {
     let actSetData = setData.actSetData;
     let type = setData.type;
     let typeInput = 'tel';
-    if (type == '1') {
-      typeInput = 'text';
+    let title = 'link da Imagem';
+    let placeholder = 'link da Imagem';
+
+    switch (type) {
+      case "1":
+        console.log('Caso ', type);
+        typeInput = 'text';
+        break;
+      case "2":
+        console.log('Caso ', type);
+        title = 'Contato do Whatsapp';
+        placeholder = 'Contato do Whatsapp';
+        break;
+      case "3":
+        console.log('Caso ', type);
+        title = 'Contato Telefônico';
+        placeholder = 'Contato telefônico';
+        break;
+
+      default:
+        console.log('Nenhuma das opções ', type);
+        break;
     }
+
+
     console.log(image_id);
 
     switch (actSetData) {
       case 'link':
         let alertLink = this.alertCtrl.create({
-          title: 'Link da Imagem',
+          title: title,
           inputs: [
             {
               type: typeInput,
               name: 'link',
-              placeholder: 'Link para imagem'
+              placeholder: placeholder
             }
           ],
           buttons: [
