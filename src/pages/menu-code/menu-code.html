@@ -17,7 +17,7 @@
 
 <ion-content padding scroll="false">
   <div class="topo" *ngIf="segment == 1">
-    <form class="col s12" [formGroup]="cadastroCode" name="cadastroCode">
+    <form class="col s12" [formGroup]="cadastroCode" name="cadastroCode" (ngSubmit)="editCode()">
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -68,7 +68,7 @@
     <!-- slide inicial-->
     <div class="segment-slide">
       <div *ngIf="segment == '1' ">
-        <form class="col s12" [formGroup]="cadastroForm" name="cadastroForm">
+        <form class="col s12" [formGroup]="cadastroForm" name="cadastroForm" (ngSubmit)="editCode()">
           <ion-list class="index-formularios">
             <ion-item>
               <ion-label>
@@ -80,8 +80,12 @@
 
             <ion-item *ngIf="!isIos">
               <p>Descrição</p>
-              <editor [init]="initEditor3" [(ngModel)]="modelG.descricao" name="descricao" formControlName="descricao"
-                [initialValue]="descricao"></editor>
+              <!-- <editor [init]="initEditor3" [(ngModel)]="modelG.descricao" name="descricao" formControlName="descricao"
+                [initialValue]="descricao"></editor> -->
+                <ion-item>
+                <!-- <ion-label position="floating">Description</ion-label> -->
+                  <ion-textarea [(ngModel)]="modelG.descricao" name="descricao" formControlName="descricao"></ion-textarea>
+                </ion-item>
 
             </ion-item>
             <ion-item *ngIf="isIos">
@@ -153,7 +157,7 @@
         </div> <!-- Painel buttons -->
       </div>
       <div *ngIf="segment == 3">
-        <form class="" [formGroup]="loginForm">
+        <form class="" [formGroup]="loginForm" (ngSubmit)="editCode()">
           <ion-list class="index-formularios">
             <ion-item>
               <ion-label>
@@ -281,7 +285,7 @@
           </div>
           <!-- Mostra se a rede for selecionada -->
           <div *ngIf="isWifiSelected">
-            <form class="" [formGroup]="hotSpotForm">
+            <form class="" [formGroup]="hotSpotForm" (ngSubmit)="setActionHotSpot('send')">
               <div style="margin-top: 20px">
                 <h5>Nome da Rede:</h5>
                 <ion-list>
@@ -352,9 +356,21 @@
 </ion-content>
 <!-- CONTENT -->
 <ion-footer>
-  <ion-toolbar color="primary">
+
+
+  <ion-toolbar color="primary" style="text-align: center;" *ngIf="!isKeyBoardShower">
+    <button ion-button round color="light"
+      (click)="segment == 4 && isWifiSelected && hotSpotForm.valid ? setActionHotSpot('send') : editCode()"
+      style="margin: auto;">
+      <ion-icon slot="icon-only" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"
+        style="font-size: x-large;"></ion-icon>
+    </button>
+  </ion-toolbar>
+
+  <!-- <ion-toolbar color="primary">
     <a class="bt-cadatro" color="primary" (click)="setActionHotSpot('send')"
       *ngIf="segment == 4 && isWifiSelected && hotSpotForm.valid">{{btn_publicar}}</a>
     <a class="bt-cadatro" color="primary" (click)="editCode()" *ngIf="segment != 4">{{btn_publicar}}</a>
-  </ion-toolbar>
+  </ion-toolbar> -->
+
 </ion-footer>

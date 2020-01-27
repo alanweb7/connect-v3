@@ -32,7 +32,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
 })
 export class HomePage {
 
-  
+
   @ViewChild('input') myInput;
   public modalIsOpen: boolean;
   public signupform: FormGroup;
@@ -207,14 +207,12 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+    console.log('enter ionViewDidLoad homePage:');
 
-    let dataUser:any = this.data;
-
+    let dataUser: any = this.data;
     dataUser.token = '';
 
-    this.events.publish('dados',dataUser);
-
-    console.log('enter ionViewDidLoad homePage:');
+    this.events.publish('dados', dataUser);
 
     setTimeout(() => {
       console.log('iniciando o foco');
@@ -355,7 +353,12 @@ export class HomePage {
     }
   }
 
-  pushPage() {
+  pushPage(action = null) {
+
+    if (action === 'qrcode') {
+      this.navCtrl.push('QrcodePage', { id: 812 });
+      return;
+    }
 
     if (!this.codeNumber) {
       alert('Digite algo pra acessar');
@@ -675,7 +678,7 @@ export class HomePage {
     console.log();
   }
 
-  setFocusField(){
+  setFocusField() {
     this.myInput.setFocus();
     this.keyboard.show();
     console.log('Acessando o connect');

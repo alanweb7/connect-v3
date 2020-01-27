@@ -1,86 +1,104 @@
-
 page-home {
+  ion-app.md {
+    background: #000;
+  }
 
-    .fundo{
-        background: #000;
-        height: 100%;
-        width: 100%;
-        ion-card{
-           margin-top: 10%;
+  .icon_btn_home {
+    margin-left: 0;
+    position: absolute;
+    left: 20px;
+    display: block;
+    border-right: 2px solid #0cbee8;
+    padding-right: 10px;
+  }
+  .btn_home {
+    height: 50px;
+    font-size: large;
+  }
 
-           background: #000;
-           ion-card-title{
-               color: #fff;
-               text-align: center;
-           }
-           ion-card-title{
-               font-size: 12px;
-           }
-            img{
-               display:block;width:40%;height:auto;margin-left:auto;margin-right:auto;
-            }
-        }
+  .fundo {
+    background: #000;
+    height: 100%;
+    width: 100%;
+    ion-card {
+      margin-top: 10%;
 
-        button#button-white{
-           background: #fff;
-           color: black;
-           margin-top: 5%;
-       }
-
-       .social-share{
-           text-align: center;
-           margin-top: 5%;
-       }
-
-    }
-    .text-input {
+      background: #000;
+      ion-card-title {
+        color: #fff;
         text-align: center;
-        font-size: medium;
-        text-transform: uppercase;
+      }
+      ion-card-title {
+        font-size: 12px;
+      }
+      img {
+        display: block;
+        width: 40%;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
-    .scroll-content {
+
+    button#button-white {
+      background: #fff;
+      color: black;
+      margin-top: 5%;
+    }
+
+    .social-share {
+      text-align: center;
+      margin-top: 5%;
+    }
+  }
+  .text-input {
+    text-align: center;
+    font-size: medium;
+    text-transform: uppercase;
+  }
+  .scroll-content {
     padding-bottom: 0 !important;
     margin-top: 38px;
     margin-bottom: 56px;
     text-transform: uppercase;
-    }
-    
-    ion-footer {
-        left: 0;
-        bottom: 0;
-        position: fixed;
-        z-index: 10;
-        display: block;
-        width: 100%;
-        overflow: inherit;
-        height: 50px;
-        background: #000;
-        color: #fff;
-        .toolbar {
-            height: 55px;
-            min-height: 55px;
+  }
 
-            .toolbar-background{
-                background: #000;
-            }
+  ion-footer {
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: 10;
+    display: block;
+    width: 100%;
+    overflow: inherit;
+    height: 50px;
+    background: #000;
+    color: #fff;
+    .toolbar {
+      height: 55px;
+      min-height: 55px;
+
+      .toolbar-background {
+        background: #000;
+      }
+      color: #fff;
+      font: bold;
+      text-align: center;
+      span {
         color: #fff;
-            font: bold;
-            text-align: center;
-        span{
-            color: #fff;
-            font: bold;
-            text-align: left;
-            font-size: 13px;
-        }
-        &.adquire-code{
-            text-align: center;
-            color:#fff;
-            font-size: 12px;
-            margin-top: 5%;
-        }
+        font: bold;
+        text-align: left;
+        font-size: 13px;
+      }
+      &.adquire-code {
+        text-align: center;
+        color: #fff;
+        font-size: 12px;
+        margin-top: 5%;
       }
     }
-    input.text-input.text-input-ios {
-      font-size: larger;
-    }
-   }
+  }
+  input.text-input.text-input-ios {
+    font-size: larger;
+  }
+}

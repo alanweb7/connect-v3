@@ -17,7 +17,7 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content class="fundo">
+<ion-content class="fundo" padding>
   <div style="margin-top: 15px;">
     <ion-card class="fundo" style="text-align: center" *ngIf="footerIsHidden">
       <img src="assets/imgs/logo_home_blanc.svg" style="height: 90px" />
@@ -33,16 +33,23 @@
           <ion-row>
             <ion-col col-12>
               <ion-item>
-                <ion-input (click)="setFocusField()" type="text" #input placeholder="CONNECT AQUI" [(ngModel)]="codeNumber"
-                  formControlName="codeNumber" name="code"></ion-input>
+                <ion-input (click)="setFocusField()" type="text" #input placeholder="CONNECT AQUI"
+                  [(ngModel)]="codeNumber" formControlName="codeNumber" name="code"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col col-12 class="info-servico">
               <button id="home-button1" ion-button color="primary" block icon-left (click)="pushPage()"
                 [disabled]="signupform.invalid">
-                <ion-icon name="navigate"></ion-icon>
+                <ion-icon name="navigate"  slot="start" class="icon_btn_home"></ion-icon>
                 {{button}}
               </button>
+              <div style="text-align: center;margin-top: 15px;">
+                <button ion-button round outline color="primary" (click)="pushPage('qrcode')" style="margin: auto;width: 90%; border-color: #98e2ff; color: cornsilk;" >
+                  <ion-icon slot="start" name="md-qr-scanner" style="margin-right: 7px;"></ion-icon>  Escanear código QR
+                  
+                </button>
+              </div>
+
             </ion-col>
           </ion-row>
         </ion-grid>

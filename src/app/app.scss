@@ -1,6 +1,15 @@
 ion-app.md {
   font-family: "Poppins", sans-serif;
+  // background: transparent !important;
 }
+
+ion-app.cameraView,
+ion-app.cameraView ion-content,
+ion-app.cameraView .nav-decor {
+  background-color: green;
+  background: transparent none !important;
+}
+
 .index-formularios {
   .item {
     background: transparent;

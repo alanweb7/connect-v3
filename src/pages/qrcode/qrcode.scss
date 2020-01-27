@@ -1,0 +1,38 @@
+page-qrcode {
+
+  ion-content.qr-initial{
+    background-color: #fff;
+  }
+
+  .scan_container {
+    margin-top: 30%;
+    height: 50% !important;
+    // background-color: aquamarine;
+  }
+
+  .scan_content {
+    border: 10px solid #e0e0e0;
+    width: 85%;
+    height: 95%;
+    margin: auto;
+  }
+
+  .scan_success {
+    border-color:  #0abe4f;
+    background-color: #fff;
+  }
+  
+  ion-content.qr_success {
+    background-color: #fff;
+  }
+
+  .scan_initial {
+    border-color: #fff;
+  }
+
+
+  .message-api {
+    text-align: center;
+    padding: 7px 10px 5px 10px;
+  }
+}

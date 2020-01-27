@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import { IonicPageModule, Keyboard } from 'ionic-angular';
 import { MenuCodePage } from './menu-code';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -19,8 +19,10 @@ import { EditorModule } from '@tinymce/tinymce-angular';
         deps: [HttpClient]
       }
     }),
+  ],
+  providers:[
+    Keyboard,
   ]
-
 })
 export class MenuCodePageModule {}
 export function createTranslateLoader(http: HttpClient) {

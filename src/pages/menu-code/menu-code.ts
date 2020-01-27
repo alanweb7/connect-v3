@@ -10,6 +10,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
 import { text } from '@angular/core/src/render3/instructions';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @IonicPage({
   priority: 'low',
@@ -47,6 +48,9 @@ export class MenuCodePage {
   card: string;
   package_imagens: String;
   isIos: boolean;
+
+  // fucoes do teclado
+  public isKeyBoardShower: boolean;
 
   // configuracoes hotspot
   hotspotData: any;
@@ -115,13 +119,28 @@ export class MenuCodePage {
 
     private translate: TranslateService,
     public platform: Platform,
-    private hotspot: Hotspot
+    private hotspot: Hotspot,
+    private keyboard: Keyboard
   ) {
     this.messages = new Messages();
     this.user_info = new UserInfoData();
     if (this.platform.is('ios')) {
       this.isIos = true;
     }
+
+
+    this.platform.ready().then(() => {
+      this.keyboard.onKeyboardShow().subscribe(() => {
+        console.log('O teclado foi ativado');
+        this.isKeyBoardShower = true;
+      });
+
+      this.keyboard.onKeyboardHide().subscribe(() => {
+        console.log('Teclado hidde');
+        this.isKeyBoardShower = false;
+      });
+
+    });
     this.initEditor3 = {
       // selector: 'textarea',  // change this value according to your HTML
       height: 300,

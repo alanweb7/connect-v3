@@ -140,8 +140,16 @@ export class CodeProvider {
     return result;
   }
 
-  async getShowCode(code: String) {
+  async getShowCode(code: any) {
+    /**
+     * data = {
+     * url: 'string(https)'
+     * }
+     */
     let url = this.API_URL + "?code=" + code;
+    if(code.url){
+      url = code.url;
+    }
     let result = await this.httpn.get(url, {}, {}).then((res) => {
       console.log('resultado do code.ts MENU CODE: ', res);
       let response = JSON.parse(res.data);
