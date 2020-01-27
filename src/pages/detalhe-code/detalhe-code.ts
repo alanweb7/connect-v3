@@ -140,7 +140,6 @@ export class DetalheCodePage {
   public showDataWifi: boolean;
 
   hotspotData = new HotspotData();
-
   isConnected: boolean;
   hotSpotConnMens: string;
   hotspotActive: boolean;
@@ -492,6 +491,7 @@ export class DetalheCodePage {
           }
 
           vid.video_pictures = img;
+          
           if (vid.post_status == "complete") {
             vid.video_link = this.domSanitizer.bypassSecurityTrustResourceUrl(vid.video_link);
 
@@ -624,6 +624,7 @@ export class DetalheCodePage {
   handleIFrameLoadEvent(): void {
 
   }
+
   viewPhoto(img) {
     console.log('Visualizar imagem: ', img);
     this.photoViewer.show(img);

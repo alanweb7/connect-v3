@@ -2,9 +2,9 @@ import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-m
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController, Events, Navbar, ViewController, Platform } from 'ionic-angular';
-import { FirebaseApp } from 'angularfire2';
+// import { FirebaseApp } from 'angularfire2';
 //import firebase from 'firebase';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions, CaptureAudioOptions } from '@ionic-native/media-capture';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -105,7 +105,8 @@ export class VideCodeFirebasePage {
   public ftp_user: string;
   public ftp_password: string;
 
-  constructor(@Inject(FirebaseApp) fb: any,
+  constructor(
+    // @Inject(FirebaseApp) fb: any,
     public navCtrl: NavController,
     public navParams: NavParams,
     private alertCtrl: AlertController,
@@ -129,7 +130,7 @@ export class VideCodeFirebasePage {
     private streamingMedia: StreamingMedia,
   ) {
 
-    this.referencia = firebase.storage().ref();
+    // this.referencia = firebase.storage().ref();
     this.fonteCapture = this.navParams.get('font_capture');
     if (this.fonteCapture == 'camera') {
       this.isGallery = false;
@@ -244,15 +245,15 @@ export class VideCodeFirebasePage {
         //  console.log(splitted);
         console.log('Upload is ' + this.porcentagem + '% done');
         switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED: // or 'paused'
-            console.log('Upload is paused');
-            // this.isResume = "true";
-            break;
-          case firebase.storage.TaskState.RUNNING: // or 'running'
-            console.log('Upload is running');
-            //this.ispause="true";
-            //this.isResume = "";
-            break;
+          // case firebase.storage.TaskState.PAUSED: // or 'paused'
+          //   console.log('Upload is paused');
+          //   // this.isResume = "true";
+          //   break;
+          // case firebase.storage.TaskState.RUNNING: // or 'running'
+          //   console.log('Upload is running');
+          //   //this.ispause="true";
+          //   //this.isResume = "";
+          //   break;
         }
       }, function (error) {
 
@@ -542,11 +543,11 @@ export class VideCodeFirebasePage {
   }
 
   deleteArqui() {
-    const images = firebase.storage().ref().child('pasta');
-    const image = images.child('1553352893853.mp4');
-    image.delete().then((url) => {
-      console.log(url);
-    });
+    // const images = firebase.storage().ref().child('pasta');
+    // const image = images.child('1553352893853.mp4');
+    // image.delete().then((url) => {
+    //   console.log(url);
+    // });
     /* image.getDownloadURL().then((url) => {
          console.log(url);
     }); */
@@ -639,57 +640,59 @@ export class VideCodeFirebasePage {
     console.log('processo de envio');
     //this.getVideo(video);
 
-    const images = firebase.storage().ref().child('pasta');
+    // const images = firebase.storage().ref().child('pasta');
     let vi = this.name;
-    const image = images.child(vi.toString());
-    image.getDownloadURL().then((url) => {
-      console.log(url);
-      this.util.showLoading(this.load_enviando);
+    // const image = images.child(vi.toString());
+    // image.getDownloadURL().then((url) => {
+    // let old = function (){
+    //   // console.log(url);
+    //   this.util.showLoading(this.load_enviando);
 
-      console.log(url);
-      this.codeProvider.video_link_create(this.id_code, this.token, url, "firebase", this.lang)
-        .then(
-          (result: any) => {
-            this.util.loading.dismissAll();
-            if (result.status == 200) {
-              console.log("result delete code", result);
-              this.selecionado = "true";
-              this.name = "";
-              this.porcentagem = "";
-              //this.closeModal();
+      // console.log(url);
+      // this.codeProvider.video_link_create(this.id_code, this.token, url, "firebase", this.lang)
+    //     .then(
+    //       (result: any) => {
+    //         this.util.loading.dismissAll();
+    //         if (result.status == 200) {
+    //           console.log("result delete code", result);
+    //           this.selecionado = "true";
+    //           this.name = "";
+    //           this.porcentagem = "";
+    //           //this.closeModal();
 
-              //this.navCtrl.push('VideoCodePage',{videos:result.midias,token:this.token,code:this.id_code,package_videos:this.package_videos,package_name:this.package_name});
+    //           //this.navCtrl.push('VideoCodePage',{videos:result.midias,token:this.token,code:this.id_code,package_videos:this.package_videos,package_name:this.package_name});
 
-              this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'sucesso' }).present();
-              this.case_upload();
-            } else if (result.status == 402) {
-              this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'alerta' }).present();
-              this.navCtrl.push('LoginPage', { lang: this.lang });
-            }
-            else if (result.status == 403) {
-              this.selecionado = "true";
-              this.name = "";
-              this.porcentagem = "";
-              this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
-            }
-          }, (error: any) => {
-            //this.toast.create({ message: 'Não conseguimos conectar ao servidor !', position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'error'  }).present();
-            this.util.loading.dismissAll();
-            //this.navCtrl.setRoot('HomePage');
-            this.tentar_video();
+    //           this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'sucesso' }).present();
+    //           this.case_upload();
+    //         } else if (result.status == 402) {
+    //           this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'alerta' }).present();
+    //           this.navCtrl.push('LoginPage', { lang: this.lang });
+    //         }
+    //         else if (result.status == 403) {
+    //           this.selecionado = "true";
+    //           this.name = "";
+    //           this.porcentagem = "";
+    //           this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
+    //         }
+    //       }, (error: any) => {
+    //         //this.toast.create({ message: 'Não conseguimos conectar ao servidor !', position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'error'  }).present();
+    //         this.util.loading.dismissAll();
+    //         //this.navCtrl.setRoot('HomePage');
+    //         this.tentar_video();
 
-          });
+    //       });
 
-    }).catch(() => {
-      //this.selecionado="true";
-      //this.name = "";
-      //.toast.create({ message: "Não conseguimos completar o envio do seu vídeo", position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'error'  }).present();
-      // this.tentar_video();
-      this.getUploadVideo(this.name);
-    });
+    // }).catch(() => {
+    //   //this.selecionado="true";
+    //   //this.name = "";
+    //   //.toast.create({ message: "Não conseguimos completar o envio do seu vídeo", position: 'botton', duration: 3000 ,closeButtonText: 'Ok!',cssClass: 'error'  }).present();
+    //   // this.tentar_video();
+    //   this.getUploadVideo(this.name);
+    // });
 
 
   }
+
   tentar_video() {
     const prompt = this.alertCtrl.create({
       title: 'Aviso',
@@ -763,11 +766,11 @@ export class VideCodeFirebasePage {
   }
 
   getVideo(video) {
-    const images = firebase.storage().ref().child('pasta');
-    const image = images.child("VID-20190329-WA0030.mp4");
-    image.getDownloadURL().then((url) => {
-      console.log(url);
-    });
+    // const images = firebase.storage().ref().child('pasta');
+    // const image = images.child("VID-20190329-WA0030.mp4");
+    // image.getDownloadURL().then((url) => {
+    //   console.log(url);
+    // });
   }
   someFunction() {
     let event = new KeyboardEvent('keyup', { 'bubbles': true });

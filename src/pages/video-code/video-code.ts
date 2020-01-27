@@ -5,7 +5,7 @@ import { Camera, CameraOptions} from "@ionic-native/camera";
 import { MediaCapture, MediaFile, CaptureError,CaptureVideoOptions } from '@ionic-native/media-capture';
 import { File, Entry } from '@ionic-native/file';
 import { FTP } from '@ionic-native/ftp';
-import { FirebaseApp } from 'angularfire2';
+// import { FirebaseApp } from 'angularfire2';
 import { VideoEditor } from '@ionic-native/video-editor';
 //import Provider
 import { NetworkProvider } from '../../providers/network/network';
@@ -13,7 +13,7 @@ import { CodeProvider } from './../../providers/code/code';
 import { UtilService } from '../../providers/util/util.service';
 
 import { Events } from 'ionic-angular';
-import firebase from 'firebase';
+// import firebase from 'firebase';
 @IonicPage({
   priority : 'off',
   segment  : 'VideoCode/:videos/:code/:token/:qtd/:pacote',
@@ -46,7 +46,7 @@ export class VideoCodePage {
 
   utmADD : String;
   constructor(
-               @Inject(FirebaseApp) fb: any,
+              //  @Inject(FirebaseApp) fb: any,
                public navCtrl         : NavController,
                public navParams       : NavParams,
                private codeProvider   : CodeProvider,
@@ -467,14 +467,14 @@ showConfirm2(id_img) {
  confirm.present();
 }
 deleteArqui(video){
-  const images = firebase.storage().ref().child('pasta');
-  const image = images.child(video);
-  image.delete().then((url:any) => {
-    console.log(url);
-   });
-  /* image.getDownloadURL().then((url) => {
-       console.log(url);
-  }); */
+  // const images = firebase.storage().ref().child('pasta');
+  // const image = images.child(video);
+  // image.delete().then((url:any) => {
+  //   console.log(url);
+  //  });
+  // /* image.getDownloadURL().then((url) => {
+  //      console.log(url);
+  // }); */
 }
 //muda a qualidade do vídeo
 transcodeVideo():Promise<string>{

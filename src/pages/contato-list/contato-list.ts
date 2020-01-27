@@ -16,7 +16,10 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: 'contato-list.html',
 })
 export class ContatoListPage {
+
   @ViewChild('mySlider') slider: Slides;
+
+
   selectedSegment      : string;
   slides               : any;
   token        : String;
@@ -114,6 +117,8 @@ export class ContatoListPage {
 //trocar o slide de acordo com o segment
 onSegmentChanged(segmentButton) {
   const selectedIndex = segmentButton.value;
+  console.log('Slide selecionado: ', selectedIndex);
+  
   this.slider.slideTo(selectedIndex);
  }
 //trocar a o segment de acordo com o slide
@@ -275,3 +280,4 @@ voltar(){
 }
 
 }
+

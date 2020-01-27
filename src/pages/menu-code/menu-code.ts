@@ -453,7 +453,7 @@ export class MenuCodePage {
     this.navCtrl.push('ContatoCodePage', { contato: this.contato, token: this.token, code_id: this.id_code, lang: this.lang });
   }
 
-  ShowCam(part: number) {
+  ShowCam(part: number = null) {
     this.navCtrl.push('ImageCodePage', { part: part, imagens: this.imagens, token: this.token, code: this.id_code, package_imagens: this.package_imagens, package_name: this.package_name, lang: this.lang });
 
   }

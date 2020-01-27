@@ -133,6 +133,7 @@ export class ImageCodePage {
 
     }, 250);
  }
+ 
   ShowCam(){
 
  this.navCtrl.push('ImageAddPage',{

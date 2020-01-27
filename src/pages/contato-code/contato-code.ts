@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '../../../node_modules/@angular/forms';
 import { CodeProvider } from './../../providers/code/code';
 import { NetworkProvider } from '../../providers/network/network';
 import { UtilService } from '../../providers/util/util.service';
+
 @IonicPage({
   priority : 'off',
   segment  : 'ContatoCode/:contato/:code/:token',
@@ -14,6 +15,7 @@ import { UtilService } from '../../providers/util/util.service';
   templateUrl: 'contato-code.html',
 })
 export class ContatoCodePage {
+  
   model          : contato;
   ctt_pais       : String;
   ctt_whatsapp   : String;

@@ -1,17 +1,28 @@
-import { Chooser } from '@ionic-native/chooser';
-import { CallNumber } from '@ionic-native/call-number';
+
 import { ModalDetailPage } from './../pages/modal-detail/modal-detail';
-import { Camera } from '@ionic-native/camera';
-import { MediaCapture } from '@ionic-native/media-capture';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpModule, } from '@angular/http';
-import { SplashScreen } from '@ionic-native/splash-screen';
+
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
+
 import { MyApp } from './app.component';
-//import native
 import { IonicStorageModule } from '@ionic/storage';
+// import { AngularFireModule } from "angularfire2";
+// import { FIREBASE_CONFIG } from './firebase.config';
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { Autosize } from '../directives/autosize/autosize';
+import { FileUploadModule } from 'ng2-file-upload';
+
+// Native plugins
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { Camera } from '@ionic-native/camera';
+import { MediaCapture } from '@ionic-native/media-capture';
+import { Chooser } from '@ionic-native/chooser';
+import { CallNumber } from '@ionic-native/call-number';
 import { SQLite } from '@ionic-native/sqlite';
 import { Network } from '@ionic-native/network';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -21,12 +32,20 @@ import { BrowserTab } from '@ionic-native/browser-tab';
 import { Base64 } from '@ionic-native/base64';
 import { File } from '@ionic-native/file';
 import { NativeStorage } from '@ionic-native/native-storage';
-import { AngularFireModule } from "angularfire2";
-import { FIREBASE_CONFIG } from './firebase.config';
-import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { Diagnostic } from '@ionic-native/diagnostic';
+import { HTTP } from '@ionic-native/http';
+import { FTP } from '@ionic-native/ftp';
+import { Media } from '@ionic-native/media';
+import { NativeAudio } from '@ionic-native/native-audio';
+import { Crop } from '@ionic-native/crop';
+import { VideoEditor } from '@ionic-native/video-editor';
+import { Hotspot } from '@ionic-native/hotspot';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
+import { Facebook } from '@ionic-native/facebook';
+import { Clipboard } from '@ionic-native/clipboard';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { StreamingMedia } from '@ionic-native/streaming-media';
+
 
 //import provider
 import { SqliteHelperService } from '../providers/sqlite-helper/sqlite-helper.service';
@@ -35,26 +54,9 @@ import { NetworkProvider } from '../providers/network/network';
 import { UsuarioService } from '../providers/movie/usuario.service';
 import { AdminToolsDb, AdminToolsRest } from '../providers/admin-tools/admin-tools';
 import { UtilService } from '../providers/util/util.service';
-import { Autosize } from '../directives/autosize/autosize';
-import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { GeolocationProvider } from '../providers/geolocation/geolocation';
-import { FileUploadModule } from 'ng2-file-upload';
-import { HTTP } from '@ionic-native/http';
-import { FTP } from '@ionic-native/ftp';
-import { Media } from '@ionic-native/media';
-import { NativeAudio } from '@ionic-native/native-audio';
 
-import { Crop } from '@ionic-native/crop';
-
-import { VideoEditor } from '@ionic-native/video-editor';
-import { Hotspot } from '@ionic-native/hotspot';
-import { LocationAccuracy } from '@ionic-native/location-accuracy';
-import { Facebook } from '@ionic-native/facebook';
-import { Clipboard } from '@ionic-native/clipboard';
-
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { StreamingMedia } from '@ionic-native/streaming-media';
-
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,7 @@ import { StreamingMedia } from '@ionic-native/streaming-media';
       }
     }),
     IonicModule.forRoot(MyApp,{ scrollAssist: false }),
-    AngularFireModule.initializeApp(FIREBASE_CONFIG),
+    // AngularFireModule.initializeApp(FIREBASE_CONFIG),
     IonicStorageModule.forRoot(),
 
   ],

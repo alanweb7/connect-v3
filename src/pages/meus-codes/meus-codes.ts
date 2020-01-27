@@ -92,6 +92,8 @@ ionViewDidLoad() {
      }
 
 }
+
+
 private _translateLanguage() : void
 {
    this.translate.use(this.lang);
@@ -125,17 +127,22 @@ private _initialiseTranslation() : void
       this.code_existe    = this.translate.instant("home.code_existe");
    }, 250);
 }
+
 onCancel(){
+
     return this.meus_codes =this.codes_serve;
 
 }
+
 filterItems(searchTerm){
     return this.meus_codes.filter((item) => {
         return item.code.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
 
 }
+
 setFilteredItems() {
+
    if(this.searchTerm == ""){
       this.meus_codes=[];
       this.onCancel();
@@ -260,8 +267,9 @@ validaPacote(){
  }
 
 }
-showPrompt() {
-     const prompt = this.alertCtrl.create({
+
+async showPrompt() {
+     const prompt = await this.alertCtrl.create({
         title: this.texto,
         enableBackdropDismiss: false ,
         inputs: [
@@ -285,7 +293,8 @@ showPrompt() {
           }
         ]
       });
-      prompt.present();
+
+     await prompt.present();
 
 }
 

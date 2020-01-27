@@ -31,6 +31,8 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
   templateUrl: 'home.html',
 })
 export class HomePage {
+
+  
   @ViewChild('input') myInput;
   public modalIsOpen: boolean;
   public signupform: FormGroup;
@@ -154,7 +156,7 @@ export class HomePage {
     public modalCtrl: ModalController,
     public sqliteHelperService: SqliteHelperService,
     private translate: TranslateService,
-    private formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
     public util: UtilService,
     public toast: ToastController,
     public networkProvider: NetworkProvider,
