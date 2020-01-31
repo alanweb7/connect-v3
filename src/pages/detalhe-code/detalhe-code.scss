@@ -1,4 +1,86 @@
 page-detalhe-code {
+  // youtube Responsivo
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .video-container iframe,
+  .video-container object,
+  .video-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  // novos estilos
+  .content-header {
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+  //   estilos da galeria
+  .menu_apps {
+    font-size: xx-large;
+    color: #eeff00f5;
+  }
+
+  // galeria e ferrametas
+  .gallery-view {
+    .image-container {
+      padding: 10px;
+      display: flex;
+      //   justify-content: space-between;
+      flex-wrap: wrap;
+
+      .thumb-item {
+        flex: 1 0 27%;
+        width: 50px;
+        height: auto;
+        text-align: center;
+        line-height: 12px;
+        padding: 7px;
+      }
+
+      .thumb-item {
+        .title-item {
+          display: block;
+          font-size: 10px;
+          margin-top: 7px;
+        }
+      }
+
+      .item-avatar {
+        margin: auto;
+        padding: 10px;
+        background: salmon;
+        border-radius: 50%;
+        font-size: 30px;
+        display: table;
+      }
+      .icon-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 50px;
+        display: table-cell !important;
+        vertical-align: middle;
+      }
+      .icon-tools {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+        display: table-cell !important;
+        vertical-align: middle;
+      }
+      .content-itens {
+        text-align: center;
+      }
+    }
+  }
+  // outros estilos
   .slide-galery {
     width: 100%;
     height: 250px;
@@ -286,7 +368,7 @@ page-detalhe-code {
     text-align: center;
   }
   ion-header {
-    min-height: 80px;
+    // min-height: 80px;
     background: linear-gradient(135deg, #052049 0%, black 100%) !important;
   }
   .video_controller {
@@ -318,10 +400,10 @@ page-detalhe-code {
     font-size: larger;
     word-break: keep-all;
   }
-  .btn_connect{
+  .btn_connect {
     width: 90%;
   }
-  .facebook_st{
+  .facebook_st {
     background: linear-gradient(to bottom, #0c86c7 -13%, #336699 77%);
   }
   // .header_landing{

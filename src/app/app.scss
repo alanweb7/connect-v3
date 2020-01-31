@@ -153,7 +153,6 @@ ion-icon {
     width: 2em;
     height: 1.5em;
   }
-
   &[class*="video-gallery"] {
     mask-image: url(../assets/icon/gallery-video.svg);
   }
@@ -162,6 +161,49 @@ ion-icon {
   }
   &[class*="video-record"] {
     mask-image: url(../assets/icon/record-video.svg);
+  }
+  &[class*="text-"] {
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    background: currentColor;
+    width: 2em;
+    height: 2em;
+  }
+  &[class*="text-left"] {
+    mask-image: url(../assets/icon/align-left-solid.svg);
+  }
+  &[class*="text-right"] {
+    mask-image: url(../assets/icon/align-right-solid.svg);
+  }
+  &[class*="text-center"] {
+    mask-image: url(../assets/icon/align-center-solid.svg);
+  }
+  &[class*="text-justify"] {
+    mask-image: url(../assets/icon/align-justify-solid.svg);
+  }
+  &[class*="text-ol"] {
+    mask-image: url(../assets/icon/list-ol-solid.svg);
+  }
+  &[class*="text-ul"] {
+    mask-image: url(../assets/icon/list-ul-solid.svg);
+  }
+  &[class*="tools-"] {
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    background: currentColor;
+    width: 0.5em;
+    height: 0.5em;
+  }
+  &[class*="tools-audio"] {
+    mask-image: url(../assets/icon/volume-up-solid.svg);
+  }
+  &[class*="tools-doc"] {
+    mask-image: url(../assets/icon/file-alt-regular.svg);
+  }
+  &[class*="tools-wifi"] {
+    mask-image: url(../assets/icon/wifi-solid.svg);
   }
 }
 .toolbar-title {

@@ -9,7 +9,6 @@ import { OneSignal } from '@ionic-native/onesignal';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from "@angular/common/http";
-import { EditorModule } from '@tinymce/tinymce-angular';
 import { BrMaskerModule } from 'brmasker-ionic-3';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { BrMaskerModule } from 'brmasker-ionic-3';
   ],
   imports: [
     BrMaskerModule,
-    EditorModule,
     IonicPageModule.forChild(DetalheCodePage),
     TranslateModule.forChild({
       loader: {

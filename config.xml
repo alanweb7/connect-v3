@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="br.com.kscode.app360" version="20.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="br.com.kscode.app360" version="25.5.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CONNECT-KSC</name>
     <description>Tudo se conecta aqui.</description>
     <author email="contato@kscode.com.br" href="http://spottec.com.br/">SPOTTEC</author>
@@ -19,6 +19,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="200000" />
     <preference name="AndroidLaunchMode" value="singleTask" />
+    <preference name="android-targetSdkVersion" value="27" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -105,8 +106,6 @@ close to you.</string>
         <icon height="196" src="resources/ios/icon/icon-98@2x.png" width="196" />
         <splash height="2436" src="resources/ios/splash/Default-2436h.png" width="1125" />
         <splash height="1125" src="resources/ios/splash/Default-Landscape-2436h.png" width="2436" />
-        <!-- <hook src="update_pods.sh" type="before_platform_add" />
-        <hook src="run_pods.sh" type="after_platform_add" /> -->
     </platform>
     <feature name="Camera">
         <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
@@ -186,4 +185,5 @@ close to you.</string>
         <variable name="FACEBOOK_ANDROID_SDK_VERSION" value="5.5.2" />
     </plugin>
     <plugin name="cordova-clipboard" spec="^1.3.0" />
+    <engine name="android" spec="8.1.0" />
 </widget>

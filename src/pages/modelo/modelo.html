@@ -11,25 +11,132 @@
   </ion-navbar>
 
 </ion-header>
+<ion-content padding>
+  <ion-item-sliding>
+    <ion-item>
+      Item 1
+    </ion-item>
+    <ion-item-options side="right" (ionSwipe)="saveItem(item)">
+      <button ion-button expandable (click)="saveItem(item)">
+        <ion-icon name="star"></ion-icon>
+      </button>
+    </ion-item-options>
+  </ion-item-sliding>
+  <ion-list>
+    <ion-item-sliding #slidingItem>
+      <ion-item>
+        Item
+      </ion-item>
+      <ion-item-options>
+        <button ion-button (click)="share(slidingItem)">Share</button>
+        <button ion-button (click)="share(slidingItem)">Share</button>
+        <button ion-button (click)="share(slidingItem)">Share</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 
-
-<ion-content no-padding>
-    <div class="header_thumbs">
-
-        <div class="thumbs-list container item item-thumbnail-left custom-thumbnail" (click)="changeLogo()">
-              <img src="https://ogimg.infoglobo.com.br/in/19862454-ba1-5bc/FT1086A/652/ximagens-imagens-da-torre-eiffel-5.jpg.pagespeed.ic.GXHZKrNAOs.jpg" />
-              <ion-icon slot="end" name="ios-reverse-camera" class="edit_photo"></ion-icon>
-        </div>
-        <div class="field_text">
-          <ion-input type="text" class="text_item" placeholder="Awesome Input"></ion-input>
-        </div>
-
-
-
+  <ion-list *ngFor="let code of meus_codes">
+    <ion-item-sliding #actionCode>
+      <ion-item>
+        <ion-thumbnail item-left (click)="pushPage(code.code)">
+          <img [src]="code.img_link ?  code.img_link : '/assets/imgs/no-img.jpeg'">
+        </ion-thumbnail>
+        <ion-label style="width: 100%; display: flex;">
+          <div style="width: 60%; display: flex;">
+            <h4>{{code.code}}</h4>
+            {{code.descricao}}
+          </div>
+          <ion-badge color="dark" slot="end">{{code.views}}</ion-badge>
+          <ion-icon name="code" style="font-size: x-large; margin-left: 17px; position: relative; float:right">
+          </ion-icon>
+        </ion-label>
+      </ion-item>
+      <ion-item-options side="end" (click)="actionCode.close()">
+        <button ion-button color="danger" expandable (click)="showConfirm(code.id)">
+          <ion-icon ios="ios-trash" md="md-trash" style="color: #ffffff;"></ion-icon>
+        </button>
+        <button ion-button color="primary" expandable (click)="ShowMenu(code.id)">
+          <ion-icon ios="ios-construct" md="md-construct" style="color: #ffffff;"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-item>
+    <ion-avatar slot="start">
+      <img src="https://www.cocacola.com.br/content/dam/GO/coca-cola/brazil/Onebrand/og-share_logo.jpg" />
+    </ion-avatar>
+    <div style="margin-left: 10px;">
+      <div style="font-size: smaller; text-transform: uppercase;">{{"Vitoria "| slice:0:18}}</div>
+      <div style="color: slategrey; font-size: x-small; text-transform:uppercase">{{"Titulo do canal" | slice:0:24}}
+      </div>
     </div>
-        <div>
-          <button ion-button (click)="onClick()">
-            selct file
-          </button>
+    <ion-badge color="primary" item-end>{{vews}}<br>visualizações</ion-badge>
+  </ion-item>
+  <!-- novo menu -->
+  <h4 style="text-align: center;">Seja bem vindo ao painel do seu \n canal Connect!</h4>
+  <p style="text-align: center;">Escolha uma área para editar as informações:</p>
+  <div class="gallery-view">
+    <div class="image-container">
+
+      <div class="thumb-item content-itens" *ngFor="let menu of menu_midias">
+        <div class="item-avatar" (click)="getAction(menu.action)"
+          [ngStyle]="{'background-color': menu.bg_color ? menu.bg_color : 'red'}">
+          <ion-icon class="icon-avatar" [ngStyle]="{'color': menu.icon_color ? menu.icon_color : '#ffffff'}"
+            name="{{menu.icon}}"></ion-icon>
         </div>
+
+
+        <h4 class="title-item">{{menu.name}}</h4>
+      </div>
+
+      <!-- <img [src]="image.img_link" (click)="viewPhoto(image.img_link)"> -->
+    </div>
+  </div>
+  <!-- final do novo menu -->
+  <div class="editor-header">
+    <ion-icon (click)="presentProfileModal()" slot="icon-only" name="apps" class="icon-only-left"></ion-icon>
+    <span class="dec_channel">Voltar ao Painel</span>
+  </div>
+
+  <div class="editor-header">
+    <span class="dec_channel">Descrição do Canal</span>
+    <ion-icon (click)="presentProfileModal()" slot="icon-only" name="md-brush" class="icon-only-round"></ion-icon>
+  </div>
+  <rich-text [formControlItem]="item" placeholderText="A sample of placeholder text"></rich-text>
+  <div padding [innerHTML]="textHtml"></div>
+
+  <hr class="divider-midi">
+
+  <div class="gallery-view">
+    <div class="image-container">
+
+      <div class="thumb-item content-itens" *ngFor="let menu of barMidias">
+
+
+        <div class="item-avatar" (click)="getAction(menu.action)"
+          [ngStyle]="{'background-color': menu.bg_color ? menu.bg_color : 'blue'}">
+          <ion-icon class="icon-tools"
+            [ngStyle]="{'color': menu.icon_color ? menu.icon_color : '#ffffff', 'font-size':'12px'}"
+            name="{{menu.icon}}"></ion-icon>
+        </div>
+        <h4 class="title-item">{{menu.name}}s</h4>
+
+
+      </div>
+
+      <!-- <img [src]="image.img_link" (click)="viewPhoto(image.img_link)"> -->
+    </div>
+  </div>
+  <button ion-button full (click)="presentMidiaModal('audio')">Áudios</button>
+  <button ion-button full (click)="presentMidiaModal('doc')">Documentos</button>
+  <hr>
+
+  <h3>HTML Original</h3>
+  <div padding [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(htmlOrig)"></div>
+
+  <h3>Texto escapado</h3>
+  <div padding [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(textEscaped)"></div>
+
+  <button ion-button full (click)="escapeHtml()">escape Html</button>
+
 </ion-content>

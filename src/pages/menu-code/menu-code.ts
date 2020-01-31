@@ -6,11 +6,11 @@ import { NetworkProvider } from '../../providers/network/network';
 import { CodeProvider } from './../../providers/code/code';
 import { UtilService } from '../../providers/util/util.service';
 import { TranslateService } from '@ngx-translate/core';
-import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
 import { text } from '@angular/core/src/render3/instructions';
 import { Keyboard } from '@ionic-native/keyboard';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage({
   priority: 'low',
@@ -24,6 +24,13 @@ import { Keyboard } from '@ionic-native/keyboard';
 export class MenuCodePage {
 
   @ViewChild('myInput') myInput: ElementRef;
+
+  // conteudo da desxcricao
+  textHtml;
+  dataTextEditor;
+  menu_midias;
+  showMenuApps: boolean;
+
   token: any;
   code: any;
   imagens: any;
@@ -120,7 +127,10 @@ export class MenuCodePage {
     private translate: TranslateService,
     public platform: Platform,
     private hotspot: Hotspot,
-    private keyboard: Keyboard
+    private keyboard: Keyboard,
+    private sanitizer: DomSanitizer,
+
+
   ) {
     this.messages = new Messages();
     this.user_info = new UserInfoData();
@@ -130,6 +140,44 @@ export class MenuCodePage {
 
 
     this.platform.ready().then(() => {
+      // dados do novo menu
+      // this.tools.dismissAll();
+      // informacoes do wi-fi
+      this.hotspot.getConnectionInfo().then((res)=>{
+        console.log('informações do hotspot getConnectionInfo: ', res);
+        
+      });
+
+      this.hotspot.getNetConfig().then((res)=>{
+        console.log('informações do hotspot getNetConfig: ', res);
+      });
+    
+      let menuNames = {
+        descricao: this.translate.instant('menu_code.seg_1'),
+        imagem: this.translate.instant('menu_code.menu_1'),
+        doc: this.translate.instant('menu_code.menu_2'),
+        contato: this.translate.instant('menu_code.menu_4'),
+        hotspot: 'HOTSOT',
+        link: this.translate.instant('menu_code.seg_3'),
+        video: this.translate.instant('menu_code.menu_3'),
+        audio: 'AUDIO',
+      };
+      console.log('Traduzir palavras: ', this.translate.instant('menu_code.page'));
+
+      this.menu_midias = [
+        { name: menuNames.descricao, icon: 'list-box', icon_color: '#ffffff', bg_color: '#7044ff', action: 'descricao' },
+        { name: menuNames.imagem, icon: 'camera', icon_color: '#ffffff', bg_color: '#d649c7', action: 'imagem' },
+        { name: menuNames.doc, icon: 'clipboard', icon_color: '#ffffff', bg_color: '#ffdf44', action: 'doc' },
+        { name: menuNames.contato, icon: 'contact', icon_color: '#ffffff', bg_color: '#ffb000', action: 'contato' },
+        { name: menuNames.hotspot, icon: 'md-wifi', icon_color: '#ffffff', bg_color: '#52f100', action: 'hotspot' },
+        { name: menuNames.link, icon: 'link', icon_color: '#ffffff', bg_color: '#24d6ea', action: 'link' },
+        { name: menuNames.video, icon: 'videocam', icon_color: '#ffffff', bg_color: 'red', action: 'video' },
+        { name: menuNames.audio, icon: 'mic', icon_color: '#ffffff', bg_color: '#ffd50a', action: 'audio' },
+
+      ];
+
+
+
       this.keyboard.onKeyboardShow().subscribe(() => {
         console.log('O teclado foi ativado');
         this.isKeyBoardShower = true;
@@ -141,60 +189,6 @@ export class MenuCodePage {
       });
 
     });
-    this.initEditor3 = {
-      // selector: 'textarea',  // change this value according to your HTML
-      height: 300,
-      skin: "oxide",
-      plugins: [
-        'advlist autolink lists link image charmap print preview anchor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table paste code help wordcount'
-      ],
-      toolbar: ['styleselect removeformat', 'fontsizeselect forecolor sizeselect', 'bold', 'italic', 'underline', 'link', 'bullist numlist'],
-      fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
-      formats: {
-        // Changes the default format for the bold button to produce a strong with data-style attribute
-        bold: { inline: 'strong', attributes: { 'data-style': 'bold' } }
-      },
-      style_formats: [
-        {
-          title: 'Cabeçalho', items: [
-            { title: 'h1', block: 'h1' },
-            { title: 'h2', block: 'h2' },
-            { title: 'h3', block: 'h3' },
-            { title: 'h4', block: 'h4' },
-          ]
-        },
-        {
-          title: 'Parágrafos', items: [
-            { title: 'Esqueda', block: 'div', styles: { 'text-align': 'left' } },
-            { title: 'Centralizado', block: 'div', styles: { 'text-align': 'center' } },
-            { title: 'Direita', block: 'div', styles: { 'text-align': 'right' } },
-            { title: 'Justificado', block: 'div', styles: { 'text-align': 'justify' } },
-          ]
-        },
-        {
-          title: 'Alinhamentos & Formatos', items: [
-
-            { title: 'Esqueda', block: 'div', styles: { 'text-align': 'left' } },
-            { title: 'Centralizado', block: 'div', styles: { 'text-align': 'center' } },
-            { title: 'Direita', block: 'div', styles: { 'text-align': 'right' } },
-            { title: 'Justificado', block: 'div', styles: { 'text-align': 'justify' } },
-            { title: 'Negrito', inline: 'strong' },
-            { title: 'Texto Vermelho', inline: 'span', styles: { color: '#ff0000' } },
-            { title: 'Cabeçalho Vermelho', block: 'h1', styles: { color: '#ff0000' } },
-
-          ]
-        }
-
-      ],
-      content_css: [
-        // '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-        // '//www.tiny.cloud/css/codepen.min.css'
-      ],
-      visualblocks_default_state: true,
-      end_container_on_empty_block: true
-    }; ///final editor
 
     this.selectedSegment = '0';
     //instanica do model login
@@ -227,6 +221,7 @@ export class MenuCodePage {
       password: ['', Validators.required],
       isprivate: ['', Validators.required]
     });
+
     this.editorInit = {
       plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount tinymcespellchecker a11ychecker imagetools textpattern help formatpainter permanentpen pageembed tinycomments mentions linkchecker',
       toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media pageembed | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat ',
@@ -288,7 +283,6 @@ export class MenuCodePage {
     this.code = "";
     this.token = "";
     this.link = "";
-    this.descricao = "";
     this.titulo = "";
     this.contato.telefone = String;
     this.package_name = "";
@@ -396,7 +390,9 @@ export class MenuCodePage {
               this.meu_link = false;
             }
 
-            this.descricao = result.data[0]['descricao'];
+            this.descricao = this.decode(result.data[0]['descricao']);
+            this.textHtml = this.decode(result.data[0]['descricao']);
+            this.dataTextEditor = this.decode(result.data[0]['descricao']);
             this.user_info = result.data[0]['user_info'];
             this.modelG.descricao = this.descricao;
             this.contato.pais = result.data[0]['pais'];
@@ -905,6 +901,90 @@ export class MenuCodePage {
           this.toast.create({ message: this.msg_servidor, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
           this.util.loading.dismissAll();
         });
+  }
+
+
+  presentProfileModal() {
+    let profileModal = this.modalCtrl.create('TextEditorPage', { textHtml: this.dataTextEditor ? this.dataTextEditor : '' });
+    profileModal.onDidDismiss(data => {
+      console.log('Dados retornados do modal: ', data);
+
+
+      if (!data.dismissed) {
+        let html = data.data;
+
+        // manter formato do HTML
+        this.modelG.descricao = this.encode(html);
+        console.log('Texto para gravar no banco:', this.modelG.descricao);
+
+        this.textHtml = html;
+        this.dataTextEditor = data.data;
+
+      }
+      return;
+    });
+    profileModal.present();
+  }
+
+  encode(str) {
+    let buf = [];
+
+    for (let i = str.length - 1; i >= 0; i--) {
+      buf.unshift(['&#', str[i].charCodeAt(), ';'].join(''));
+    }
+
+    return buf.join('');
+  }
+
+  decode(str) {
+    return str.replace(/&#(\d+);/g, function (match, dec) {
+      return String.fromCharCode(dec);
+    });
+  }
+  getAction(event) {
+    console.log('Switch do menu: ', event);
+    console.log('ID do code pra editar 2344: ', this.code);
+    let sendData;
+    let redirect: any = false;
+    let extrasNavigators: any = {};
+    this.showMenuApps = true;
+
+    switch (event) {
+
+      case 'apps':
+        this.changeSegment(2);
+        this.showMenuApps = false;
+        break;
+      case 'descricao':
+        this.changeSegment(1);
+        break;
+      case 'imagem':
+        this.ShowCam();
+        break;
+      case 'doc':
+        this.ShowDoc();
+        break;
+      case 'contato':
+        this.ShowContato();
+        break;
+      case 'hotspot':
+        this.changeSegment(4)
+        break;
+      case 'video':
+        this.ShowVideo('video');
+        break;
+      case 'audio':
+       this.ShowVideo('audio');
+        break;
+      case 'link':
+        this.changeSegment(3);
+        break;
+
+      default:
+        break;
+    }
+
+
   }
 
 }

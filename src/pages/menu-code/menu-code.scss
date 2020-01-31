@@ -1,4 +1,80 @@
 page-menu-code {
+  //   estilos da galeria
+  .menu_apps {
+    font-size: xx-large;
+    color: #eeff00f5;
+  }
+  .gallery-view {
+    .image-container {
+      padding: 10px;
+      display: flex;
+      //   justify-content: space-between;
+      flex-wrap: wrap;
+
+      .thumb-item {
+        flex: 1 0 27%;
+        width: 50px;
+        height: auto;
+        text-align: center;
+        line-height: 12px;
+        padding: 7px;
+      }
+
+      .thumb-item {
+        .title-item {
+          display: block;
+          font-size: 10px;
+          margin-top: 7px;
+        }
+      }
+
+      .item-avatar {
+        margin: auto;
+        padding: 10px;
+        width: 80px;
+        height: 80px;
+        background: salmon;
+        border-radius: 50%;
+        font-size: 50px;
+        display: table;
+      }
+      .icon-avatar {
+        font-size: 50px;
+        display: table-cell !important;
+        vertical-align: middle;
+      }
+
+      .content-itens {
+        text-align: center;
+      }
+    }
+  }
+  // style icones only
+  .icon-only-round {
+    padding: 10px;
+    // background-color: darkorange;
+    border-radius: 50%;
+    color: floralwhite;
+    font-size: x-large;
+    float: right;
+    position: relative;
+    bottom: 10px;
+  }
+  .icon-only-left {
+    // background-color: darkorange;
+    color: #cc8b09;
+    font-size: 40px;
+    position: relative;
+    bottom: 10px;
+    float: left;
+  }
+  .editor-header {
+    text-align: center;
+  }
+  .dec_channel {
+    font-size: large;
+  }
+
   .topo {
     .grid {
       padding: 0;
@@ -179,7 +255,7 @@ page-menu-code {
       font-size: 17px;
     }
   }
-  .error{
-    color:red;
+  .error {
+    color: red;
   }
 }

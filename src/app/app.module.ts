@@ -4,7 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpModule, } from '@angular/http';
 
-import { IonicApp, IonicErrorHandler, IonicModule, Keyboard } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { Keyboard } from '@ionic-native/keyboard';
 
 import { MyApp } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
@@ -59,6 +60,7 @@ import { GeolocationProvider } from '../providers/geolocation/geolocation';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 
 import { QRScanner } from '@ionic-native/qr-scanner';
+
 
 @NgModule({
   declarations: [

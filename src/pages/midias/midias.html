@@ -1,0 +1,60 @@
+<!--
+  Generated template for the MidiasPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button (click)="onCloseModal()">
+        <ion-icon ios="ios-close-circle" md="md-close-circle" color="danger"
+          style="font-size: 25px;margin-right: 10px;"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="masters">
+  <div class="container-media">
+    <div class="header-midia" [ngStyle]="headerStyle"><h4>{{title_page}}</h4></div>
+  </div>
+  <div class="content-midia">
+    <div class="segment-midia">
+      <ion-grid fixed>
+        <ion-row *ngIf="infoData.area == 'audio'">
+          <ion-col col-12>
+            <div style="background-color: #1f38794d;">
+              <div *ngFor="let audio of infoData.colection">
+                <div class="full-audio-div" style="text-align: center;">
+                  <audio controls>
+                    <source [src]="audio.audio_link" type="audio/mpeg">
+                    Seu dispositivo não suporta esse formato de audio.
+                  </audio>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="infoData.area == 'doc'">
+          <ion-col col-12 class="info-servico">
+            <ion-list id="verConteDo-list3" *ngFor="let doc of infoData.colection">
+              <a href="{{doc.doc_link}}">
+                <ion-item-sliding class="docitem">
+
+                  <ion-item color="none" id="verConteDo-list-item5">
+                    {{doc.file_name}}
+                    <ion-icon name="document" item-right></ion-icon>
+                  </ion-item>
+
+                  <ion-item-options side="left">
+                    <button ion-button color="positive"></button>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </a>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</ion-content>

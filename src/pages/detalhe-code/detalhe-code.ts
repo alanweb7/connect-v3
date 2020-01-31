@@ -22,7 +22,6 @@ import { Historico } from './../../models/historico.model';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
 import { UsuarioService } from '../../providers/movie/usuario.service';
-import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
 
@@ -44,6 +43,8 @@ import { Clipboard } from '@ionic-native/clipboard';
 })
 export class DetalheCodePage {
   @ViewChild(Navbar) navBar: Navbar;
+  barMidias;
+
   editorInit: any;
   galeria: any[];
   album_vimeo: any[];
@@ -123,6 +124,8 @@ export class DetalheCodePage {
   initModeUser: any;
   audiolinkUrl: string;
   audioContent: boolean;
+  docContent: boolean;
+  hotspotContent: boolean;
   alertModal: any;
   public logo_header: string;
 
@@ -177,6 +180,7 @@ export class DetalheCodePage {
     private geoProv: GeolocationProvider,
     private fb: Facebook,
     private clipboard: Clipboard,
+    private sanitizer: DomSanitizer
 
   ) {
 
@@ -196,7 +200,6 @@ export class DetalheCodePage {
     this.audioContent = true;
     this.audiolinkUrl = 'http://soundbible.com/grab.php?id=2196&type=mp3';
     this.initModeUser = {
-      // selector: '#meu-editor',
       menubar: false,
       inline: true,
       toolbar: false,
@@ -212,8 +215,8 @@ export class DetalheCodePage {
 
     });
 
-  }
 
+  }
 
   ionViewDidLoad() {
     this.navBar.backButtonClick = (e: UIEvent) => {
@@ -376,6 +379,11 @@ export class DetalheCodePage {
   async continueLoad(res) {
 
     this.page = null;
+    let isActived = {
+      audio: false,
+      doc: false,
+      hotspot: false,
+    };
 
     let result: any = res;
     if (result.status === 200) {
@@ -403,7 +411,7 @@ export class DetalheCodePage {
       }
       //testa se meu retorno da API é vazio
       this.titulo = result.data[0]['titulo'];
-      this.descricao = result.data[0].descricao;
+      this.descricao = this.decode(result.data[0].descricao);
 
       this.nome_documento = result.data[0]['nome_documento'];
       // this.documento        = result.data[0]['documento'];
@@ -471,7 +479,9 @@ export class DetalheCodePage {
 
       }
       //popula documento
+      this.docContent = false;
       if (result.data[0]['documento'].length > 0) {
+        this.docContent = true;
         for (var i = 0; i < result.data[0]['documento'].length; i++) {
           var doc = result.data[0]['documento'][i];
           this.documento.push(doc);
@@ -491,7 +501,7 @@ export class DetalheCodePage {
           }
 
           vid.video_pictures = img;
-          
+
           if (vid.post_status == "complete") {
             vid.video_link = this.domSanitizer.bypassSecurityTrustResourceUrl(vid.video_link);
 
@@ -519,6 +529,7 @@ export class DetalheCodePage {
       this.infoLegendSlides = '1/' + this.totalSlides;
       this.currentSlide = 0;
       //popula audio
+      this.audioContent = false;
       if (result.data[0]['audio_colection'].length > 0) {
         this.audioContent = true;
         this.audio_colection = result.data[0]['audio_colection'];
@@ -528,6 +539,24 @@ export class DetalheCodePage {
       this.util.loading.dismissAll();
       this.navCtrl.setRoot('HomePage', { 'error': result });
     }
+
+    this.barMidias = [
+      { name: 'AUDIOS', icon: 'tools-audio', isActived: this.audioContent, action: 'audio' },
+      { name: 'DOCUMENTOS', icon: 'tools-doc', isActived: this.docContent, action: 'doc' },
+      { name: 'WI-FI', icon: 'tools-wifi', isActived: this.hotspotData.isHotspotActive, action: 'hotspot' }
+    ];
+
+    let filterTools = [];
+    for (let index = 0; index < this.barMidias.length; index++) {
+      const element = this.barMidias[index];
+      console.log('Está ativo: ', element.isActived);
+      if (element.isActived) {
+        filterTools.push(element);
+      }
+    }
+
+    this.barMidias = filterTools;
+
 
 
   }
@@ -629,10 +658,46 @@ export class DetalheCodePage {
     console.log('Visualizar imagem: ', img);
     this.photoViewer.show(img);
   }
+
+  presentMidiaModal(action) {
+    let areaData;
+
+    switch (action) {
+      case 'audio':
+        areaData = this.audio_colection;
+        break;
+      case 'doc':
+        areaData = this.documento;
+        break;
+
+      default:
+        break;
+    }
+
+    let infoData = {
+      area: action,
+      colection: areaData
+    };
+
+    let profileModal = this.modalCtrl.create('MidiasPage', { infoData: infoData });
+    profileModal.onDidDismiss(data => {
+      console.log('Dados retornados do modal: ', data);
+
+      if (!data.dismissed) {
+        let html = 'Dados recebidos do modal';
+      }
+      return;
+    });
+
+    profileModal.present();
+
+  }
+
   mostraEnquete() {
     let myModal = this.modalCtrl.create('EnqueteVotarPage', { ask_id: this.ask_id, code_id: this.code_id });
     myModal.present();
   }
+
   resultEnq() {
 
     let myModal = this.modalCtrl.create('EnqueteGraphPage', { ask_id: this.ask_id, code_id: this.code_id, question: this.ask_info, option1: this.option1, option2: this.option2, label1: this.label1, label2: this.label2 });
@@ -755,10 +820,11 @@ export class DetalheCodePage {
 
   }
 
+
   redirectLinkImage(data) {
     console.log('Dados recebidos na função redirectLinkImage::: ', data);
     console.log('Codigo do pais na função redirectLinkImage::: ', this.calling_code);
-    let getAction = data.action;
+    let getAction = data.action ? data.action : data;
     /** 1 = link, 2 = whatsapp, 3 = telefone */
     switch (getAction) {
       case '1':
@@ -781,6 +847,24 @@ export class DetalheCodePage {
         this.callNumber.callNumber(data.link_ads, true)
           .then(res => console.log('Launched dialer!', res))
           .catch(err => console.log('Error launching dialer', err));
+        break;
+      case 'audio':
+      case 'doc':
+
+        console.log('Case ', getAction, ' em redirectLinkImage');
+        // call page audios (Modal)
+        this.presentMidiaModal(getAction);
+
+        break;
+      case 'hotspot':
+        console.log('Case ', getAction, ' em redirectLinkImage');
+
+        // call page audios (Modal)
+        if (!this.inConnect) {
+          this.actionSpotConnect();
+          this.inConnect = true;
+        }
+
         break;
     }
 
@@ -1023,6 +1107,7 @@ export class DetalheCodePage {
     }
 
   }
+
   actionSpotConnect() {
 
     this.verifyGeolocationIsActive();
@@ -1300,6 +1385,14 @@ export class DetalheCodePage {
       console.log('OneSignal Player ID: ', this.player_id);
     });
 
+
+  }
+
+
+  decode(str) {
+    return str.replace(/&#(\d+);/g, function (match, dec) {
+      return String.fromCharCode(dec);
+    });
   }
 
 }
@@ -1330,3 +1423,5 @@ export class HotspotData {
   password: string;
   ssid: string;
 }
+
+

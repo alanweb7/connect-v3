@@ -1,0 +1,33 @@
+page-midias {
+  ion-content{
+    --background: #00112b;
+  }
+  .masters{
+    background: #00112b;
+  }
+  .red_content {
+    background: #0262f1;
+  }
+  .audio_content {
+    background-image: url(../../assets/imgs/back_audio.png);
+    width: 100%;
+    height: 80px;
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+
+  .header-midia {
+    height: 120px;
+    padding: 10px;
+    background-position: center right !important;
+    background-repeat: no-repeat !important;
+    background-position: 20px;
+    background-size: contain !important;
+  }
+
+  .header-midia {
+    text-align: center;
+    color: floralwhite;
+  }
+}
