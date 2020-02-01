@@ -22,12 +22,10 @@
     <div class="content_details" *ngIf="!activeForm">
       <ion-grid no-padding>
         <ion-row>
-          
           <ion-col col-12 class="info-servico video_gallery" *ngIf="mostra">
-            <iframe [src]="this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/ozBlvwVizXI')" width="560" height="315" frameborder="0" align="middle" allowfullscreen="allowfullscreen"></iframe>
             <div *ngIf="video_status == 'complete'">
               <div class="video-container">
-                <iframe width="853" height="480" src="{{video_link}}" (load)="video ? handleIFrameLoadEvent() : null"
+                <iframe width="853" height="480" [src]="video_link" (load)="video ? handleIFrameLoadEvent() : null"
                   frameborder="0" allowfullscreen>
                 </iframe>
               </div>

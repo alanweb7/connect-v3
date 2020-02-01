@@ -166,6 +166,12 @@ export class HomePage {
     public viewCtrl: ViewController,
 
   ) {
+    // teste
+    let texto = '"casa"';
+    if (texto[texto.length - 1] == '"' && texto[0] == '"') {
+      texto = texto.substring(1, texto.length - 1);
+    }
+    console.log(texto);
 
     // configurações iniciais :: criação do banco de dados
     // this.setConfigInitial();

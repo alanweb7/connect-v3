@@ -1118,6 +1118,7 @@ export class DetalheCodePage {
 
     if (dataHotspot.isRegisterScreen) {
       this.activeForm = true;
+      this.inConnect = false;
 
       console.log('Abrindo formulário de conexão...');
     } else {
@@ -1192,11 +1193,13 @@ export class DetalheCodePage {
           this.isConnected = true;
           this.hotSpotConnMens = 'Sucesso! Você está conectado.';
           console.log('Success | Response of conection wifi: ', res);
+          this.inConnect = false;
 
         }, (error) => {
 
           this.hotSpotConnMens = 'Erro! Verifique os dados da conexão e tente novamente.';
           console.log('Erro | Error of conection wifi: ', error);
+          this.inConnect = false;
 
         });
 

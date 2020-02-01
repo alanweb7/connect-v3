@@ -261,7 +261,7 @@ export class CodeProvider {
         id: rec.id_code,
         action: rec.action,
         player_id: rec.player_id,
-        data: rec.data,
+        data: JSON.stringify(rec.data),
         bloco: 16,
       };
     }
