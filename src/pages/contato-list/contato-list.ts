@@ -121,6 +121,7 @@ onSegmentChanged(segmentButton) {
   
   this.slider.slideTo(selectedIndex);
  }
+ 
 //trocar a o segment de acordo com o slide
 onSlideChanged(slider) {
   const currentSlide = slider.getActiveIndex();
@@ -186,7 +187,7 @@ voltar(){
 
  }
  newSetor(id){
-  let myModal =this.modalCtrl.create('ContatoAddPage',{load_aguarde:this.load_aguarde,load_enviando:this.load_enviando,lang:this.lang,token:this.token,code_id:this.code_id ,setor_id:id,tipo:this.selectTipo,btn_publicar:this.btn_publicar,pais:this.pais,departamento:this.departamento,email_campo:this.email_campo,contato:this.contato,page:this.contato,campo_link:this.campo_link});
+  let myModal = this.modalCtrl.create('ContatoAddPage',{load_aguarde:this.load_aguarde,load_enviando:this.load_enviando,lang:this.lang,token:this.token,code_id:this.code_id ,setor_id:id,tipo:this.selectTipo,btn_publicar:this.btn_publicar,pais:this.pais,departamento:this.departamento,email_campo:this.email_campo,contato:this.contato,page:this.contato,campo_link:this.campo_link});
   myModal.present();
   //this.viewCtrl.dismiss();
   //this.navCtrl.push('ContatoAddPage', {token:this.token,code_id:this.code_id ,setor_id:id,tipo:this.selectTipo});

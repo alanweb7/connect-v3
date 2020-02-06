@@ -216,6 +216,9 @@ export class ContatoAddPage {
           }else{
             action ="update";
           }
+
+          console.log('Dados para o servidor: ', this.model);
+          
           this.codeProvider.contato(this.id_code,this.token,"true",this.model.tipo,this.model.calling_code,this.model.pais,this.model.conteudo,this.model.titulo,action,this.sector_id,this.lang).then(
             (result: any) =>{
               console.log('Resultado dos contatos em cotato-adds.ts:line-221:', result);
