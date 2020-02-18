@@ -1,12 +1,10 @@
 <ion-header>
 
   <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>{{page}}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="closeModal()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -26,7 +24,8 @@
         </div>
         <div class="field_text" style="max-width: 97%">
           <p><strong>{{ item.code | slice:0:15}}</strong> - {{item.titulo | slice:0:15}}</p>
-          <p style="white-space: normal;">{{item.descricao | slice:0:40}}<span *ngIf="item.descricao.length > 40">...</span></p>
+          <p style="white-space: normal;">{{item.descricao | slice:0:40}}<span
+              *ngIf="item.descricao.length > 40">...</span></p>
         </div>
       </div>
     </ion-item>

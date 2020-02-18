@@ -20,6 +20,10 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: 'modelo.html',
 })
 export class ModeloPage {
+
+  items: any = [];
+  itemExpandHeight: number = 100;
+
   textHtml;
   dataTextEditor;
   textEscaped;
@@ -29,6 +33,9 @@ export class ModeloPage {
 
   audioContent = true;
   activeForm = true;
+  iconCurrent = 'ios-arrow-dropdown'; //ios-arrow-dropup
+  styleListOpen;
+  styleListClosed;
 
   meus_codes = [
     {code: 'vitoria', id: 1, views: 100},
@@ -44,6 +51,25 @@ export class ModeloPage {
     private sanitizer: DomSanitizer,
     private platform: Platform,
   ) {
+
+    this.styleListOpen = {
+      'color': 'red'
+    };
+    this.styleListClosed = {
+      'color': 'green'
+    };
+
+    this.items = [
+      {expanded: false},
+      {expanded: false},
+      {expanded: false},
+      {expanded: false},
+      {expanded: false},
+      {expanded: false},
+      {expanded: false},
+      {expanded: false},
+      {expanded: false}
+  ];
 
     this.platform.ready().then(() => {
       // dados do novo menu
@@ -93,6 +119,23 @@ export class ModeloPage {
     })
 
 
+  }
+
+  expandItem(item): void {
+    console.log('Item clicado: ', item);
+    if (item.expanded) {
+      item.expanded = false;
+    } else {
+
+      this.items.map(listItem => {
+        if (item == listItem) {
+          listItem.expanded = !listItem.expanded;
+        } else {
+          listItem.expanded = false;
+        }
+        return listItem;
+      });
+    }
   }
 
   presentProfileModal() {

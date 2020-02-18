@@ -130,6 +130,7 @@ export class MenuCodePage {
     private hotspot: Hotspot,
     private keyboard: Keyboard,
     private sanitizer: DomSanitizer,
+    private events: Events
 
 
   ) {
@@ -138,6 +139,13 @@ export class MenuCodePage {
     if (this.platform.is('ios')) {
       this.isIos = true;
     }
+
+    this.event.subscribe("closeSegment", (CloseSegment: any) => {
+      if (CloseSegment) {
+        this.segment = 2;
+        this.event.publish('isOpenSegment', false);
+      }
+    });
 
 
     this.platform.ready().then(() => {
@@ -863,7 +871,7 @@ export class MenuCodePage {
   // compartilhar social share
   shareSheetShare() {
     let user_info = this.user_info;
-    console.log('Dados do usuário em shareSheetShare: ', user_info.name);
+    console.log('Dados do usuário em shareSheetShare: ', user_info);
     this.card = this.imagens[0].img_link;
     console.log('link do card: ', this.card, this.slug);
     this.socialSharing.share(user_info.intro, "Share subject", user_info.card, user_info.link).then(() => {
@@ -976,6 +984,7 @@ export class MenuCodePage {
         this.showMenuApps = false;
         break;
       case 'descricao':
+        this.events.publish('isOpenSegment', true);
         this.changeSegment(1);
         break;
       case 'imagem':
@@ -988,6 +997,7 @@ export class MenuCodePage {
         this.ShowContato();
         break;
       case 'hotspot':
+        this.events.publish('isOpenSegment', true);
         this.changeSegment(4)
         break;
       case 'video':
@@ -997,6 +1007,7 @@ export class MenuCodePage {
         this.ShowVideo('audio');
         break;
       case 'link':
+        this.events.publish('isOpenSegment', true);
         this.changeSegment(3);
         break;
 
@@ -1005,6 +1016,16 @@ export class MenuCodePage {
     }
 
 
+  }
+
+  backButtonEvent() {
+    if (this.segment !== 2) {
+      this.segment = 2;
+      this.event.publish('isOpenSegment', false);
+      return;
+    }
+
+    this.navCtrl.pop();
   }
 
 }

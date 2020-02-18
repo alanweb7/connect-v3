@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ToastController, Events } from 'ionic-angular';
 
 import { CodeProvider } from './../../providers/code/code';
 import { Subject } from 'rxjs/Subject';
@@ -36,19 +36,28 @@ export class CodePesquisaPage {
   texto: any;
   endLat: any;
   endLong: any;
+  termoPesquisa;
   constructor(
     private geoProv: GeolocationProvider,
     public navCtrl: NavController,
     public toast: ToastController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
-    private codeProvider: CodeProvider
+    private codeProvider: CodeProvider,
+    private events: Events
   ) {
     this.searchControl = new FormControl();
 
   }
 
   ionViewDidLoad() {
+    this.termoPesquisa = this.navParams.get('termoPesquisa');
+
+    if (this.termoPesquisa && this.termoPesquisa !== '') {
+      this.searchTerm = this.termoPesquisa;
+      this.setFilteredItems();
+    }
+
     this.isLoading = "";
     this.language = this.navParams.get('lang');
     this.token = this.navParams.get('token');
@@ -104,10 +113,6 @@ export class CodePesquisaPage {
 
     }
   }
-  closeModal() {
-    this.navCtrl.pop();
-    this.navCtrl.setRoot('HomePage');
-  }
 
   onCancel() {
 
@@ -116,7 +121,7 @@ export class CodePesquisaPage {
     return this.codes = [];
 
   }
-  pushPage(code){
+  pushPage(code) {
 
     let sendData = {
       liberado: false,
@@ -126,10 +131,12 @@ export class CodePesquisaPage {
       code: code,
       latitude: this.endLat,
       longitude: this.endLong,
-      telephone: ""
+      telephone: "",
+      pageOrigem: 'CodePesquisaPage',
+      termoPesquisa: this.searchTerm
     };
 
-    this.navCtrl.push('RedirectPage', {data:sendData});
+    this.navCtrl.push('RedirectPage', { data: sendData });
     // this.navCtrl.push('DetalheCodePage', {});
   }
 
@@ -143,5 +150,17 @@ export class CodePesquisaPage {
     });
 
   }
+
+  // saindo da pagina
+  ionViewWillLeave() {
+    console.log('Saindo da página code-pesquisa: ');
+    let dataUser = { 
+      pageOrigem: 'CodePesquisaPage',
+      termoPesquisa: this.searchTerm
+    };
+    this.events.publish('pageOrigem', dataUser);
+    this.events.publish('searchTerm', this.searchTerm);
+  }
+
 
 }

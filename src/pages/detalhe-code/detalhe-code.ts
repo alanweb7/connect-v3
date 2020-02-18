@@ -5,7 +5,7 @@ import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
 import { Code } from './../menu-code/menu-code';
 import { ModalDetailPage } from './../modal-detail/modal-detail';
 import { Component } from '@angular/core';
-import { IonicPage, Navbar, NavController, NavParams, LoadingController, Slides, ToastController, ViewController, ModalController, AlertController, Platform } from 'ionic-angular';
+import { IonicPage, Navbar, NavController, NavParams, LoadingController, Slides, ToastController, ViewController, ModalController, AlertController, Platform, Events } from 'ionic-angular';
 import { CodeProvider } from './../../providers/code/code';
 import { ViewChild } from '@angular/core';
 import { OneSignal } from '@ionic-native/onesignal';
@@ -35,7 +35,6 @@ import { Clipboard } from '@ionic-native/clipboard';
   priority: 'low',
   segment: 'DetalheCode/:info/:liberado:/origem:/token/:btn_continuar/:btn_cancelar/:load_aguarde/:msg_servidor/:code_existe/:lang',
   defaultHistory: ['HomePage'],
-
 })
 @Component({
   selector: 'page-detalhe-code',
@@ -150,6 +149,8 @@ export class DetalheCodePage {
   activeForm: boolean = false;
   globalAction: string;
   showParts = new ShowParts();
+  pageOrigem;
+  termoPesquisa;
 
   constructor(
     public navCtrl: NavController,
@@ -180,9 +181,16 @@ export class DetalheCodePage {
     private geoProv: GeolocationProvider,
     private fb: Facebook,
     private clipboard: Clipboard,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private event: Events
 
   ) {
+
+    //capturar do evento 
+
+    this.pageOrigem = this.navParams.get('pageOrigem');
+    this.termoPesquisa = this.navParams.get('termoPesquisa');
+    console.log('Página de origem recebida:', this.pageOrigem);
 
     this.userHotspotForm = formBuilder.group({
       nome: ['', ''],
@@ -220,11 +228,19 @@ export class DetalheCodePage {
 
   ionViewDidLoad() {
     this.navBar.backButtonClick = (e: UIEvent) => {
-      this.navCtrl.setRoot('HomePage');
+      console.log('Clicando btn voltar');
 
+      this.navCtrl.setRoot(this.pageOrigem);
     }
-
   }
+
+  // saindo da pagina
+  ionViewWillLeave() {
+    console.log('Saindo da página detalhe-code: ');
+    let dataUser = { pageOrigem: false };
+    this.event.publish('pageOrigem', dataUser);
+  }
+
   //iniciacao da tradução
   private _translateLanguage(): void {
     this.translate.use(this.lang);
@@ -1396,6 +1412,20 @@ export class DetalheCodePage {
     return str.replace(/&#(\d+);/g, function (match, dec) {
       return String.fromCharCode(dec);
     });
+  }
+
+
+
+  backButtonEvent() {
+    console.log('Origem page em detalhe-code: ', this.pageOrigem);
+
+
+    if (this.pageOrigem) {
+      this.navCtrl.setRoot(this.pageOrigem, {token: this.token, termoPesquisa: this.termoPesquisa});
+    } else {
+      this.navCtrl.setRoot('HomePage');
+    }
+
   }
 
 }

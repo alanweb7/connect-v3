@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Component, ViewChild } from '@angular/core';
-import { Events, Nav, Platform, ModalController, NavController, App, AlertController } from 'ionic-angular';
+import { Events, Nav, Platform, ModalController, App, AlertController, Alert, ActionSheetController, MenuController, ViewController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SqliteHelperService } from '../providers/sqlite-helper/sqlite-helper.service';
@@ -12,7 +12,9 @@ import { Deeplinks } from "@ionic-native/deeplinks";
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  @ViewChild(ViewController) viewCtrl: ViewController;
 
+  private alert: Alert;
   rootPage: any = 'HomePage';
   mostra: Boolean;
   id_serv: Number;
@@ -74,10 +76,14 @@ export class MyApp {
   ou: any;
   conta: any;
   email_login: any;
+  pageOrigem = false;
+  isOpenSegment: boolean = false;
+  termoPesquisa;
 
 
   pages: Array<{ color: string, icon: string, title: String, component: any }>;
-  constructor(private usuarioService: UsuarioService,
+  constructor(
+    private usuarioService: UsuarioService,
     public platform: Platform,
     private event: Events,
     public statusBar: StatusBar,
@@ -89,7 +95,8 @@ export class MyApp {
     private deeplinks: Deeplinks,
     public alertCtrl: AlertController,
     private translateService: TranslateService,
-    //  public navCtrl: NavController,
+    private actionSheetCtrl: ActionSheetController,
+    private menu: MenuController,
 
   ) {
 
@@ -157,6 +164,25 @@ export class MyApp {
       this.language = lang;
     });
 
+
+    this.event.subscribe("isOpenSegment", (openSegment: any) => {
+      if (openSegment) {
+        console.log('Status do isOpenSegment', openSegment);
+
+        this.isOpenSegment = true;
+      }
+
+    });
+
+    //capturar do evento 
+    this.event.subscribe("pageOrigem", (data: any) => {
+
+      console.log('Origem dos dados: ', data);
+      this.pageOrigem = data.pageOrigem;
+      this.termoPesquisa = data.termoPesquisa;
+
+    });
+
     //capturar do evento da home
     this.event.subscribe("dados", (data: any) => {
       console.log(data);
@@ -205,8 +231,45 @@ export class MyApp {
     console.log(this.pages);
   }
 
+  ionViewDidLoad() {
+    console.log(' ionViewDidLoad app.component');
+
+  }
+  ionViewWillEnter() {
+    console.log(' ionViewWillEnter app.component');
+
+  }
+  ionViewDidEnter() {
+    console.log(' ionViewDidEnter app.component');
+
+  }
+  ionViewWillLeave() {
+    console.log(' ionViewWillLeave app.component');
+
+  }
+  ionViewDidLeave() {
+    console.log(' ionViewDidLeave app.component');
+
+  }
+  ionViewWillUnload() {
+    console.log(' ionViewWillUnload app.component');
+
+  }
+
   initializeApp() {
+
+
+    console.log('initializeApp in app.component');
+
+
+
     this.platform.ready().then(() => {
+
+      let nav = this.app.getActiveNavs()[0];
+      let activeView = nav.getActive();
+
+      console.log('Dados da pagina de origem: ', activeView.name);
+
 
       this.statusBar.styleDefault();
       this.splashScreen.hide();
@@ -236,40 +299,109 @@ export class MyApp {
        } */
     });
 
-    this.platform.registerBackButtonAction(() => {
 
-      // Catches the active view
-      let nav = this.app.getActiveNavs()[0];
-      let activeView = nav.getActive();
-      // Checks if can go back before show up the alert
-      if (activeView.name === 'HomePage') {
-        if (nav.canGoBack()) {
-          nav.pop();
+    this.platform.registerBackButtonAction(async () => {
+
+      // close side menu
+      try {
+
+        const element = await this.menu.getOpen();
+        if (element) {
+          console.log('fechando o menu: ', element);
+          this.menu.close();
+          return;
+
+        }
+
+      } catch (error) {
+
+      }
+
+      try {
+
+        console.log('seguindo com o botao voltar');
+
+        // Catches the active view
+        let navg = this.app.getActiveNavs()[0];
+        let activeView = navg.getActive();
+        // Checks if can go back before show up the alert
+        if (activeView.name === 'HomePage') {
+          if (navg.canGoBack()) {
+            navg.pop();
+          }
+          else {
+            const alert = this.alertCtrl.create({
+              title: 'Sair do Connect?',
+              message: 'Você tem certeza?',
+              buttons: [{
+                text: 'Cancelar',
+                role: 'cancel',
+                handler: () => {
+                  this.nav.setRoot('HomePage');
+                  console.log('** Saída do App Cancelada! **');
+                }
+              }, {
+                text: 'Fechar o App',
+                handler: () => {
+                  // this.logout();
+                  this.platform.exitApp();
+                }
+              }]
+            });
+            alert.present();
+          }
+
+        } else if (activeView.name === 'MeusCodesPage') {
+
+
+          console.log('Apertando voltar em Meus-codes');
+          return;
+
+        }
+        else if (activeView.name === 'MenuCodePage') {
+
+          if (this.isOpenSegment) {
+            this.event.publish('closeSegment', true);
+            this.isOpenSegment = false;
+            return;
+          }
+
+
+          console.log('Apertando voltar em Menu-code');
+          this.nav.pop().then(() => {
+            console.log('Vontando uma etapa');
+
+          });
+          return;
+
+        }
+        else if (activeView.name === 'DetalheCodePage') {
+
+          this.nav.setRoot(this.pageOrigem ? this.pageOrigem : 'HomePage', { token: this.token, lang: this.language, origem: activeView.name, termoPesquisa: this.termoPesquisa }).then(() => {
+            console.log('Vontando app.component para: ', this.pageOrigem);
+          });
+          console.log('Apertando voltar em DetalheCodePage');
+
+          return;
         }
         else {
-          const alert = this.alertCtrl.create({
-            title: 'Sair do Connect?',
-            message: 'Você tem certeza?',
-            buttons: [{
-              text: 'Cancelar',
-              role: 'cancel',
-              handler: () => {
-                this.nav.setRoot('HomePage');
-                console.log('** Saída do App Cancelada! **');
-              }
-            }, {
-              text: 'Fechar o App',
-              handler: () => {
-                // this.logout();
-                this.platform.exitApp();
-              }
-            }]
+
+          console.log('Vontando app.component');
+
+          this.nav.pop().then(() => {
+            console.log('Vontando app.component');
+
           });
-          alert.present();
+
         }
 
-      } else {
-        this.nav.setRoot('HomePage');
+        this.nav.pop().then(() => {
+          console.log('Vontando fora do if rm app.component');
+
+        });
+
+      } catch (error) {
+
       }
 
     });
@@ -277,8 +409,6 @@ export class MyApp {
     this.sobrenome = "";
     this.photo = "";
     this.email = "";
-
-
   }
 
 
@@ -299,24 +429,49 @@ export class MyApp {
     //  this.nav.push('DetalheCodePage', sendData);
   }
   openPage(page) {
+    let nav = this.app.getActiveNavs()[0];
+    let activeView = nav.getActive();
+
+    let DestinationPage = 'MeusCodesPage';
+    let currentIndex = this.nav.getActive().index;
+    console.log('Página de origem: ', activeView.name);
+
     if (page == 2) {
+      DestinationPage = 'MeusCodesPage';
       if (this.token == undefined) {
 
-        this.nav.push('LoginPage', { lang: this.language });
+        this.nav.setRoot('LoginPage', { lang: this.language, origem: activeView.name }).then(() => {
+          this.nav.remove(currentIndex);
+        });
+
       } else {
-        this.nav.push("MeusCodesPage", { token: this.token, lang: this.language });
+
+        this.nav.setRoot(DestinationPage, { token: this.token, lang: this.language, origem: activeView.name }).then(() => {
+          this.nav.remove(currentIndex);
+        });
+
+        // this.nav.setRoot("MeusCodesPage", { token: this.token, lang: this.language });
       }
     } else if (page == 1) {
       this.nav.setRoot("HomePage", { token: this.token });
     }
     else if (page == 3) {
-      this.nav.push("HistoricoPage", { token: this.token, lang: this.language });
+      this.nav.setRoot("HistoricoPage", { token: this.token, lang: this.language });
     } else if (page == 4) {
-      this.nav.push("PesquisaPage", {
+      this.nav.setRoot("PesquisaPage", {
         token: this.token, page_pesquisa: this.page_pesquisa, load_aguarde: this.load_aguarde,
         msg_servidor: this.msg_servidor
       });
     }
+    else if (page == 'CodePesquisaPage') {
+
+      let  sendData = {
+        token: this.token, page_pesquisa: this.page_pesquisa, load_aguarde: this.load_aguarde,
+        msg_servidor: this.msg_servidor
+      }
+      this.nav.setRoot("CodePesquisaPage", sendData);
+    }
+
     else if (page == 5) {
       this.nav.push("BonusPage", {
         token: this.token, lang: this.language, page_pesquisa: this.page_pesquisa, load_aguarde: this.load_aguarde,

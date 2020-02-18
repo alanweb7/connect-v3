@@ -16,16 +16,19 @@
     </div>
     <ion-list class="menu-lateral">
       <button menuClose ion-item (click)="openPage(1)">
-        <ion-icon color="primary" name="home"></ion-icon> {{home}}
+        <ion-icon color="primary" name="home" style="color: blue;"></ion-icon> {{home}}
       </button>
       <button menuClose ion-item (click)="openPage(2)">
-        <ion-icon color="primary" name="contact"></ion-icon> {{codes}}
+        <ion-icon color="primary" name="contact" style="color: #068f5a;"></ion-icon> {{codes}}
       </button>
       <button menuClose ion-item (click)="openPage(3)">
-        <ion-icon color="primary" name="star"></ion-icon> {{favoritos}}
+        <ion-icon color="primary" name="star" style="color: #bbb11f;"></ion-icon> {{favoritos}}
       </button>
       <button menuClose ion-item (click)="openPage(4)">
-        <ion-icon color="primary" name="search"></ion-icon> {{pesquisa}}
+        <ion-icon color="primary" name="apps" style="color: #0d941f;"></ion-icon> {{pesquisa}}
+      </button>
+      <button menuClose ion-item (click)="openPage('CodePesquisaPage')">
+        <ion-icon color="primary" name="search"></ion-icon> Pesquisar Canal
       </button>
       <button menuClose ion-item (click)="openPage(5)" *ngIf="cnpj">
         <ion-icon color="primary" name="filing"></ion-icon> Relatórios Ganhos

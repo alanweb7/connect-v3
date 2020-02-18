@@ -1,10 +1,14 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>{{page}}</ion-title>
-    <ion-buttons end *ngIf="code">
+
+  <ion-navbar color="primary" hideBackButton>
+    <ion-buttons left>
+      <button slot="start" start ion-button icon-only (click)="backButtonEvent()" style="background: transparent !important;">
+        <ion-icon ios="ios-arrow-round-back" md="md-arrow-round-back"></ion-icon>
+      </button>  
+    </ion-buttons>
+       
+    <ion-title>Painel</ion-title> 
+    <ion-buttons right >
       <button ion-button icon-only (click)="shareSheetShare()">
         <ion-icon ios="ios-share" md="md-share"></ion-icon>
       </button>
@@ -18,8 +22,8 @@
 <ion-content padding scroll="false">
   <!-- novo menu -->
   <div class="container-panel" *ngIf="segment == 2">
-    <h4 style="text-align: center;">Seja bem vindo ao painel do seu canal Connect!</h4>
-    <p style="text-align: center;">Escolha uma área para editar as informações:</p>
+   
+    <p class="info-painel">Escolha uma área para editar as informações:</p>
     <div class="gallery-view">
       <div class="image-container">
 
@@ -38,10 +42,6 @@
   </div>
   <!-- final do novo menu -->
   <div style="margin-bottom: 15%;" *ngIf="segment != 2">
-    <div class="editor-header" *ngIf="segment != 2">
-      <ion-icon (click)="changeSegment(2)" slot="icon-only" name="apps" class="icon-only-left"></ion-icon>
-      <span class="dec_channel">Voltar ao Painel</span>
-    </div>
     <!-- AQUI COMEÇA O SEGMENTE DA HOME-->
     <div class="topo" *ngIf="segment == 1">
       <form class="col s12" [formGroup]="cadastroCode" name="cadastroCode" (ngSubmit)="editCode()">
@@ -261,7 +261,7 @@
               Você está conectado na rede: \n {{infoRede.SSID}}
             </h4>
             <span>Se desejar usar esta rede para configurar o acesso de seus usuários, clique no botão a baixo.</span>
-          
+
             <button ion-button round icon-left (click)="setCurrentNetwork()">
               <ion-icon name="code-download"></ion-icon>
               User esta rede no Hotspot
@@ -352,12 +352,11 @@
   </div> <!-- final dos segmentos -->
 </ion-content>
 <!-- CONTENT -->
-<ion-footer>
+<ion-footer *ngIf="segment !== 2">
 
 
   <ion-toolbar color="primary" style="text-align: center;" *ngIf="!isKeyBoardShower">
-    <button ion-button round color="light"
-      (click)="segment == 4 ? setActionHotSpot('send') : editCode()"
+    <button ion-button round color="light" (click)="segment == 4 ? setActionHotSpot('send') : editCode()"
       style="margin: auto;">
       <ion-icon slot="icon-only" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"
         style="font-size: x-large;"></ion-icon>

@@ -1,6 +1,6 @@
 import { UsuarioService } from './../../providers/movie/usuario.service';
 import { Component } from '@angular/core';
-import { IonicPage, Navbar, NavController, NavParams, AlertController, ToastController, Platform } from 'ionic-angular';
+import { IonicPage, Navbar, Nav, NavController, NavParams, AlertController, ToastController, Platform, Events } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { HistoricoService } from '../../providers/historico/historico.service';
 import { Historico } from '../../models/historico.model';
@@ -18,8 +18,9 @@ import { GeolocationProvider } from '../../providers/geolocation/geolocation';
   templateUrl: 'historico.html',
 })
 export class HistoricoPage {
-  hist: Historico[] = [];
+  @ViewChild(Nav) nav: Nav;
   @ViewChild(Navbar) navBar: Navbar;
+  hist: Historico[] = [];
   endLat: any;
   endLong: any;
   token: any;
@@ -44,11 +45,14 @@ export class HistoricoPage {
     private translate: TranslateService,
     private platform: Platform,
     private usuario: UsuarioService,
+    private events: Events
 
   ) {
 
+
   }
   ionViewDidLoad() {
+
     this.token = String;
     this.token = "";
     this.token = this.navParams.get('token');
@@ -64,6 +68,16 @@ export class HistoricoPage {
     }
 
     this.userData();
+
+  }
+
+
+  // saindo da pagina
+  ionViewWillLeave() {
+
+    console.log('Saindo da página meus-codes: ');
+    let dataUser = { pageOrigem: 'HistoricoPage' };
+    this.events.publish('pageOrigem', dataUser);
 
   }
 
@@ -101,7 +115,8 @@ export class HistoricoPage {
       liberado: false, origem: 3, lang: this.lang, token: this.token,
       code: codeNumber,
       latitude: this.endLat, longitude: this.endLong,
-      telephone: ""
+      telephone: "",
+      pageOrigem: 'HistoricoPage'
     };
 
     this.navCtrl.push('RedirectPage', { data: redirectData });
@@ -161,20 +176,16 @@ export class HistoricoPage {
       console.log("card", code);
     }
 
-    let userData = this.userInfo[0];
-    let nome = '';
-    let sobrenome = '';
+    let userData = new UserInfoData();
+    userData = this.userInfo[0];
+    console.log('Dados do usuário', userData);
 
-    if (userData.name) {
-      nome = userData.name;
-    }
-    if (userData.sobrenome) {
-      sobrenome = userData.sobrenome;
-    }
+    let nome = !userData.name ? '' : userData.name;
+    let sobrenome = !userData.sobrenome ? '' : userData.sobrenome;
 
     let user = nome + ' ' + sobrenome;
 
-    this.socialSharing.share(user + " convida você para conhecer seu canal Connect ->", "Share subject", card, "https://kscode.com.br/card?code=" + code).then(() => {
+    this.socialSharing.share(user + " convida você para conhecer seu canal Connect ->", "Share subject", card, "https://connect.kscode.com.br/" + code).then(() => {
       console.log("shareSheetShare: Success");
     }).catch((error) => {
       console.error("shareSheetShare: failed", error);
@@ -209,4 +220,12 @@ export class HistoricoPage {
     });
   }
 
+}
+export class UserInfoData {
+  name: string;
+  sobrenome: String;
+  email: string;
+  intro: string;
+  card: string;
+  link: string;
 }

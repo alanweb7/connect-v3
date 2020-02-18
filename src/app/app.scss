@@ -3,6 +3,14 @@ ion-app.md {
   // background: transparent !important;
 }
 
+ion-app,
+ion-nav,
+ion-tab,
+ion-tabs,
+.app-root,
+.ion-page {
+    contain: size layout style;
+}
 ion-app.cameraView,
 ion-app.cameraView ion-content,
 ion-app.cameraView .nav-decor {

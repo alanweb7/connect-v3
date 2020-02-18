@@ -18,6 +18,10 @@
 
 </ion-header>
 <ion-content class="fundo" padding>
+  <div>
+  <iframe src="https://player.vimeo.com/video/301857805?api=1&loop=1&title=0&byline=0&portrait=0&autopause=1"
+  frameborder="0" width="600px" height="350px" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+</div>
   <div style="margin-top: 15px;">
     <ion-card class="fundo" style="text-align: center" *ngIf="footerIsHidden">
       <img src="assets/imgs/logo_home_blanc.svg" style="height: 90px" />
@@ -38,13 +42,13 @@
               </ion-item>
             </ion-col>
             <ion-col col-12 class="info-servico">
-              <button id="home-button1" ion-button color="primary" block icon-left (click)="pushPage()"
+              <button id="home-button1" class="btn-home" ion-button block icon-left (click)="pushPage()"
                 [disabled]="signupform.invalid">
                 <ion-icon name="navigate"  slot="start" class="icon_btn_home"></ion-icon>
                 {{button}}
               </button>
               <div style="text-align: center;margin-top: 15px;">
-                <button ion-button round outline color="primary" (click)="pushPage('qrcode')" style="margin: auto;width: 90%; border-color: #98e2ff; color: cornsilk;" >
+                <button class="btn-qrcode" ion-button round outline color="primary" (click)="pushPage('qrcode')" style="margin: auto;width: 100%; border-color: #0071f8; color: #0071f8;" >
                   <ion-icon slot="start" name="md-qr-scanner" style="margin-right: 7px;"></ion-icon>  Escanear código QR
                   
                 </button>
@@ -65,9 +69,8 @@
     <ion-grid>
       <ion-row>
         <ion-col col-3>
-
           <div class="adquire-code" (click)="pushPagePesquisa()">
-            <span class="title-share">{{pesquisa}}</span>
+            <span class="title-share icon-search"><img class="icon-search" src="../../assets/imgs/search-btn.png"></span>
           </div>
         </ion-col>
         <ion-col col-1>

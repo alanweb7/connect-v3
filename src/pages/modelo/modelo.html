@@ -12,6 +12,33 @@
 
 </ion-header>
 <ion-content padding>
+  <!-- acordion -->
+
+  <ion-list (click)="expandItem(item)" *ngFor="let item of items" no-padding>
+    <ion-item>
+      <ion-icon item-left name="ios-contact"></ion-icon>
+      <ion-icon item-right [ngStyle]="item.expanded ? styleListOpen : styleListClosed" [name]="item.expanded ? 'ios-arrow-dropup-circle' : 'ios-arrow-dropdown'"></ion-icon>
+      <ion-label>Awesome Label</ion-label>
+    </ion-item>
+    <app-expandable expandHeight="100px" [expanded]="item.expanded">
+      <p>
+        Hello there.
+      </p>
+      <p>
+        Hello there.
+      </p>
+      <p>
+        Hello there.
+      </p>
+    </app-expandable>
+  </ion-list>
+  <!-- acordion -->
+  <ion-list>
+    ion3-ite
+    <ion-item>
+
+    </ion-item>
+  </ion-list>
   <ion-item-sliding>
     <ion-item>
       Item 1

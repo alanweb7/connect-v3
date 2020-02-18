@@ -167,6 +167,23 @@ export class HomePage {
 
   ) {
     // teste
+
+    //   this.navCtrl.push('ClientDetailPage', params) // push in new page, increments view index
+    //   .then(() => {
+    //     /*Set the index back 2 pages but remove 3 because we don't want 
+    //     ClientDetailPage on the stack twice (because we have added it above).*/
+    //     this.navCtrl.remove(this.viewCtrl.index - 2, 3); 
+    // });
+
+    // let currentIndex = this.navController.getActive().index;
+    // this.navController.push(DestinationPage).then(() => {
+    //     this.navController.remove(currentIndex);
+    // });
+
+    // console.log('Dados da Navegação: ',this.viewCtrl);
+
+    // this.navCtrl.remove(this.viewCtrl.index - 2, 3);
+
     let texto = '"casa"';
     if (texto[texto.length - 1] == '"' && texto[0] == '"') {
       texto = texto.substring(1, texto.length - 1);
@@ -215,6 +232,10 @@ export class HomePage {
   ionViewDidLoad() {
     console.log('enter ionViewDidLoad homePage:');
 
+    let pageNav = { pageOrigem: 'HomePage' };
+    this.events.publish('pageOrigem', pageNav);
+    console.log('Página de origem definida na HomePage');
+    
     let dataUser: any = this.data;
     dataUser.token = '';
 
@@ -287,6 +308,11 @@ export class HomePage {
       this.footerIsHidden = true;
     });
 
+  }
+
+
+  // saindo da pagina
+  ionViewWillLeave() {
   }
 
   setConfigInitial() {
@@ -430,7 +456,7 @@ export class HomePage {
 
     // let sendData = {texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language};
     // this.navCtrl.push('RedirectPage', {data:sendData});
-    this.navCtrl.push('CodePesquisaPage', { texto: this.texto, campo: this.campo, page_pesquisa: this.page_consulta, msg_servidor: this.msg_servidor, load_aguarde: this.load_aguarde, token: this.token, lang: this.language });
+    this.navCtrl.setRoot('CodePesquisaPage', { texto: this.texto, campo: this.campo, page_pesquisa: this.page_consulta, msg_servidor: this.msg_servidor, load_aguarde: this.load_aguarde, token: this.token, lang: this.language });
 
     // let myModal =this.modalCtrl.create('CodePesquisaPage',{texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language});
     // myModal.present();
@@ -438,6 +464,9 @@ export class HomePage {
   showCheckbox() {
 
     let alert = this.alertCtrl.create();
+
+
+
     alert.setTitle(this.selecione);
     //ingles, espanhol, italiano, frances e alemão
     alert.addInput({

@@ -22,25 +22,25 @@
     <ion-list *ngFor="let code of meus_codes">
       <ion-item-sliding #actionCode>
         <ion-item>
-          <ion-thumbnail item-left (click)="pushPage(code.code)">
-            <img [src]="code.img_link ?  code.img_link : '/assets/imgs/no-img.jpeg'">
-          </ion-thumbnail>
+          <ion-avatar item-left (click)="pushPage(code.code)" >
+            <img [src]="code.img_link ?  code.img_link : '/assets/imgs/no-img.jpeg'" style="width: 60px; height: 60px;">
+          </ion-avatar>
           <ion-label style="width: 100%; display: flex;">
-            <div style="width: 60%; display: flex;">
-              <h4>{{code.code | slice: 0: 40}}</h4>
-              <div class="desc_channel">{{code.resume | slice: 0: 40}}</div>
+            <div style="width: 60%;">
+              <h3 style="text-transform: uppercase;">{{code.code | slice: 0: 15}}</h3>
+              <h5 class="desc_channel" style="color: #bbbbbb !important;">{{code.resume ? code.resume : "Canal Connect" | slice: 0: 18}}</h5>
             </div>
-            <ion-badge color="dark" slot="end">{{code.views}}</ion-badge>
+            <ion-badge color="dark" slot="end">{{code.views ? code.views : "000"}}</ion-badge>
             <ion-icon name="code" style="font-size: x-large; margin-left: 17px; position: relative; float:right">
             </ion-icon>
           </ion-label>
         </ion-item>
         <ion-item-options side="end" (click)="actionCode.close()">
-          <button ion-button color="danger" (click)="showConfirm(code.id)">
-            <ion-icon ios="ios-trash" md="md-trash" style="color: red;font-size: x-large;"></ion-icon>
+          <button ion-button color="danger" (click)="showConfirm(code.id)" style="width: 15%;margin-left: 30px;">
+            <ion-icon ios="ios-trash" md="md-trash" style="font-size: x-large;"></ion-icon>
           </button>
-          <button ion-button color="primary" (click)="ShowMenu(code.id)">
-            <ion-icon ios="ios-construct" md="md-construct" style="color: blue;font-size: x-large;"></ion-icon>
+          <button ion-button color="primary" (click)="ShowMenu(code.id)" style="width: 15%;">
+            <ion-icon ios="ios-construct" md="md-construct" style="font-size: x-large;"></ion-icon>
           </button>
         </ion-item-options>
       </ion-item-sliding>

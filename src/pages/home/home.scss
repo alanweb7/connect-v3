@@ -45,6 +45,17 @@ page-home {
       color: black;
       margin-top: 5%;
     }
+    ion-item.item.item-block.item-md {
+      border-radius: 20px;
+    }
+    .btn-home {
+      background-color: #0071f8;
+      border-radius: 25px;
+    }
+
+    button.btn-qrcode{
+
+    }
 
     .social-share {
       text-align: center;
@@ -62,7 +73,12 @@ page-home {
     margin-bottom: 56px;
     text-transform: uppercase;
   }
-
+  .icon-search {
+    position: relative !important;
+    // bottom: 4px !important;
+    width: 30px !important;
+    height: 30px;
+  }
   ion-footer {
     left: 0;
     bottom: 0;
