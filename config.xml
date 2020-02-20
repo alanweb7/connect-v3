@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="br.com.kscode.app360" version="25.5.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="br.com.kscode.app360" version="25.5.2"
+    xmlns="http://www.w3.org/ns/widgets"
+    xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CONNECT-KSC (V5)</name>
     <description>Tudo se conecta aqui.</description>
     <author email="contato@kscode.com.br" href="http://spottec.com.br/">SPOTTEC</author>
@@ -19,7 +21,8 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="200000" />
     <preference name="AndroidLaunchMode" value="singleTask" />
-    <preference name="android-targetSdkVersion" value="27" />
+    <preference name="android-targetSdkVersion" value="28" />
+    <preference name="android-minSdkVersion" value="19" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
