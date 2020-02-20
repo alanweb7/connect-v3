@@ -182,7 +182,7 @@
             </div>
           </div>
           <!-- acordion -->
-          <div *ngIf="hotspotConditions">
+          <!-- <div *ngIf="hotspotConditions">
           <ion-list (click)="expandItem(user)" *ngFor="let user of hotspotuserInfo" no-padding >
             <ion-item>
               <ion-icon item-left name="ios-contact"></ion-icon>
@@ -191,20 +191,61 @@
               <ion-label>{{user.data.nome}}</ion-label>
             </ion-item>
             <app-expandable expandHeight="100px" [expanded]="user.expanded">
-              <ion-list>
-                <ion-item >
-                  <ion-icon slot="start" name="add"></ion-icon>
-                  <h4></h4>
-                  <p></p>
-                </ion-item>
-                <ion-item *ngIf="user.data.email">
-                  <ion-icon slot="start" ios="ios-mail" md="md-mail"></ion-icon>
-                  <p class="text-endereco" [innerHtml]="user.data.email"></p>
-                </ion-item>
-              </ion-list>
+              <div class="info-user">
+                <h4>
+                  <ion-icon ios="ios-contact" md="md-contact"></ion-icon><strong> informações do usuário:</strong>
+                </h4>
+                <div style="padding-left: 10%">
+                  <p style="font-size: large" class="local-info item-text-wrap">
+                  </p>
+                  <ion-item *ngIf="user.data.email">
+                    <ion-icon ios="ios-mail" md="md-mail"></ion-icon>
+                    <ion-textarea class="text-endereco" rows="2" readonly value="{{user.data.email}}">
+                    </ion-textarea>
+                  </ion-item>
+                  <p style="font-size: large" class="local-info item-text-wrap">
+                    <ion-icon ios="ios-call" md="md-call"></ion-icon>
+                    {{user.data.fone}}
+                  </p>
+                  <ion-item *ngIf="user.data.endereco">
+                    <ion-textarea class="text-endereco" rows="5" readonly value="{{user.data.endereco}}">
+                    </ion-textarea>
+                  </ion-item>
+                </div>
+                <h4>
+                  <ion-icon ios="ios-construct" md="md-construct"></ion-icon><strong> Ferramentas:</strong>
+                </h4>
+                <ion-grid>
+                  <ion-row style="display: flex;">
+                    <ion-col size="4">
+                      <button ion-button color="light" (click)="postPushHotspot(user)" class="um">
+                        <ion-icon style="text-align: center" ios="ios-notifications" md="md-notifications"
+                          class="icons-tools notify-user">
+                        </ion-icon>
+                      </button>
+                    </ion-col>
+                    <ion-col size="4">
+                      <a href="mailto:{{user.data.email}}" *ngIf="user.data.email"> <button ion-button color="light"
+                          class="um">
+                          <ion-icon style="text-align: center" ios="ios-mail" md="md-mail"
+                            class="icons-tools email-user">
+                          </ion-icon>
+                        </button></a>
+                    </ion-col>
+                    <ion-col size="4">
+                      <a href="tel:{{user.data.fone}}" *ngIf="user.data.fone"> <button ion-button color="light"
+                          class="um">
+                          <ion-icon style="text-align: center" ios="ios-call" md="md-call"
+                            class="icons-tools phone-user">
+                          </ion-icon>
+                        </button></a>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
             </app-expandable>
           </ion-list>
-          </div>
+          </div> -->
           <!-- acordion -->
           <ion-list no-padding *ngIf="hotspotConditions">
             <ion-item class="hotspot-item" *ngFor="let user of hotspotuserInfo">
