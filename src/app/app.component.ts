@@ -231,37 +231,11 @@ export class MyApp {
     console.log(this.pages);
   }
 
-  ionViewDidLoad() {
-    console.log(' ionViewDidLoad app.component');
-
-  }
-  ionViewWillEnter() {
-    console.log(' ionViewWillEnter app.component');
-
-  }
-  ionViewDidEnter() {
-    console.log(' ionViewDidEnter app.component');
-
-  }
-  ionViewWillLeave() {
-    console.log(' ionViewWillLeave app.component');
-
-  }
-  ionViewDidLeave() {
-    console.log(' ionViewDidLeave app.component');
-
-  }
-  ionViewWillUnload() {
-    console.log(' ionViewWillUnload app.component');
-
-  }
 
   initializeApp() {
 
 
     console.log('initializeApp in app.component');
-
-
 
     this.platform.ready().then(() => {
 
@@ -273,30 +247,16 @@ export class MyApp {
 
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      //CHAMDA DO BANCO DE DADOS
-      /*  this.usuarioDB.getAll()
-       .then((movies:any) => {
-           alert("alert deu certo");
-       }).catch((erro)=>{
-           alert("deu errado"+erro);
-       }); */
-      /* this.sqliteHelperService.getDb()
-      .then((movies:any) => {
-          alert("alert deu certo");
-      }).catch((erro)=>{
-          alert("deu errado"+erro);
-      }); */
+ 
       if (this.platform.is('ios')) {
         this.sqliteHelperService.getDb()
           .then((movies: any) => {
-            // alert("alert deu certo");
+           
           }).catch((erro) => {
-            // alert("deu errado"+erro);
+            
           });
       }
-      /*  if (this.platform.is('android')){
-         alert("sou android");
-       } */
+    
     });
 
 
@@ -337,12 +297,12 @@ export class MyApp {
                 text: 'Cancelar',
                 role: 'cancel',
                 handler: () => {
-                  this.nav.setRoot('HomePage');
                   console.log('** Saída do App Cancelada! **');
                 }
               }, {
                 text: 'Fechar o App',
                 handler: () => {
+                  console.log('** Apertou sair do app! **');
                   // this.logout();
                   this.platform.exitApp();
                 }
