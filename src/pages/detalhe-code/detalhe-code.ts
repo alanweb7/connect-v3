@@ -129,6 +129,7 @@ export class DetalheCodePage {
   public logo_header: string;
 
   // configuracoes do hotspot
+  public hotspotVerify: boolean;
   public userHotspotForm: any;
   public emailHotspot: string;
   public passwordHotspot: string;
@@ -368,6 +369,7 @@ export class DetalheCodePage {
         this.code_id = res.data[0].id;
         this.hotspotData = res.data[0].hotspot;
 
+
         if (res.data[0]['isprivate'] == true) {
           this.presentAlertPrompt(null);
         } else {
@@ -556,16 +558,50 @@ export class DetalheCodePage {
       this.navCtrl.setRoot('HomePage', { 'error': result });
     }
 
-    this.barMidias = [
+    // verificando se a rede configurada no hotspot está presente 
+    if (this.hotspotData.isHotspotActive) {
+
+      await this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
+
+        console.log('redes encontradas: ', networks);
+        console.log('rede Configurada: ', this.hotspotData.ssid);
+
+        let redes = [];
+        let res;
+        networks.forEach(rede => {
+
+          res = rede.SSID == this.hotspotData.ssid ? true : false;
+          console.log(rede.SSID, " e ", this.hotspotData.ssid, " São iguais? R= ", res);
+
+          if (res) {
+            this.hotspotVerify = res;
+            return;
+          }
+
+        });
+
+
+      }).catch((error) => {
+        console.log('Erro ao buscar redes: ', error);
+        this.hotSpotConnMens = 'Erro! Nenhuma rede disponível no local (Verifque se seu wi-fi está ativo).';
+      });
+
+    }
+
+
+
+    this.barMidias = await [
       { name: 'AUDIOS', icon: 'tools-audio', isActived: this.audioContent, action: 'audio' },
       { name: 'DOCUMENTOS', icon: 'tools-doc', isActived: this.docContent, action: 'doc' },
-      { name: 'WI-FI', icon: 'tools-wifi', isActived: this.hotspotData.isHotspotActive, action: 'hotspot' }
+      { name: 'WI-FI', icon: 'tools-wifi', isActived: this.hotspotVerify, action: 'hotspot' }
     ];
 
     let filterTools = [];
+    console.log("status do this.hotspotVerify: ", this.hotspotVerify);
+
     for (let index = 0; index < this.barMidias.length; index++) {
       const element = this.barMidias[index];
-      console.log('Está ativo: ', element.isActived);
+      console.log(element.name, ' Está ativo: ', element.isActived);
       if (element.isActived) {
         filterTools.push(element);
       }
@@ -1421,7 +1457,7 @@ export class DetalheCodePage {
 
 
     if (this.pageOrigem) {
-      this.navCtrl.setRoot(this.pageOrigem, {token: this.token, termoPesquisa: this.termoPesquisa});
+      this.navCtrl.setRoot(this.pageOrigem, { token: this.token, termoPesquisa: this.termoPesquisa });
     } else {
       this.navCtrl.setRoot('HomePage');
     }

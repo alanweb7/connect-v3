@@ -2,13 +2,14 @@
 
   <ion-navbar color="primary" hideBackButton>
     <ion-buttons left>
-      <button slot="start" start ion-button icon-only (click)="backButtonEvent()" style="background: transparent !important;">
+      <button slot="start" start ion-button icon-only (click)="backButtonEvent()"
+        style="background: transparent !important;">
         <ion-icon ios="ios-arrow-round-back" md="md-arrow-round-back"></ion-icon>
-      </button>  
+      </button>
     </ion-buttons>
-       
-    <ion-title>Painel</ion-title> 
-    <ion-buttons right >
+
+    <ion-title>Painel</ion-title>
+    <ion-buttons right>
       <button ion-button icon-only (click)="shareSheetShare()">
         <ion-icon ios="ios-share" md="md-share"></ion-icon>
       </button>
@@ -22,7 +23,7 @@
 <ion-content padding scroll="false">
   <!-- novo menu -->
   <div class="container-panel" *ngIf="segment == 2">
-   
+
     <p class="info-painel">Escolha uma área para editar as informações:</p>
     <div class="gallery-view">
       <div class="image-container">
@@ -180,6 +181,31 @@
               </button>
             </div>
           </div>
+          <!-- acordion -->
+          <div *ngIf="hotspotConditions">
+          <ion-list (click)="expandItem(user)" *ngFor="let user of hotspotuserInfo" no-padding >
+            <ion-item>
+              <ion-icon item-left name="ios-contact"></ion-icon>
+              <ion-icon item-right [ngStyle]="user.expanded ? styleListOpen : styleListClosed"
+                [name]="user.expanded ? 'ios-arrow-dropup-circle' : 'ios-arrow-dropdown'"></ion-icon>
+              <ion-label>{{user.data.nome}}</ion-label>
+            </ion-item>
+            <app-expandable expandHeight="100px" [expanded]="user.expanded">
+              <ion-list>
+                <ion-item >
+                  <ion-icon slot="start" name="add"></ion-icon>
+                  <h4></h4>
+                  <p></p>
+                </ion-item>
+                <ion-item *ngIf="user.data.email">
+                  <ion-icon slot="start" ios="ios-mail" md="md-mail"></ion-icon>
+                  <p class="text-endereco" [innerHtml]="user.data.email"></p>
+                </ion-item>
+              </ion-list>
+            </app-expandable>
+          </ion-list>
+          </div>
+          <!-- acordion -->
           <ion-list no-padding *ngIf="hotspotConditions">
             <ion-item class="hotspot-item" *ngFor="let user of hotspotuserInfo">
               <div class="info-content" (click)="setActionHotSpot({'action':'detail_user','player_id':user.player_id})">

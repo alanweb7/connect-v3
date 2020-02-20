@@ -24,6 +24,7 @@ export class ModeloPage {
   items: any = [];
   itemExpandHeight: number = 100;
 
+  textModelo = "Outras informações relevantes como endereço e tudo mais. Podemos colocar várias linhas aqui";
   textHtml;
   dataTextEditor;
   textEscaped;

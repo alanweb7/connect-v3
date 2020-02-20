@@ -25,7 +25,14 @@ export class MenuCodePage {
 
   @ViewChild('myInput') myInput: ElementRef;
 
-  // conteudo da desxcricao
+  // modelo do acordion
+  items: any = [];
+  itemExpandHeight: number = 100;
+
+  styleListOpen;
+  styleListClosed;
+
+  // conteudo da descricao
   textHtml;
   dataTextEditor;
   menu_midias;
@@ -74,7 +81,7 @@ export class MenuCodePage {
   messages: Messages;
   infoRede;
 
-  hotspotuserInfo: object;
+  hotspotuserInfo: any = [];
   showDetails: any = {
     icon: {
       ios: 'ios-arrow-dropdown-circle',
@@ -134,6 +141,28 @@ export class MenuCodePage {
 
 
   ) {
+
+    // dados modelo do acordion
+    this.styleListOpen = {
+      'color': 'red'
+    };
+    this.styleListClosed = {
+      'color': 'green'
+    };
+
+    this.items = [
+      { expanded: false },
+      { expanded: false },
+      { expanded: false },
+      { expanded: false },
+      { expanded: false },
+      { expanded: false },
+      { expanded: false },
+      { expanded: false },
+      { expanded: false }
+    ];
+
+
     this.messages = new Messages();
     this.user_info = new UserInfoData();
     if (this.platform.is('ios')) {
@@ -639,10 +668,6 @@ export class MenuCodePage {
 
   setHotSpotApi(action) {
 
-    if (action == 'get_users') {
-      this.hotspotConditions = true;
-    }
-
     let info = this.hotSpotForm.value;
     console.log('Dados do hotSpotForm enviados: ', info);
     let data = {
@@ -662,13 +687,21 @@ export class MenuCodePage {
           if (result.status == 200) {
 
             // tratando dados retornado do servidor
-            let DataHotspot = result.hotspot.data;
-            if (result.action == 'get_users') {
-              this.hotspotuserInfo = result.hotspot;
 
+            if (action == 'get_users') {
+              this.hotspotConditions = true;
+              let users = [];
+              result.hotspot.forEach(user => {
+                user.expanded = false;
+                users.push(user);
+              });
+              this.hotspotuserInfo = users;
+              console.log('Novo array de users do hotspot: ', this.hotspotuserInfo);
+              
               return;
             }
 
+            let DataHotspot = result.hotspot.data;
             if (DataHotspot) {
 
               action = {
@@ -1026,6 +1059,23 @@ export class MenuCodePage {
     }
 
     this.navCtrl.pop();
+  }
+
+  expandItem(item): void {
+    console.log('Item clicado: ', item);
+    if (item.expanded) {
+      item.expanded = false;
+    } else {
+
+      this.hotspotuserInfo.map(listItem => {
+        if (item == listItem) {
+          listItem.expanded = !listItem.expanded;
+        } else {
+          listItem.expanded = false;
+        }
+        return listItem;
+      });
+    }
   }
 
 }

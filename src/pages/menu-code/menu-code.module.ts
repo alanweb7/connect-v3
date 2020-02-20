@@ -5,9 +5,12 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from "@angular/common/http";
 
+import { ExpandableComponent } from "../../components/expandable/expandable";
+
 @NgModule({
   declarations: [
     MenuCodePage,
+    ExpandableComponent
   ],
   providers: [
 

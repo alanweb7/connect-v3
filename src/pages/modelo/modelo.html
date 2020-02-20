@@ -13,25 +13,33 @@
 </ion-header>
 <ion-content padding>
   <!-- acordion -->
-
+<!-- 
   <ion-list (click)="expandItem(item)" *ngFor="let item of items" no-padding>
     <ion-item>
       <ion-icon item-left name="ios-contact"></ion-icon>
-      <ion-icon item-right [ngStyle]="item.expanded ? styleListOpen : styleListClosed" [name]="item.expanded ? 'ios-arrow-dropup-circle' : 'ios-arrow-dropdown'"></ion-icon>
+      <ion-icon item-right [ngStyle]="item.expanded ? styleListOpen : styleListClosed"
+        [name]="item.expanded ? 'ios-arrow-dropup-circle' : 'ios-arrow-dropdown'"></ion-icon>
       <ion-label>Awesome Label</ion-label>
     </ion-item>
     <app-expandable expandHeight="100px" [expanded]="item.expanded">
-      <p>
-        Hello there.
-      </p>
-      <p>
-        Hello there.
-      </p>
-      <p>
-        Hello there.
-      </p>
+      <ion-list>
+
+        <ion-item>
+          <ion-icon slot="start" name="star"></ion-icon>
+          <h3>meuemail@meuemail.com.br</h3>
+          <div [innerHtml]="textModelo" class="text-modelo"></div>
+        </ion-item>
+        <ion-item>
+          <label>
+            <ion-icon slot="start" name="star"></ion-icon>
+            <h2>Endereço:</h2>
+          </label>
+
+          <div [innerHtml]="textModelo" class="text-modelo"></div>
+        </ion-item>
+      </ion-list>
     </app-expandable>
-  </ion-list>
+  </ion-list> -->
   <!-- acordion -->
   <ion-list>
     ion3-ite
