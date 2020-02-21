@@ -203,7 +203,8 @@
         "FACEBOOK_ANDROID_SDK_VERSION": "5.5.2"
       },
       "cordova-clipboard": {},
-      "cordova-plugin-qrscanner": {}
+      "cordova-plugin-qrscanner": {},
+      "cordova-plugin-add-swift-support": {}
     },
     "platforms": [
       "android"
