@@ -903,12 +903,14 @@ export class MenuCodePage {
   }
   // compartilhar social share
   shareSheetShare() {
+    this.util.showLoading('Aguarde...');
     let user_info = this.user_info;
     console.log('Dados do usuário em shareSheetShare: ', user_info);
     this.card = this.imagens[0].img_link;
     console.log('link do card: ', this.card, this.slug);
     this.socialSharing.share(user_info.intro, "Share subject", user_info.card, user_info.link).then(() => {
       console.log("shareSheetShare: Success");
+      this.util.loading.dismissAll();
     }).catch(() => {
       console.error("shareSheetShare: failed");
     });

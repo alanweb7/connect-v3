@@ -400,9 +400,7 @@ export class MyApp {
       DestinationPage = 'MeusCodesPage';
       if (this.token == undefined) {
 
-        this.nav.setRoot('LoginPage', { lang: this.language, origem: activeView.name }).then(() => {
-          this.nav.remove(currentIndex);
-        });
+        this.nav.setRoot('LoginPage', { lang: this.language, origem: activeView.name });
 
       } else {
 

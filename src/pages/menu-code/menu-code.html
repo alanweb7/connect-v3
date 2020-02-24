@@ -10,7 +10,7 @@
 
     <ion-title>Painel</ion-title>
     <ion-buttons right>
-      <button ion-button icon-only (click)="shareSheetShare()">
+      <button ion-button icon-only (click)="shareSheetShare()" *ngIf="slug">
         <ion-icon ios="ios-share" md="md-share"></ion-icon>
       </button>
       <button ion-button icon-only (click)="showPromptPush()">

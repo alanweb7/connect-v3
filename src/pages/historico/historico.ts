@@ -7,6 +7,7 @@ import { Historico } from '../../models/historico.model';
 import { ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { GeolocationProvider } from '../../providers/geolocation/geolocation';
+import { UtilService } from '../../providers/util/util.service';
 @IonicPage({
   priority: 'off',
   segment: 'Historico/:token',
@@ -45,8 +46,9 @@ export class HistoricoPage {
     private translate: TranslateService,
     private platform: Platform,
     private usuario: UsuarioService,
-    private events: Events
-
+    private events: Events,
+    private utils: UtilService,
+    
   ) {
 
 
@@ -169,6 +171,7 @@ export class HistoricoPage {
   }
   // compartilhar social share
   shareSheetShare(code, card) {
+    this.utils.showLoading('Aguarde...');
     console.log("card", card);
     if (code != "" && code != null && code != undefined) {
       //remover os espaços em branco e trocar por _
@@ -176,17 +179,25 @@ export class HistoricoPage {
       console.log("card", code);
     }
 
+    let textShare = "Conheça este interessante canal Connect -> ";
+
     let userData = new UserInfoData();
     userData = this.userInfo[0];
-    console.log('Dados do usuário', userData);
 
-    let nome = !userData.name ? '' : userData.name;
-    let sobrenome = !userData.sobrenome ? '' : userData.sobrenome;
+    if (userData) {
+      console.log('Dados do usuário', userData);
 
-    let user = nome + ' ' + sobrenome;
+      let nome = !userData.name ? '' : userData.name;
+      let sobrenome = !userData.sobrenome ? '' : userData.sobrenome;
+      let user = nome + ' ' + sobrenome;
+      textShare = user + " convida você para conhecer seu canal Connect ->";
 
-    this.socialSharing.share(user + " convida você para conhecer seu canal Connect ->", "Share subject", card, "https://connect.kscode.com.br/" + code).then(() => {
+    }
+
+    this.socialSharing.share(textShare, "Share subject", card, "https://connect.kscode.com.br/" + code).then(() => {
       console.log("shareSheetShare: Success");
+      this.utils.loading.dismissAll();
+      
     }).catch((error) => {
       console.error("shareSheetShare: failed", error);
     });

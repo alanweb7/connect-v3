@@ -157,12 +157,12 @@ export class LoginPage {
   }
   ionViewDidEnter() {
     //disabilita menu lateral
-    this.menu.enable(false);
+    // this.menu.enable(false);
 
   }
   ionViewWillLeave() {
     // to enable menu.
-    this.menu.enable(true);
+    // this.menu.enable(true);
    }
   login() {
 
