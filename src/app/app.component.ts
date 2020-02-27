@@ -247,16 +247,16 @@ export class MyApp {
 
       this.statusBar.styleDefault();
       this.splashScreen.hide();
- 
+
       if (this.platform.is('ios')) {
         this.sqliteHelperService.getDb()
           .then((movies: any) => {
-           
+
           }).catch((erro) => {
-            
+
           });
       }
-    
+
     });
 
 
@@ -264,6 +264,7 @@ export class MyApp {
 
       // close side menu
       try {
+        console.log("Primeiro try");
 
         const element = await this.menu.getOpen();
         if (element) {
@@ -286,8 +287,10 @@ export class MyApp {
         let activeView = navg.getActive();
         // Checks if can go back before show up the alert
         if (activeView.name === 'HomePage') {
-          if (navg.canGoBack()) {
-            navg.pop();
+          if (this.nav.canGoBack()) {
+            console.log('Acessou o canGoBack!');
+            
+            this.nav.pop();
           }
           else {
             const alert = this.alertCtrl.create({
@@ -326,7 +329,6 @@ export class MyApp {
             return;
           }
 
-
           console.log('Apertando voltar em Menu-code');
           this.nav.pop().then(() => {
             console.log('Vontando uma etapa');
@@ -355,10 +357,10 @@ export class MyApp {
 
         }
 
-        this.nav.pop().then(() => {
-          console.log('Vontando fora do if rm app.component');
+        // this.nav.pop().then(() => {
+        //   console.log('Vontando fora do if rm app.component');
 
-        });
+        // });
 
       } catch (error) {
 
@@ -423,7 +425,7 @@ export class MyApp {
     }
     else if (page == 'CodePesquisaPage') {
 
-      let  sendData = {
+      let sendData = {
         token: this.token, page_pesquisa: this.page_pesquisa, load_aguarde: this.load_aguarde,
         msg_servidor: this.msg_servidor
       }

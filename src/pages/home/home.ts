@@ -23,6 +23,7 @@ import { UtilService } from '../../providers/util/util.service';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 // Pacote IOS: br.com.kscode.app360
+// Pacote Google: com.kcode360.kcode
 @IonicPage({
   priority: 'high'
 })

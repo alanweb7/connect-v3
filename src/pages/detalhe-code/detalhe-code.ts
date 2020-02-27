@@ -3,7 +3,6 @@ import { Facebook } from '@ionic-native/facebook';
 import { GeolocationProvider } from './../../providers/geolocation/geolocation';
 import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
 import { Code } from './../menu-code/menu-code';
-import { ModalDetailPage } from './../modal-detail/modal-detail';
 import { Component } from '@angular/core';
 import { IonicPage, Navbar, NavController, NavParams, LoadingController, Slides, ToastController, ViewController, ModalController, AlertController, Platform, Events } from 'ionic-angular';
 import { CodeProvider } from './../../providers/code/code';
@@ -1064,19 +1063,7 @@ export class DetalheCodePage {
     this.slides.slidePrev();
   }
 
-  getModalAds() {
-    let option = {
-      showBackdrop: true,
-    };
-    let profileModal = this.modalCtrl.create(ModalDetailPage, {}, option);
-    profileModal.present();
-
-    profileModal.onDidDismiss(data => {
-      console.log(data);
-    });
-  }
-
-
+ 
   setLanguage() {
     this.platform.ready().then(() => {
       if (this.lang == undefined || this.lang == "" || this.lang == null) {

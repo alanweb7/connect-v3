@@ -1,5 +1,4 @@
 
-import { ModalDetailPage } from './../pages/modal-detail/modal-detail';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpModule, } from '@angular/http';
@@ -65,7 +64,6 @@ import { QRScanner } from '@ionic-native/qr-scanner';
 @NgModule({
   declarations: [
     MyApp,
-    ModalDetailPage,
     Autosize,
     ProgressBarComponent
 
@@ -90,9 +88,7 @@ import { QRScanner } from '@ionic-native/qr-scanner';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ModalDetailPage,
-
-  ],
+   ],
   providers: [
     Keyboard,
     QRScanner,
