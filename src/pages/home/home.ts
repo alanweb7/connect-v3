@@ -19,9 +19,7 @@ import { SqliteHelperService } from '../../providers/sqlite-helper/sqlite-helper
 import { ClienteProvider } from '../../providers/cliente/cliente';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UtilService } from '../../providers/util/util.service';
-
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
-
 // Pacote IOS: br.com.kscode.app360
 // Pacote Google: com.kcode360.kcode
 @IonicPage({
