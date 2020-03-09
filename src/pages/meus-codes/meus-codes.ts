@@ -101,7 +101,6 @@ export class MeusCodesPage {
 
   }
 
-
   private _translateLanguage(): void {
     this.translate.use(this.lang);
     this._initialiseTranslation();

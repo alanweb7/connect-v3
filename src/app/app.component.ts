@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { SqliteHelperService } from '../providers/sqlite-helper/sqlite-helper.service';
 import { UsuarioService } from '../providers/movie/usuario.service';
 import { Deeplinks } from "@ionic-native/deeplinks";
+import { TranslateConfigService } from '../providers/lang-translate-config/translate-config.service';
 
 @Component({
   templateUrl: 'app.html'
@@ -67,6 +68,7 @@ export class MyApp {
   page: String
   btn_salvar: String;
   //tradução login
+  selectedLanguage;
   page_login: any;
   load_enviando: any;
   campo_obrigatorio: any;
@@ -95,6 +97,7 @@ export class MyApp {
     private deeplinks: Deeplinks,
     public alertCtrl: AlertController,
     private translateService: TranslateService,
+    private translateConfigService: TranslateConfigService,
     private actionSheetCtrl: ActionSheetController,
     private menu: MenuController,
 
@@ -118,9 +121,6 @@ export class MyApp {
         // this.navCtrl.setRoot("HomePage",{token:this.token});
       });
 
-
-      translateService.setDefaultLang('pt');
-      translateService.use('pt');
     });
 
     this.initializeApp();
@@ -160,10 +160,16 @@ export class MyApp {
     });
 
     this.event.subscribe("lang", (lang: any) => {
-      console.log("lang", lang);
+      console.log("definição de linguagem no app.component.ts", lang);
       this.language = lang;
     });
 
+    if (!this.language) {
+      this.selectedLanguage = this.translateService.getBrowserLang();
+      console.log('Sem linguagem definida!');
+      console.log('Linguagem do browser: ', this.selectedLanguage);
+      this.event.publish('lang', this.selectedLanguage);
+    }
 
     this.event.subscribe("isOpenSegment", (openSegment: any) => {
       if (openSegment) {
@@ -198,8 +204,6 @@ export class MyApp {
         this.cnpj = data.cnpj;
         console.log(data.cnpj);
         this.tp_pessoa = data.tp_pessoa;
-        //this.language = data.lang;
-
 
 
       } else {
@@ -213,7 +217,7 @@ export class MyApp {
         this.sobrenome = "";
         this.cnpj = "";
         this.tp_pessoa = "";
-        //this.language = "pt";
+
 
       }
 
@@ -289,7 +293,7 @@ export class MyApp {
         if (activeView.name === 'HomePage') {
           if (this.nav.canGoBack()) {
             console.log('Acessou o canGoBack!');
-            
+
             this.nav.pop();
           }
           else {
@@ -456,7 +460,7 @@ export class MyApp {
   minhaConta() {
     console.log("token", this.token);
     if (this.token == undefined) {
-      console.log("porrta", this.language)
+      console.log("Linguagem minhaConta app.component", this.language)
       this.nav.push('LoginPage', { lang: this.language });
     } else {
       let myModal = this.modalCtrl.create('MinhaContaPage', {
@@ -490,7 +494,7 @@ export class MyApp {
         if (data) {
           console.log('Dados do usuario: ', data)
           console.log("uusuario atualizado");
-          this.nav.setRoot('HomePage', { lang: this.language });
+          this.nav.setRoot('HomePage');
         }
       });
   }

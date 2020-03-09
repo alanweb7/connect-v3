@@ -1,11 +1,10 @@
 import { AdminToolsRest, AdminToolsDb } from './../../providers/admin-tools/admin-tools';
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../../providers/network/network';
-import { Component, Input, ViewChild } from '@angular/core';
-import { NavController, IonicPage, NavParams, Platform, Loading, LoadingController, Events, AlertController, ModalController, ToastController, ViewController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, IonicPage, NavParams, Platform, LoadingController, Events, AlertController, ModalController, ToastController, ViewController } from 'ionic-angular';
 //Import Native
 import { OneSignal } from '@ionic-native/onesignal';
-import { Geolocation } from '@ionic-native/geolocation';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { BrowserTab } from '@ionic-native/browser-tab';
 //import Provider
@@ -16,10 +15,11 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { TranslateService } from '@ngx-translate/core';
 import { GeolocationProvider } from '../../providers/geolocation/geolocation';
 import { SqliteHelperService } from '../../providers/sqlite-helper/sqlite-helper.service';
-import { ClienteProvider } from '../../providers/cliente/cliente';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { UtilService } from '../../providers/util/util.service';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
+
 // Pacote IOS: br.com.kscode.app360
 // Pacote Google: com.kcode360.kcode
 @IonicPage({
@@ -47,7 +47,7 @@ export class HomePage {
   public myGlobalVar: string;
   public title: string;
   public description: string;
-  public language: string = "pt";
+  public language: string;
   button: String = "";
   pesquisa: String = "";
   adquira: String = "";
@@ -65,6 +65,7 @@ export class HomePage {
     tp_pessoa: String
 
   }
+  selectedLanguage;
   trans = {
     login: String,
     home: String,
@@ -150,7 +151,6 @@ export class HomePage {
     public net: NetworkProvider,
     public network: Network,
     private usuario: UsuarioService,
-    private cli_Provider: ClienteProvider,
     private keyboard: Keyboard,
     public modalCtrl: ModalController,
     public sqliteHelperService: SqliteHelperService,
@@ -165,29 +165,7 @@ export class HomePage {
     public viewCtrl: ViewController,
 
   ) {
-    // teste
 
-    //   this.navCtrl.push('ClientDetailPage', params) // push in new page, increments view index
-    //   .then(() => {
-    //     /*Set the index back 2 pages but remove 3 because we don't want 
-    //     ClientDetailPage on the stack twice (because we have added it above).*/
-    //     this.navCtrl.remove(this.viewCtrl.index - 2, 3); 
-    // });
-
-    // let currentIndex = this.navController.getActive().index;
-    // this.navController.push(DestinationPage).then(() => {
-    //     this.navController.remove(currentIndex);
-    // });
-
-    // console.log('Dados da Navegação: ',this.viewCtrl);
-
-    // this.navCtrl.remove(this.viewCtrl.index - 2, 3);
-
-    let texto = '"casa"';
-    if (texto[texto.length - 1] == '"' && texto[0] == '"') {
-      texto = texto.substring(1, texto.length - 1);
-    }
-    console.log(texto);
 
     // configurações iniciais :: criação do banco de dados
     // this.setConfigInitial();
@@ -198,9 +176,7 @@ export class HomePage {
     if (this.modalIsOpen == true) {
       this.util.loading.dismissAll();
     }
-
     let error = this.navParams.get('error');
-    console.log('erro recebido na HOME:: ', error);
     if (error && error.status == -3) {
 
       this.netFail();
@@ -234,25 +210,25 @@ export class HomePage {
     let pageNav = { pageOrigem: 'HomePage' };
     this.events.publish('pageOrigem', pageNav);
     console.log('Página de origem definida na HomePage');
-    
+
+  
     let dataUser: any = this.data;
     dataUser.token = '';
 
     this.events.publish('dados', dataUser);
 
-    setTimeout(() => {
-      console.log('iniciando o foco');
-      this.language = "pt";
-      this.isPT = true;
-    }, 150);
-
     //CHAMDA DO BANCO DE DADOS
     this.platform.ready().then(() => {
+
+      if (!this.language) {   
+        let language = this.translate.getBrowserLang();
+        this.translate.setDefaultLang(language);
+      }
+
       this.usuario.getAll()
         .then((movies: any) => {
           console.log('Dados do banco interno: ', movies);
           if (movies.length == 1) {
-            console.log('Dados Iniciais: ', movies);
             this.data.name = movies[0].name;
             this.data.sobrenome = movies[0].sobrenome;
             this.data.email = movies[0].email;
@@ -269,34 +245,26 @@ export class HomePage {
             this.data.tp_pessoa = movies[0].tp_pessoa;
 
             // this.update_cupom();
-            this.trogle_idiome_onesignal();
+            // this.trogle_idiome_onesignal();
             //  this.events.publish('trans',this.language);
             this.events.publish('dados', this.data);
           } else {
-            this.language = "pt";
-            console.log("minha lang", this.language);
             console.log("entrei no else");
-            this.isPT = true;
-            this.trogle_idiome_onesignal();
+            // this.trogle_idiome_onesignal();
           }
-          // this.language= "pt";
-          // this.isPT  =  true;
+
           this.pushGeoinfo();
-          this.trogle_idiome(this.language);
+          // this.trogle_idiome(this.language);
           this._translateLanguage();
           this.oneSignalApp();
 
         }).catch((error) => {
           alert("sqlite Erro " + error);
-          this.language = "pt";
-          this.isPT = true;
           this.pushGeoinfo();
-          this.trogle_idiome(this.language);
+          // this.trogle_idiome(this.language);
           this._translateLanguage();
           this.oneSignalApp();
         });
-      this.language = "pt";
-      this.isPT = true;
     });///final platform ready
 
 
@@ -315,7 +283,7 @@ export class HomePage {
   }
 
   setConfigInitial() {
-    console.log('iniciando a ciração do banco');
+    console.log('iniciando o banco');
     let res = this.adminDb.createDatabase();
 
     this.adminDb.getAll().then((resp) => {
@@ -331,7 +299,7 @@ export class HomePage {
 
 
   trogle_idiome(id) {
-    console.log("lang", id);
+    console.log("lang em trogle_idiome", id);
     if (id == 'pt') {
       this.isDE = false;
       this.isPT = true;
@@ -545,7 +513,7 @@ export class HomePage {
     this.oneSignal.startInit('d9687a3a-3df5-4565-b183-653e84ed8207', '8700496258');
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
     this.oneSignal.handleNotificationReceived().subscribe(notification => {
-      console.log(notification);
+      console.log('Dados do Push recebido na HomePage: ',notification);
       //var notificationData       = notification.notification.payload;
       /*  var notificationAdditional = notificationData.additionalData;
        var notificationCode       = notificationAdditional.code; */
@@ -583,11 +551,14 @@ export class HomePage {
     this._translateLanguage();
   }
 
-
   private _translateLanguage(): void {
-    this.translate.use(this.language);
-    this.trogle_idiome(this.language);
-    console.log("linguagem", this.language);
+
+    if (this.language) {
+      this.translate.use(this.language);
+      this.trogle_idiome(this.language);
+      console.log("linguagem (HomePage)", this.language);
+    }
+
     this._initialiseTranslation();
   }
 
@@ -626,7 +597,6 @@ export class HomePage {
       this.btn_ircode = this.translate.instant("default.btn_ircode");
       this.btn_fechar = this.translate.instant("default.btn_fechar");
 
-      console.log(this.btn_cancelar, this.btn_continuar, this.btn_fechar, this.btn_ircode);
       this.page_pesquisa = this.translate.instant("default.page_pesquisa");
       // this.load_aguarde           = this.translate.instant("default.btn_fechar");
       this.msg_servidor = this.translate.instant("default.msg_servidor");
@@ -652,8 +622,10 @@ export class HomePage {
 
       //this.events.publish('dados',this.data);
       this.events.publish('trans', this.trans);
-      this.events.publish('lang', this.language);
-      // this.events.publish('dados',this.data);
+      if (this.language) {
+        this.events.publish('lang', this.language);
+      }
+
     }, 250);
 
   }
@@ -677,7 +649,7 @@ export class HomePage {
 
 
   trogle_idiome_onesignal() {
-    console.log("langsdfds", this.language);
+    console.log("lang trogle_idiome_onesignal", this.language);
     if (this.language == 'pt') {
       this.btn_fechar = "Fechar";
       this.btn_ircode = "Ir para Code";

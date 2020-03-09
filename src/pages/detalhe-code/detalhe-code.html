@@ -16,6 +16,7 @@
       <div style="margin-left: 10px;">
         <div style="font-size: smaller; text-transform: uppercase;">{{TagRegCode ? TagRegCode : "Nome do Canal" | slice:0:18}}</div>
         <div style="color: slategrey; font-size: x-small; text-transform:uppercase">{{titulo ? titulo : "Título do Canal Connect"| slice:0:24}}</div>
+        <div style="color: #002b57; font-size: x-small; text-transform:uppercase" *ngIf="subscribers > 0">{{subscribers}} Inscritos</div>
       </div>
       <ion-badge color="primary" item-end>{{vews}}<br>visualizações</ion-badge>
     </ion-item>
@@ -75,87 +76,6 @@
       </ion-grid>
     </div>
     <!--Final da div content_details-->
-    <div *ngIf="hotspotData.isHotspotActive" style="text-align: center">
-      <div *ngIf="activeForm && hotspotData.isRegisterScreen">
-        <!-- <div *ngIf="player_id"><span>Token wi-fi: {{player_id}}</span></div> -->
-
-        <form padding [formGroup]="userHotspotForm" (submit)="setDataUserHotspot()" novalidate>
-          <div>
-            <ion-item>
-              <ion-input [(ngModel)]="userHotspotForm.nome" formControlName="nome" type="text" placeholder="Nome"
-                clearInput clearOnEdit="false">
-              </ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input [(ngModel)]="userHotspotForm.email" formControlName="email" type="text" placeholder="E-mail"
-                clearInput clearOnEdit="false">
-              </ion-input>
-            </ion-item>
-          </div>
-          <ion-item>
-            <ion-input [(ngModel)]="userHotspotForm.fone" formControlName="fone" type="text"
-              [brmasker]="{mask:'(00) 00000-0000', len:15, type:'num'}" placeholder="fone" clearInput
-              clearOnEdit="false">
-            </ion-input>
-          </ion-item>
-
-          <div>
-            <h5>Endereço:</h5>
-            <ion-item>
-              <ion-textarea [(ngModel)]="userHotspotForm.endereco" formControlName="endereco" placeholder="Endereço"
-                value="{{userHotspotForm.endereco}}">
-              </ion-textarea>
-            </ion-item>
-
-            <ion-item>
-              <ion-input class="text-inputs" [(ngModel)]="userHotspotForm.cidade" formControlName="cidade" type="text"
-                placeholder="Cidade" clearInput clearOnEdit="false">
-              </ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input class="text-inputs" [(ngModel)]="userHotspotForm.bairro" formControlName="bairro" type="text"
-                placeholder="Bairro" clearInput clearOnEdit="false">
-              </ion-input>
-            </ion-item>
-
-          </div>
-          <div style="display: flex">
-            <ion-item>
-              <ion-input [(ngModel)]="userHotspotForm.idade" formControlName="idade" type="number" placeholder="idade"
-                clearInput clearOnEdit="false">
-              </ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label>Sexo:</ion-label>
-              <ion-select [(ngModel)]="userHotspotForm.sexo" formControlName="sexo">
-                <ion-option value="1" [selected]="true">Masc.</ion-option>
-                <ion-option value="2">Femin.</ion-option>
-              </ion-select>
-            </ion-item>
-          </div>
-          <h6 *ngIf="messageError.email" class="error"> {{messageError.email}}</h6>
-          <button ion-button block outline color="primary" [disabled]="!userHotspotForm.valid"
-            class="login-button">Connect</button>
-        </form>
-        <button class="btn_connect facebook_st" ion-button icon-left (click)='loginFacebook();'>
-          <ion-icon name="logo-facebook"></ion-icon>Login com Facebook
-        </button>
-      </div>
-      <!-- <button ion-button outline (click)="actionSpotConnect()" [disabled]="inConnect" *ngIf="!activeForm">ACESSAR REDE
-        WI-FI</button> -->
-      <div style="width: 100%">
-        <span *ngIf="hotSpotConnMens && !isError" style="color: #080808;">{{hotSpotConnMens}}</span>
-        <span *ngIf="hotSpotConnMens && isError" style="color: #ff0000;">{{hotSpotConnMens}}</span>
-      </div>
-      <div *ngIf="showDataWifi">
-        <h4> Dados da conexão</h4>
-        <h5>Rede: {{hotspotData.ssid}}</h5>
-        <button ion-button icon-left (click)="copyToTransfer()">
-          <ion-icon name="copy"></ion-icon>
-          Copiar senha
-        </button>
-      </div>
-    </div>
     <!-- botoes das midias e wifi -->
     <hr class="divider-midi">
 

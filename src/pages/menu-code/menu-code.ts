@@ -1,16 +1,12 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides, ModalController, LoadingController, ToastController, AlertController, ViewController, Platform, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, LoadingController, ToastController, AlertController, ViewController, Platform, Events } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { FormBuilder, Validators } from '../../../node_modules/@angular/forms';
 import { NetworkProvider } from '../../providers/network/network';
 import { CodeProvider } from './../../providers/code/code';
 import { UtilService } from '../../providers/util/util.service';
 import { TranslateService } from '@ngx-translate/core';
-
-import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
-import { text } from '@angular/core/src/render3/instructions';
 import { Keyboard } from '@ionic-native/keyboard';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage({
   priority: 'low',
@@ -131,12 +127,9 @@ export class MenuCodePage {
     public alertCtrl: AlertController,
     private socialSharing: SocialSharing,
     private event: Events,
-
     private translate: TranslateService,
     public platform: Platform,
-    private hotspot: Hotspot,
     private keyboard: Keyboard,
-    private sanitizer: DomSanitizer,
     private events: Events
 
 
@@ -181,24 +174,6 @@ export class MenuCodePage {
       // dados do novo menu
       // this.tools.dismissAll();
       // informacoes do wi-fi
-      this.hotspot.getConnectionInfo().then((res) => {
-        console.log('informações do hotspot getConnectionInfo: ', res);
-        this.infoRede = res;
-
-
-        if (this.infoRede.SSID) {
-          let nameNet = this.infoRede.SSID;
-          if (nameNet[nameNet.length - 1] == '"' && nameNet[0] == '"') {
-            this.infoRede.SSID = nameNet.substring(1, nameNet.length - 1);
-          }
-
-        }
-
-      });
-
-      this.hotspot.getNetConfig().then((res) => {
-        console.log('informações do hotspot getNetConfig: ', res);
-      });
 
       let menuNames = {
         descricao: this.translate.instant('menu_code.seg_1'),
@@ -709,7 +684,6 @@ export class MenuCodePage {
                 data: DataHotspot,
               };
 
-              this.setActionHotSpot(action);
             }
 
             this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'sucesso' }).present();
@@ -723,7 +697,7 @@ export class MenuCodePage {
             this.hotSpotForm.isRegisterScreen = false;
             this.hotSpotForm.password = null;
 
-            this.searchWifi();
+      
 
           }
 
@@ -742,139 +716,13 @@ export class MenuCodePage {
 
   }
 
-  setActionHotSpot(action) {
-
-    console.log('Dados recebidos na função setHotSpot: ', action);
-    let ssid = '';
-    let data = action;
-
-    if (data.action) {
-      action = data.action;
-      ssid = data.ssid;
-      this.hotSpotForm.password = ssid;
-    }
-
-    switch (action) {
-      case 'active':
-
-        let togleValue = this.hotSpotForm.value;
-
-        console.log('Status do Hotspot', togleValue);
-
-        break;
-      case 'detail_user':
-
-        let player_id = data.player_id;
-        console.log('Status do OLD Hotspot', this.sectorUser, ':: player_id: ', player_id);
-        if (player_id == this.sectorUser) {
-          this.sectorUser = null;
-        } else {
-          this.sectorUser = player_id;
-        }
-
-        console.log('Status do New Hotspot', this.sectorUser, ':: player_id: ', player_id);
-        break;
-      case 'hiddeInfo':
-
-        this.hotspotConditions = false;
-
-        break;
-      case 'send':
-        this.setHotSpotApi('set');
-        console.log('Dados do Hotspot no send da função setHotSpot: ', this.hotSpotForm.value);
-        break;
-      case 'password':
-        console.log('Password do Hotspot');
-        this.setConfigHotspot(ssid);
-        this.hotSpotForm.password = '';
-
-        break;
-      case 'config':
-
-        console.log('Config automático do Hotspot');
-        let dataHotspot = data.data;
-        console.log('Config automático do Hotspot,', dataHotspot);
-        this.hotSpotForm.ssid = dataHotspot.ssid;
-        this.hotSpotForm.password = dataHotspot.password;
-        this.hotSpotForm.isHotspotActive = dataHotspot.isHotspotActive ? dataHotspot.isHotspotActive : false;
-        this.hotSpotForm.isOnlyHotspot = dataHotspot.isOnlyHotspot ? dataHotspot.isOnlyHotspot : false;
-        this.hotSpotForm.isRegisterScreen = dataHotspot.isRegisterScreen ? dataHotspot.isRegisterScreen : false;
-        this.isWifiSelected = true;
-
-        console.log('SSID: ', dataHotspot.ssid);
-        console.log('password: ', dataHotspot.password);
-        // this.setConfigHotspot(ssid);
-
-        break;
-
-      default:
-        break;
-    }
-
-  }
-
-  conectHotspot() {
-
-    this.inSearch = true;
-    console.log('Conectando com a rede wi-fi...');
-    let data = {
-      ssid: this.hotSpotForm.ssid,
-      password: this.hotSpotForm.password
-    }
-
-    this.hotspot.removeWifiNetwork(data.ssid).then((rem) => {
-
-      console.log('Disconectando da rede: ', rem);
-
-      this.hotspot.connectToWifi(data.ssid, data.password).then((res) => {
-
-        this.inSearch = false;
-        this.isConnected = 1;
-        console.log('Success | Response of conection wifi: ', res);
-
-
-      }, (error) => {
-
-        this.inSearch = false;
-        this.isConnected = 3;
-        console.log('Erro ao conectar (wifi): ', error);
-      });
-    });
-
-  }
-  searchWifi() {
-
-    this.isWifiSelected = false;
-    this.inSearch = true;
-    this.platform.ready().then(() => {
-
-      console.log('Buscando redes');
-      this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
-        console.log(networks);
-        this.networks = networks;
-        this.inSearch = false;
-
-      });
-
-    })
-
-  }
-
-  setConfigHotspot(ssid) {
-    this.isWifiSelected = true;
-    this.hotSpotForm.password = ssid;
-    this.hotSpotForm.ssid = ssid;
-
-    console.log('Rede selecionada em setConfigHotspot: ', this.hotSpotForm.ssid);
-  }
-
+ 
   setCurrentNetwork() {
     this.isWifiSelected = true;
     this.hotSpotForm.ssid = this.infoRede.SSID;
 
     console.log('Rede selecionada em setCurrentNetwork: ', this.hotSpotForm.ssid);
   }
-
 
   changeSegment(item: any) {
 

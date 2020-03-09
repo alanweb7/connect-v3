@@ -1,8 +1,6 @@
 import { Data } from './../minha-conta/minha-conta';
 import { Facebook } from '@ionic-native/facebook';
 import { GeolocationProvider } from './../../providers/geolocation/geolocation';
-import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
-import { Code } from './../menu-code/menu-code';
 import { Component } from '@angular/core';
 import { IonicPage, Navbar, NavController, NavParams, LoadingController, Slides, ToastController, ViewController, ModalController, AlertController, Platform, Events } from 'ionic-angular';
 import { CodeProvider } from './../../providers/code/code';
@@ -50,6 +48,7 @@ export class DetalheCodePage {
   audio_colection: any[];
   titulo: String;
   descricao: String;
+  subscribers: Number;
   c_email: String;
   website: String;
   facebookUser: String;
@@ -175,15 +174,14 @@ export class DetalheCodePage {
     private translate: TranslateService,
     private platform: Platform,
     private streamingMedia: StreamingMedia,
-    private hotspot: Hotspot,
     public formBuilder: FormBuilder,
     private locationAccuracy: LocationAccuracy,
     private geoProv: GeolocationProvider,
     private fb: Facebook,
     private clipboard: Clipboard,
+    private event: Events,
     private sanitizer: DomSanitizer,
-    private event: Events
-
+   
   ) {
 
     //capturar do evento 
@@ -429,6 +427,7 @@ export class DetalheCodePage {
       //testa se meu retorno da API é vazio
       this.titulo = result.data[0]['titulo'];
       this.descricao = this.decode(result.data[0].descricao);
+      this.subscribers = result.data[0].subscribers;
 
       this.nome_documento = result.data[0]['nome_documento'];
       // this.documento        = result.data[0]['documento'];
@@ -557,42 +556,10 @@ export class DetalheCodePage {
       this.navCtrl.setRoot('HomePage', { 'error': result });
     }
 
-    // verificando se a rede configurada no hotspot está presente 
-    if (this.hotspotData.isHotspotActive) {
-
-      await this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
-
-        console.log('redes encontradas: ', networks);
-        console.log('rede Configurada: ', this.hotspotData.ssid);
-
-        let redes = [];
-        let res;
-        networks.forEach(rede => {
-
-          res = rede.SSID == this.hotspotData.ssid ? true : false;
-          console.log(rede.SSID, " e ", this.hotspotData.ssid, " São iguais? R= ", res);
-
-          if (res) {
-            this.hotspotVerify = res;
-            return;
-          }
-
-        });
-
-
-      }).catch((error) => {
-        console.log('Erro ao buscar redes: ', error);
-        this.hotSpotConnMens = 'Erro! Nenhuma rede disponível no local (Verifque se seu wi-fi está ativo).';
-      });
-
-    }
-
-
-
     this.barMidias = await [
       { name: 'AUDIOS', icon: 'tools-audio', isActived: this.audioContent, action: 'audio' },
       { name: 'DOCUMENTOS', icon: 'tools-doc', isActived: this.docContent, action: 'doc' },
-      { name: 'WI-FI', icon: 'tools-wifi', isActived: this.hotspotVerify, action: 'hotspot' }
+      // { name: 'WI-FI', icon: 'tools-wifi', isActived: this.hotspotVerify, action: 'hotspot' }
     ];
 
     let filterTools = [];
@@ -1063,7 +1030,7 @@ export class DetalheCodePage {
     this.slides.slidePrev();
   }
 
- 
+
   setLanguage() {
     this.platform.ready().then(() => {
       if (this.lang == undefined || this.lang == "" || this.lang == null) {
@@ -1194,8 +1161,7 @@ export class DetalheCodePage {
         console.log('detalhe-code total geolocation:', resp);
         this.coordenates = resp["latitude"] + ',' + resp["longitude"];
         console.log('home geolocation: ', this.coordenates);
-        this.setHotSpotApi('search_adress');
-
+     
       });
     });
 
@@ -1219,147 +1185,12 @@ export class DetalheCodePage {
       this.isConnected = true;
     }
 
-    else if (this.platform.is('android')) {
-
-      this.hotspot.scanWifi().then((networks: Array<HotspotNetwork>) => {
-        this.hotSpotConnMens = 'Conectando...';
-        console.log(networks);
-        console.log('Conectando a rede wi-fi');
-        this.activeForm = false;
-        this.inConnect = true;
-        let dataHotspot = this.hotspotData;
-        this.hotspot.connectToWifi(this.hotspotData.ssid, this.hotspotData.password).then((res) => {
-          this.isConnected = true;
-          this.hotSpotConnMens = 'Sucesso! Você está conectado.';
-          console.log('Success | Response of conection wifi: ', res);
-          this.inConnect = false;
-
-        }, (error) => {
-
-          this.hotSpotConnMens = 'Erro! Verifique os dados da conexão e tente novamente.';
-          console.log('Erro | Error of conection wifi: ', error);
-          this.inConnect = false;
-
-        });
-
-      }).catch((error) => {
-        console.log('Erro ao buscar redes: ', error);
-        this.hotSpotConnMens = 'Erro! Nenhuma rede disponível no local (Verifque se seu wi-fi está ativo).';
-      });
-
-    } //fim de platform is android
-
   }
 
   copyToTransfer() {
     this.clipboard.copy(this.hotspotData.password).then((res) => {
       alert('Senha copiada para a área de tranferência!');
     });
-  }
-  setDataUserHotspot() {
-    this.userHotspotForm.player_id = this.player_id;
-    this.userHotspotForm.value.coordenates = this.coordenates;
-    console.log('Dados do user hotspot:: ', this.userHotspotForm);
-
-    let { nome, email } = this.userHotspotForm.controls;
-
-    let nome_user = this.userHotspotForm.nome;
-    let email_user = this.userHotspotForm.email;
-
-    console.log('Nome e Email: ', nome_user, email_user)
-
-    if (!nome_user) {
-      // this.userHotspotForm.valid = false;
-      this.hotSpotConnMens = 'Nome inválido';
-      this.isError = true;
-    }
-    else if (!email_user) {
-      // this.userHotspotForm.valid = false;
-      this.hotSpotConnMens = "Email inválido";
-      this.isError = true;
-    }
-    else {
-      this.isError = false;
-      this.setHotSpotApi('set_user');
-    }
-  }
-
-  setHotSpotApi(action) {
-    this.globalAction = action;
-    console.log('Definição dos globalAction: ', this.globalAction);
-    let info = this.userHotspotForm.value;
-    let data: any;
-    console.log('Dados do hotSpotForm enviados: ', info);
-    data = {
-      token: this.token,
-      id_code: this.code_id,
-      // id_code: this.id_code,
-      action: action,
-      player_id: this.player_id,
-      data: info,
-      bloco: '16'
-    }
-
-    if (action == 'search_adress') {
-      let dataCoordenates = this.coordenates;
-      data = {
-        'action': 'search_adress',
-        url_api: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + dataCoordenates + '&key=AIzaSyCvlHIxGDuqD4hbZP2hQ0ojfelVlQT-u1s'
-      };
-      console.log('Endereço pesquisado: ', data.url_api);
-    };
-
-    this.util.showLoading(this.load_aguarde);
-    this.codeProvider.setHotSpot(data)
-      .then(
-        (result: any) => {
-
-          this.util.loading.dismissAll();
-
-          if (this.globalAction == 'search_adress' && result.status == 'OK') {
-
-            let totalSddress = result.results[0];
-            this.addresUser = totalSddress;
-
-            this.userHotspotForm.endereco = totalSddress.formatted_address;
-            this.userHotspotForm.bairro = totalSddress.address_components[2].long_name;
-            this.userHotspotForm.cidade = totalSddress.address_components[3].long_name;
-
-            console.log('Endereço Total usuário posição [0]: ', totalSddress);
-
-          }
-
-          if (result.status == 200 && this.globalAction == 'set_user') {
-            console.log('Retorno hotspot do Servidor: ', result);
-            let DataHotspot = result.hotspot.data;
-            if (DataHotspot) {
-              action = {
-                action: 'config',
-                data: DataHotspot,
-              };
-              // this.setActionHotSpot(action);
-            }
-
-            this.hotspotConnect();
-
-            this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'sucesso' }).present();
-          }
-          else if (result.status == 404) {
-            console.log('Response 404!');
-          }
-
-          else if (result.status == 403) {
-            this.toast.create({ message: result.message, position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
-            this.navCtrl.setRoot('LoginPage', { lang: this.lang });
-          }
-        }
-        , (error: any) => {
-          this.toast.create({ message: 'Error the response', position: 'botton', duration: 3000, closeButtonText: 'Ok!', cssClass: 'error' }).present();
-          this.util.loading.dismissAll();
-          this.navCtrl.setRoot('HomePage');
-        });
-
-
   }
 
   // login com facebook
@@ -1406,7 +1237,6 @@ export class DetalheCodePage {
 
     console.log('Usuario cadastrado via facebook: ', usuario);
     console.log('Gravando dados no servidor: ', this.userHotspotForm);
-    this.setHotSpotApi(action);
 
     // this.salvarService.salvarFacebook(usuario)
     //   .then(() => {

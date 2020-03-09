@@ -39,7 +39,6 @@ import { Media } from '@ionic-native/media';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { Crop } from '@ionic-native/crop';
 import { VideoEditor } from '@ionic-native/video-editor';
-import { Hotspot } from '@ionic-native/hotspot';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { Facebook } from '@ionic-native/facebook';
 import { Clipboard } from '@ionic-native/clipboard';
@@ -59,6 +58,7 @@ import { GeolocationProvider } from '../providers/geolocation/geolocation';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 
 import { QRScanner } from '@ionic-native/qr-scanner';
+import { TranslateConfigService } from '../providers/lang-translate-config/translate-config.service';
 
 
 @NgModule({
@@ -98,7 +98,6 @@ import { QRScanner } from '@ionic-native/qr-scanner';
     AdminToolsDb,
     AdminToolsRest,
     LocationAccuracy,
-    Hotspot,
     VideoEditor,
     StreamingMedia,
     Chooser,
@@ -129,6 +128,7 @@ import { QRScanner } from '@ionic-native/qr-scanner';
     Diagnostic,
     GeolocationProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    TranslateConfigService,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
