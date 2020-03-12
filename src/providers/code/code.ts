@@ -575,19 +575,20 @@ export class CodeProvider {
     // return this.http.delete(url).map((resp: Response) => resp.json());
   }
 
-  async create_push(codeNumber: String, titulo: String, mensagem: String, token: String, lang: String) {
+  async create_push(codeNumber: String, titulo: String, live: String, statuslive: Boolean, mensagem: String, token: String, lang: String) {
     console.log('dados do push em code provider create_push: ',codeNumber, titulo, mensagem, token);
     let data = {
       codeNumber: codeNumber,
       titulo: titulo,
       mensagem: mensagem,
+      live: live,
+      statuslive: statuslive,
       token: token,
       password: "@spot2020",
       lang: lang
-
     };
 
-    console.log(data);
+    console.log('dados anviados para o servidor de push:', data);
     let url = 'https://kscode.com.br/ksc_2020/wp-json/admin/v1/dashboard/';
     let result = await this.httpn.post(url, data, {}).then((res) => {
       console.log('resultado dos contatos notificacao-push.ts: ', res);

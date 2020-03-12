@@ -4,7 +4,9 @@
 		"button" 	    : "ZUGANG",
 		"pesquisa"      : "FORSCHUNG",
 		"adquira"       : "DOMAIN KAUFEN",
-		"code_existe"   : "KSCODE existiert nicht!"
+		"code_existe"   : "KSCODE existiert nicht!",
+		"placeholder"   : "HIER VERBINDEN",
+		"scanqr"   		: "SCAN QRCODE"
 
 	}
 	,

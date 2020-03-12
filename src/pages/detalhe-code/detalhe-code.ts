@@ -61,6 +61,7 @@ export class DetalheCodePage {
   page: String;
   info: any;
   TagRegCode: any;
+  TagRegSlug: String;
   persistentData: any;
   trustedVideoUrl: SafeResourceUrl;
   video_found: any = false;
@@ -181,7 +182,7 @@ export class DetalheCodePage {
     private clipboard: Clipboard,
     private event: Events,
     private sanitizer: DomSanitizer,
-   
+
   ) {
 
     //capturar do evento 
@@ -434,6 +435,7 @@ export class DetalheCodePage {
       this.pais = result.data[0]['pais'];
       this.isprivate = result.data[0]['isprivate'];
       this.TagRegCode = result.data[0]['code'];
+      this.TagRegSlug = result.data[0]['slug'];
       this.ask_id = result.data[0]['ask_code']['ask_id'];
       this.code_id = result.data[0].id;
       this.ask_info = result.data[0]['ask_code']['ask_info'];
@@ -945,11 +947,17 @@ export class DetalheCodePage {
       // registrando tags
       this.info = this.navParams.get('info');
       var tagCode = this.TagRegCode;
+      var tagSlug = this.TagRegSlug;
 
       var dataTag = '{"' + tagCode + '":"true"}';
+      var slugTag = '{"' + tagSlug + '":"true"}';
       var Tagcode = JSON.parse(dataTag);
+      var TagSlug = JSON.parse(slugTag);
 
+      console.log('Reristrando a TAG: ', TagSlug);
       this.oneSignal.sendTags(Tagcode);
+      this.oneSignal.sendTags(TagSlug);
+
 
       // alert.present();
 
@@ -1161,7 +1169,7 @@ export class DetalheCodePage {
         console.log('detalhe-code total geolocation:', resp);
         this.coordenates = resp["latitude"] + ',' + resp["longitude"];
         console.log('home geolocation: ', this.coordenates);
-     
+
       });
     });
 

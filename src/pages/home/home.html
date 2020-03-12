@@ -33,7 +33,7 @@
           <ion-row>
             <ion-col col-12>
               <ion-item>
-                <ion-input (click)="setFocusField()" type="text" #input placeholder="CONNECT AQUI"
+                <ion-input (click)="setFocusField()" type="text" #input placeholder="{{placeholder}}"
                   [(ngModel)]="codeNumber" formControlName="codeNumber" name="code"></ion-input>
               </ion-item>
             </ion-col>
@@ -45,7 +45,7 @@
               </button>
               <div style="text-align: center;margin-top: 15px;">
                 <button class="btn-qrcode" ion-button round outline color="primary" (click)="pushPage('qrcode')" style="margin: auto;width: 100%; border-color: #0071f8; color: #0071f8;" >
-                  <ion-icon slot="start" name="md-qr-scanner" style="margin-right: 7px;"></ion-icon>  Escanear código QR
+                  <ion-icon slot="start" name="md-qr-scanner" style="margin-right: 7px;"></ion-icon>  {{scanqr}}
                   
                 </button>
               </div>

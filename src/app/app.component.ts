@@ -127,7 +127,7 @@ export class MyApp {
 
 
     this.event.subscribe("trans", (trans: any) => {
-      console.log("trans", trans);
+      console.log("Traduções em app.component.ts", trans);
       this.login = trans.login;
       this.home = trans.home;
       this.favoritos = trans.favoritos;

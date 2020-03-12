@@ -4,7 +4,9 @@
 		"button" 	    : "Access",
 		"pesquisa"      : "SEARCH",
 		"adquira"       : "PURCHASE A DOMAIN",
-		"code_existe"   :"KSCODE does not exist!"
+		"code_existe"   : "KSCODE does not exist!",
+		"placeholder"   : "CONNECT HERE",
+		"scanqr"   		: "SCAN QRCODE"
 
 	},
 	"menu":{

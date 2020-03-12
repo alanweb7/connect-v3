@@ -7,6 +7,7 @@ import { CodeProvider } from './../../providers/code/code';
 import { UtilService } from '../../providers/util/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Keyboard } from '@ionic-native/keyboard';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage({
   priority: 'low',
@@ -130,7 +131,8 @@ export class MenuCodePage {
     private translate: TranslateService,
     public platform: Platform,
     private keyboard: Keyboard,
-    private events: Events
+    private events: Events,
+    private sanitizer : DomSanitizer
 
 
   ) {
@@ -181,6 +183,7 @@ export class MenuCodePage {
         doc: this.translate.instant('menu_code.menu_2'),
         contato: this.translate.instant('menu_code.menu_4'),
         hotspot: 'HOTSOT',
+        senha: 'SEMHA',
         link: this.translate.instant('menu_code.seg_3'),
         video: this.translate.instant('menu_code.menu_3'),
         audio: 'AUDIO',
@@ -192,7 +195,7 @@ export class MenuCodePage {
         { name: menuNames.imagem, icon: 'camera', icon_color: '#ffffff', bg_color: '#d649c7', action: 'imagem' },
         { name: menuNames.doc, icon: 'clipboard', icon_color: '#ffffff', bg_color: '#ffdf44', action: 'doc' },
         { name: menuNames.contato, icon: 'contact', icon_color: '#ffffff', bg_color: '#ffb000', action: 'contato' },
-        { name: menuNames.hotspot, icon: 'md-wifi', icon_color: '#ffffff', bg_color: '#52f100', action: 'hotspot' },
+        { name: menuNames.senha, icon: 'md-lock', icon_color: '#ffffff', bg_color: '#52f100', action: 'descricao' },
         { name: menuNames.link, icon: 'link', icon_color: '#ffffff', bg_color: '#24d6ea', action: 'link' },
         { name: menuNames.video, icon: 'videocam', icon_color: '#ffffff', bg_color: 'red', action: 'video' },
         { name: menuNames.audio, icon: 'mic', icon_color: '#ffffff', bg_color: '#ffd50a', action: 'audio' },
@@ -754,9 +757,8 @@ export class MenuCodePage {
     this.util.showLoading('Aguarde...');
     let user_info = this.user_info;
     console.log('Dados do usuário em shareSheetShare: ', user_info);
-    this.card = this.imagens[0].img_link;
-    console.log('link do card: ', this.card, this.slug);
-    this.socialSharing.share(user_info.intro, "Share subject", user_info.card, user_info.link).then(() => {
+    console.log('link do card: ', user_info.card, this.slug);
+    this.socialSharing.share(user_info.intro, "Share subject", user_info.card ? user_info.card : '', user_info.link).then(() => {
       console.log("shareSheetShare: Success");
       this.util.loading.dismissAll();
     }).catch(() => {
@@ -764,6 +766,7 @@ export class MenuCodePage {
     });
 
   }
+
   showAlert(message) {
     let alert = this.alertCtrl.create({
       message: message,

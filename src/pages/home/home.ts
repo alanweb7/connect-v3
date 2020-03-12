@@ -51,6 +51,9 @@ export class HomePage {
   button: String = "";
   pesquisa: String = "";
   adquira: String = "";
+  scanqr: String = "";
+  placeholder: String = "";
+
   data = {
     id_serv: Number,
     name: String,
@@ -211,7 +214,7 @@ export class HomePage {
     this.events.publish('pageOrigem', pageNav);
     console.log('Página de origem definida na HomePage');
 
-  
+
     let dataUser: any = this.data;
     dataUser.token = '';
 
@@ -219,11 +222,18 @@ export class HomePage {
 
     //CHAMDA DO BANCO DE DADOS
     this.platform.ready().then(() => {
+      let currentLang = this.translate.currentLang;
+      console.log('linguagem Atualmente definida HomePage:: ', currentLang);
 
-      if (!this.language) {   
+      if (!currentLang) {
+
         let language = this.translate.getBrowserLang();
         this.translate.setDefaultLang(language);
+        this.language = language;
+
       }
+
+      console.log('linguagem existente HomePage:: ', this.language);
 
       this.usuario.getAll()
         .then((movies: any) => {
@@ -254,14 +264,12 @@ export class HomePage {
           }
 
           this.pushGeoinfo();
-          // this.trogle_idiome(this.language);
           this._translateLanguage();
           this.oneSignalApp();
 
         }).catch((error) => {
           alert("sqlite Erro " + error);
           this.pushGeoinfo();
-          // this.trogle_idiome(this.language);
           this._translateLanguage();
           this.oneSignalApp();
         });
@@ -297,61 +305,6 @@ export class HomePage {
 
   }
 
-
-  trogle_idiome(id) {
-    console.log("lang em trogle_idiome", id);
-    if (id == 'pt') {
-      this.isDE = false;
-      this.isPT = true;
-      this.isES = false;
-      this.isFR = false;
-      this.isEN = false;
-      this.isIT = false;
-    } else if (id == 'de') {
-      this.isDE = true;
-      this.isPT = false;
-      this.isES = false;
-      this.isFR = false;
-      this.isEN = false;
-      this.isIT = false;
-    } else if (id == 'en') {
-      this.isDE = false;
-      this.isPT = false;
-      this.isES = false;
-      this.isFR = false;
-      this.isEN = true;
-      this.isIT = false;
-    } else if (id == 'it') {
-      this.isDE = false;
-      this.isPT = false;
-      this.isES = false;
-      this.isFR = false;
-      this.isEN = false;
-      this.isIT = true;
-    } else if (id == 'fr') {
-      this.isDE = false;
-      this.isPT = false;
-      this.isES = false;
-      this.isFR = true;
-      this.isEN = false;
-      this.isIT = false;
-    } else if (id == 'es') {
-      this.isDE = false;
-      this.isPT = false;
-      this.isES = true;
-      this.isFR = false;
-      this.isEN = false;
-      this.isIT = false;
-    } else {
-      this.isDE = false;
-      this.isPT = true;
-      this.isES = false;
-      this.isFR = false;
-      this.isEN = false;
-      this.isIT = false;
-    }
-  }
-
   pushPage(action = null) {
 
     if (action === 'qrcode') {
@@ -365,7 +318,6 @@ export class HomePage {
 
       let latitude = this.endLat;
       let longitude = this.endLong;
-      console.log('home codes com gps');
       let sendData = {
         liberado: false, origem: 1, token: this.token, lang: this.language,
         code: this.codeNumber,
@@ -421,75 +373,51 @@ export class HomePage {
 
   pushPagePesquisa() {
 
-    // let sendData = {texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language};
-    // this.navCtrl.push('RedirectPage', {data:sendData});
     this.navCtrl.setRoot('CodePesquisaPage', { texto: this.texto, campo: this.campo, page_pesquisa: this.page_consulta, msg_servidor: this.msg_servidor, load_aguarde: this.load_aguarde, token: this.token, lang: this.language });
 
-    // let myModal =this.modalCtrl.create('CodePesquisaPage',{texto:this.texto,campo:this.campo,page_pesquisa:this.page_consulta,msg_servidor:this.msg_servidor,load_aguarde:this.load_aguarde,token:this.token,lang:this.language});
-    // myModal.present();
   }
+
   showCheckbox() {
+    let Currentlanguage = this.translate.currentLang;
+    let inputs = [
+      { label: "Português", value: "pt" },
+      { label: "Inglês", value: "en" },
+      { label: "Espanhol", value: "es" },
+      { label: "Italiano", value: "it" },
+      { label: "Frânces", value: "fr" },
+      { label: "Alemão", value: "de" },
+    ];
+
 
     let alert = this.alertCtrl.create();
 
-
-
     alert.setTitle(this.selecione);
     //ingles, espanhol, italiano, frances e alemão
-    alert.addInput({
-      type: 'radio',
-      label: "Português",
-      value: "pt",
-      checked: this.isPT
+
+    inputs.forEach(field => {
+      alert.addInput({
+        type: 'radio',
+        label: field.label,
+        value: field.value,
+        checked: field.value == Currentlanguage ? true : false
+      });
     });
-    alert.addInput({
-      type: 'radio',
-      label: "Inglês",
-      value: "en",
-      checked: this.isEN
-    });
-    alert.addInput({
-      type: 'radio',
-      label: "Espanhol",
-      value: "es",
-      checked: this.isES
-    });
-    alert.addInput({
-      type: 'radio',
-      label: "Italiano",
-      value: "it",
-      checked: this.isIT
-    });
-    alert.addInput({
-      type: 'radio',
-      label: "Frânces",
-      value: "fr",
-      checked: this.isFR
-    });
-    alert.addInput({
-      type: 'radio',
-      label: "Alemão",
-      value: "de",
-      checked: this.isDE
-    });
+
     alert.addButton(this.btn_cancelar);
     alert.addButton({
       text: this.btn_continuar,
       handler: data => {
-        console.log('radio data:', data);
         this.language = data;
         this.usuario.update_lang(this.language, this.id_serv)
           .then((data: any) => {
             console.log(data);
-
           });
-        this.trogle_idiome(this.language);
+  
         this.changeLanguage();
-
-
       }
     });
     alert.present();
+
   }
   // compartilhar social share
   shareSheetShare() {
@@ -498,8 +426,8 @@ export class HomePage {
     }).catch(() => { });
   }
 
-  shopcode() {
-    var url = 'https://kscode.com.br/pacotes/';
+  shopcode(link = null) {
+    let url = link ? link : 'https://kscode.com.br/pacotes/';
     this.browserTab.isAvailable()
       .then(isAvailable => {
         if (isAvailable) {
@@ -509,11 +437,16 @@ export class HomePage {
   }
   // push notification onesignal
   oneSignalApp() {
-    console.log(this.btn_fechar, this.btn_ircode);
     this.oneSignal.startInit('d9687a3a-3df5-4565-b183-653e84ed8207', '8700496258');
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
     this.oneSignal.handleNotificationReceived().subscribe(notification => {
-      console.log('Dados do Push recebido na HomePage: ',notification);
+      console.log('Dados do Push recebido na HomePage: ', notification);
+      let LiveUrl = notification.payload.launchURL ? notification.payload.launchURL : false;
+      let action = LiveUrl ? "external" : "internal";
+      let sendData = {
+        action: action,
+        link: LiveUrl ? LiveUrl : notification.payload.additionalData.code
+      };
       //var notificationData       = notification.notification.payload;
       /*  var notificationAdditional = notificationData.additionalData;
        var notificationCode       = notificationAdditional.code; */
@@ -531,18 +464,28 @@ export class HomePage {
           {
             text: this.btn_ircode,
             handler: () => {
-              this.redirectPush(notification.payload.additionalData.code);
+              this.redirectPush(sendData);
             }
           }
         ]
       });
       confirm.present();
     });
+
     this.oneSignal.handleNotificationOpened().subscribe(notification => {
-      var notificationData = notification.notification.payload;
-      var notificationAdditional = notificationData.additionalData;
-      var notificationCode = notificationAdditional.code;
-      this.redirectPush(notificationCode);
+      console.log('Abrindo o Push com o app fechado... Dados: ', notification);
+      
+      let notificationData = notification.notification.payload;
+      let notificationAdditional = notificationData.additionalData;
+      let notificationCode = notificationAdditional.code;
+
+      console.log('Abrindo o Push com o app fechado... Dados: ', notification);
+      let sendData = {
+        action: "internal",
+        link: notificationCode
+      };
+
+      this.redirectPush(sendData);
     });
 
     this.oneSignal.endInit();
@@ -555,8 +498,6 @@ export class HomePage {
 
     if (this.language) {
       this.translate.use(this.language);
-      this.trogle_idiome(this.language);
-      console.log("linguagem (HomePage)", this.language);
     }
 
     this._initialiseTranslation();
@@ -568,6 +509,8 @@ export class HomePage {
       this.button = this.translate.instant("home.button");
       this.pesquisa = this.translate.instant("home.pesquisa");
       this.adquira = this.translate.instant("home.adquira");
+      this.scanqr = this.translate.instant("home.scanqr");
+      this.placeholder = this.translate.instant("home.placeholder");
       this.trans.login = this.translate.instant("menu.login");
       this.trans.home = this.translate.instant("menu.home");
       this.trans.favoritos = this.translate.instant("menu.favoritos");
@@ -631,19 +574,28 @@ export class HomePage {
   }
   // redirect push enter
   redirectPush(notificationCode) {
-    console.log(notificationCode);
+    console.log("dados de redirecionamento do push: ", notificationCode);
 
-    let sendData = {
-      liberado: false, origem: 1, token: this.token, lang: this.language,
-      code: notificationCode,
-      latitude: this.endLat, longitude: this.endLong,
-      telephone: this.global.myGlobalVar
+    if (notificationCode.action == "internal") {
 
-    };
-    this.navCtrl.push('RedirectPage', { data: sendData });
+      let code = notificationCode.link;
+      let sendData = {
+        liberado: false, origem: 1, token: this.token, lang: this.language,
+        code: code,
+        latitude: this.endLat, longitude: this.endLong,
+        telephone: this.global.myGlobalVar
 
-    // this.navCtrl.push('DetalheCodePage', sendData);
-    console.log('notifcacao codes com gps');
+      };
+      this.navCtrl.push('RedirectPage', { data: sendData });
+
+      // this.navCtrl.push('DetalheCodePage', sendData);
+      console.log('notifcacao codes com gps');
+
+    } else {
+
+      this.shopcode(notificationCode.link);
+
+    }
 
   }
 
