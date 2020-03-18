@@ -183,7 +183,7 @@ export class MenuCodePage {
         doc: this.translate.instant('menu_code.menu_2'),
         contato: this.translate.instant('menu_code.menu_4'),
         hotspot: 'HOTSOT',
-        senha: 'SEMHA',
+        senha: 'SENHA',
         link: this.translate.instant('menu_code.seg_3'),
         video: this.translate.instant('menu_code.menu_3'),
         audio: 'AUDIO',

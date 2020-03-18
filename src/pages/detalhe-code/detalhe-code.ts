@@ -61,7 +61,7 @@ export class DetalheCodePage {
   page: String;
   info: any;
   TagRegCode: any;
-  TagRegSlug: String;
+  TagRegSlug: any;
   persistentData: any;
   trustedVideoUrl: SafeResourceUrl;
   video_found: any = false;
@@ -954,7 +954,7 @@ export class DetalheCodePage {
       var Tagcode = JSON.parse(dataTag);
       var TagSlug = JSON.parse(slugTag);
 
-      console.log('Reristrando a TAG: ', TagSlug);
+      console.log('Reristrando a TAG: ', slugTag);
       this.oneSignal.sendTags(Tagcode);
       this.oneSignal.sendTags(TagSlug);
 
