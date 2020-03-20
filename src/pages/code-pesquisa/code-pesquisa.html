@@ -24,7 +24,7 @@
         </div>
         <div class="field_text" style="max-width: 97%">
           <p><strong>{{ item.code | slice:0:15}}</strong> - {{item.titulo | slice:0:15}}</p>
-          <p style="white-space: normal;">{{item.resume | slice:0:40}}<span
+          <p style="white-space: normal;">{{item.descricao | slice:0:40}}<span
               *ngIf="item.descricao.length > 40">...</span></p>
         </div>
       </div>
