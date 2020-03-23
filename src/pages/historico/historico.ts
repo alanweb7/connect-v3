@@ -175,8 +175,8 @@ export class HistoricoPage {
     console.log("card", card);
     if (code != "" && code != null && code != undefined) {
       //remover os espaços em branco e trocar por _
-      code = code.replace(/\s/g, "_");
-      console.log("card", code);
+      code = this.removeAccents(code.replace(/\s/g, "_").toLowerCase());
+      console.log("canal para compartilhar: ", code);
     }
 
     let textShare = "Conheça este interessante canal Connect -> ";
@@ -230,6 +230,12 @@ export class HistoricoPage {
         });
     });
   }
+
+  removeAccents(strAccents) {
+    let strAccentsOut = strAccents.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    return strAccentsOut;
+  }
+
 
 }
 export class UserInfoData {
