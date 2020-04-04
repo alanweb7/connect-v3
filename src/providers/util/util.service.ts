@@ -88,4 +88,57 @@ export class UtilService {
     // return this.http.get(url).map((resp: Response) => resp.json());
   }
 
+  async getApiconnect(infoData) {
+    /**
+     * infoData segue o padrao:
+     * data: {
+     * url: 'http://restfull.site.com?params',
+     * method: 'post|get|delete'
+     * data: Object
+     * }
+     */
+    let url = infoData.url;
+    let method = infoData.method;
+    let data = {};
+    let header = {};
+
+    if (infoData.data) {
+      data = infoData.data;
+    }
+
+    if (infoData.header) {
+      header = infoData.header;
+    }
+
+    let httpRest;
+
+    switch (method) {
+      case 'post':
+        httpRest = this.httpn.post(url, data, header);
+        break;
+      case 'get':
+        httpRest = this.httpn.get(url, data, header);
+        break;
+      case 'delete':
+        httpRest = this.httpn.delete(url, data, header);
+        break;
+
+      default:
+        console.log('method default no switch::');
+        break;
+    }
+
+    let result = await httpRest.then((resp) => {
+      // let response = JSON.parse(resp.data);
+      console.log('Resultado do servidor em code.ts::::setHttpPadrao',resp)
+      return resp;
+    }).catch((err) => {
+      console.log('Erro em setHttpPadrao ', err);
+    });
+
+    return result;
+
+  }
+
+
 }

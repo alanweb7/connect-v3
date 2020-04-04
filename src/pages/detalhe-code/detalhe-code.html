@@ -14,9 +14,12 @@
         <img [src]="logo_header ? logo_header : '../../assets/imgs/no-img.jpeg'" />
       </ion-avatar>
       <div style="margin-left: 10px;">
-        <div style="font-size: smaller; text-transform: uppercase;">{{TagRegCode ? TagRegCode : "Nome do Canal" | slice:0:18}}</div>
-        <div style="color: slategrey; font-size: x-small; text-transform:uppercase">{{titulo ? titulo : "Título do Canal Connect"| slice:0:24}}</div>
-        <div style="color: #002b57; font-size: x-small; text-transform:uppercase" *ngIf="subscribers > 0">{{subscribers}} Inscritos</div>
+        <div style="font-size: smaller; text-transform: uppercase;">
+          {{TagRegCode ? TagRegCode : "Nome do Canal" | slice:0:18}}</div>
+        <div style="color: slategrey; font-size: x-small; text-transform:uppercase">
+          {{titulo ? titulo : "Título do Canal Connect"| slice:0:24}}</div>
+        <div style="color: #002b57; font-size: x-small; text-transform:uppercase" *ngIf="subscribers > 0">
+          {{subscribers}} Inscritos</div>
       </div>
       <ion-badge color="primary" item-end>{{vews}}<br>visualizações</ion-badge>
     </ion-item>
@@ -100,6 +103,14 @@
     <hr>
     <div style="width: 100%; height: 90px;"></div>
   </div>
+  <div *ngIf="activeWebContent">
+    <div *ngFor="let content of webContent">
+      <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(content.html)">
+      </div>
+    </div>
+  </div>
+  
+
   <ion-fab right bottom *ngIf="whatsapp && whatsapp.length > 1">
 
     <button (click)="selectTipo('0')" ion-fab color="light" class="dois">

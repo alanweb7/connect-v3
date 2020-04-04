@@ -449,7 +449,7 @@ export class MyApp {
       });
     }
     else if (page == 77) {
-      this.nav.push("ModeloPage", {
+      this.nav.push("DebugPage", {
         token: this.token, page_pesquisa: this.page_pesquisa, load_aguarde: this.load_aguarde,
         msg_servidor: this.msg_servidor, cupom: this.cnpj
       });

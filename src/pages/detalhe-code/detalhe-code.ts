@@ -2,7 +2,7 @@ import { Data } from './../minha-conta/minha-conta';
 import { Facebook } from '@ionic-native/facebook';
 import { GeolocationProvider } from './../../providers/geolocation/geolocation';
 import { Component } from '@angular/core';
-import { IonicPage, Navbar, NavController, NavParams, LoadingController, Slides, ToastController, ViewController, ModalController, AlertController, Platform, Events } from 'ionic-angular';
+import { IonicPage, Navbar, NavController, NavParams, LoadingController, Slides, ToastController, ViewController, ModalController, AlertController, Platform, Events, Content } from 'ionic-angular';
 import { CodeProvider } from './../../providers/code/code';
 import { ViewChild } from '@angular/core';
 import { OneSignal } from '@ionic-native/onesignal';
@@ -152,6 +152,10 @@ export class DetalheCodePage {
   pageOrigem;
   termoPesquisa;
 
+  // configuracoes de conteudo externo
+  public webContent:any;
+  public activeWebContent: boolean;
+
   constructor(
     public navCtrl: NavController,
     public viewCtrl: ViewController,
@@ -231,6 +235,7 @@ export class DetalheCodePage {
 
       this.navCtrl.setRoot(this.pageOrigem);
     }
+
   }
 
   // saindo da pagina
@@ -315,7 +320,6 @@ export class DetalheCodePage {
   }
 
   validatePass(info: any) {
-    // this.util.showLoading('Aguarde...');
     console.log(info);
 
     let action = info.action;
@@ -355,8 +359,7 @@ export class DetalheCodePage {
 
 
   async getCode() {
-    this.util.showLoading('Aguarde..');
-
+ 
     this.codeProvider.getAll(this.page, this.telephone, this.latitude, this.longitude)
       .then(async (res: any) => {
         this.util.loading.dismissAll();
@@ -452,6 +455,12 @@ export class DetalheCodePage {
       this.linkedin = result.data[0]['code_sectors']['linkedin'];
       this.site = result.data[0]['code_sectors']['site'];
       this.vews = result.data[0]['vews'];
+
+      // renderizando o web Content
+      if(result.data[0].activeWebContent){
+        this.webContent = result.data[0].webContent;
+      }
+
       //tratamento do contatos preenchendo os arrays
       if (this.whatsapp.length > 0) {
         this.tel_whatsapp = this.whatsapp[0].conteudo;

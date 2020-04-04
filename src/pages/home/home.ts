@@ -316,16 +316,43 @@ export class HomePage {
       alert('Digite algo pra acessar');
     } else {
 
+      this.util.showLoading('Buscando...');
+
       let latitude = this.endLat;
       let longitude = this.endLong;
+
+      let term = (this.codeNumber).replace(/\s+$/, '').toLowerCase().normalize('NFD').replace(/\s+/, '_').replace(/([\u0300-\u036f]|[^0-9a-zA-Z_])/g, '');
+
+      console.log('Termo da busca: ', term);
+
       let sendData = {
         liberado: false, origem: 1, token: this.token, lang: this.language,
-        code: this.codeNumber,
+        code: term,
         latitude: latitude, longitude: longitude,
         telephone: this.global.myGlobalVar
       };
 
-      this.navCtrl.push('RedirectPage', { data: sendData });
+      let find = {
+        url: 'https://kscode.com.br/ksc_2020/wp-json/admin/v1/checkcode/' + term,
+        method: 'get'
+      };
+
+
+      this.util.getApiconnect(find).then((res) => {
+        
+        let response = JSON.parse(res.data);
+        console.log('Resposta do servidor: ', response);
+
+        if (response.status == 200) {
+          this.navCtrl.push('DetalheCodePage', sendData);
+          // this.navCtrl.push('RedirectPage', { data: sendData });
+        } else {
+          this.util.loading.dismissAll();
+          alert(response.message);
+        }
+
+      })
+
     }
   }
 
@@ -412,7 +439,7 @@ export class HomePage {
           .then((data: any) => {
             console.log(data);
           });
-  
+
         this.changeLanguage();
       }
     });
@@ -474,7 +501,7 @@ export class HomePage {
 
     this.oneSignal.handleNotificationOpened().subscribe(notification => {
       console.log('Abrindo o Push com o app fechado... Dados: ', notification);
-      
+
       let notificationData = notification.notification.payload;
       let notificationAdditional = notificationData.additionalData;
       let notificationCode = notificationAdditional.code;

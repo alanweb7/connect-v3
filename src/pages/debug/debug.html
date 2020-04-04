@@ -1,0 +1,55 @@
+<!--
+  Generated template for the DebugPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>debug</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label>Pesquisa de Canal</ion-label>
+  </ion-item>
+  <form [formGroup]="findchannel" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Canal </ion-label>
+      <ion-input required formControlName="channel" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">End Point </ion-label>
+      <ion-input formControlName="url" type="text"></ion-input>
+    </ion-item>
+    <div [innerHtml]>O padrão é: https://kscode.com.br/ksc_2020/wp-json/code/search/</div>
+
+    <ion-item>
+      <ion-label position="floating">Método</ion-label>
+      <ion-input required formControlName="method" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Data (array json)</ion-label>
+      <ion-input formControlName="data" type="text"></ion-input>
+    </ion-item>
+    <div [innerHtml]>O json segue o formato: "key":"valor" e não pode haver espaço entre os termos</div>
+    <ion-item>
+      <ion-label position="floating">Header</ion-label>
+      <ion-input formControlName="header" type="text"></ion-input>
+    </ion-item>
+    <div [innerHtml]>Segue o formato: "key":"valor" e não pode haver espaço entre os termos</div>
+    <button ion-button block color="primary" type="submit" [disabled]="findchannel.invalid">
+      Login
+    </button>
+  </form>
+  <h3>Dados da pesquisa</h3>
+  <div [innerHtml]="infoData"></div>
+  <h3>Dados do formularios:</h3>
+  <div [innerHtml]="terms"></div>
+  <h3>Retorno do servidor</h3>
+  <div [innerHtml]="response"></div>
+</ion-content>
